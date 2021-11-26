@@ -1,6 +1,5 @@
 variables:
   DEFAULT_MAVEN_CLI_OPTS: "--show-version -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  DOCKER_TLS_CERTDIR: ""
   MAVEN_JDK_VERSION: "3.6.3-jdk-11"
   DOCKER_VERSION: "stable"
   DOCKER_DIND_VERSION: "18.09-dind"
@@ -46,6 +45,7 @@ cache:
   variables:
       DOCKER_HOST: tcp://dockerd:2375
       DOCKER_DRIVER: overlay2
+      DOCKER_TLS_CERTDIR: ""
       IMAGE_NAME: "${PRIVATE_REGISTRY_PUSH_SERVER}/${PROJECT_GROUP_ID}/${PROJECT_NAME}"
   before_script:
     - mkdir -p ~/.docker/ && cat $DOCKER_CONF_JSON > ~/.docker/config.json
