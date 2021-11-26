@@ -2,7 +2,10 @@
   variables: 
     KUBECTL_VERSION: "1.21.1-release"
     DOCKER_REGCRED: "nexus-regcred"
-    KUBERNETES_MANIFEST: ('src/deployment.yaml' 'src/service.yaml' 'src/config-map.yaml')
+    KUBERNETES_MANIFEST: 
+      src/deployment.yaml 
+      src/service.yaml
+      src/config-map.yaml
   image:
     name: ${PRIVATE_REGISTRY_PUSH_SERVER}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
@@ -20,17 +23,22 @@
 .kubernetes-deploy:
   extends: .kubernetes-config
   script:
-    - kubectl apply -f ${CONFIGMAP_FILE} -n $KUBE_NAMESPACE
-    - kubectl apply -f ${DEPLOYMENT_FILE} -n $KUBE_NAMESPACE
-    - kubectl apply -f ${SERVICE_FILE} -n $KUBE_NAMESPACE
-
+    - >
+      for manifest in ${KUBERNETES_MANIFEST};
+      do
+          envsubst < $manifest > $manifest;
+          kubectl apply -f $manifest -n $KUBE_NAMESPACE
+      done
 
 .kubernetes-stop-deploy:
   extends: .kubernetes-config
   when: manual
   script:
-    - kubectl delete -f ${DEPLOYMENT_FILE} -n $KUBE_NAMESPACE
-    - kubectl delete -f ${SERVICE_FILE} -n $KUBE_NAMESPACE
-    - kubectl delete -f ${CONFIGMAP_FILE} -n $KUBE_NAMESPACE
+    - >
+      for manifest in ${KUBERNETES_MANIFEST};
+      do
+          envsubst < $manifest > $manifest;
+          kubectl apply -f $manifest -n $KUBE_NAMESPACE
+      done
     - kubectl delete secret nexus-regcred -n $KUBE_NAMESPACE
   allow_failure: true
