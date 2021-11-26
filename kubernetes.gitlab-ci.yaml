@@ -26,9 +26,9 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
-          envsubst < "$TEMPLATE" >> "$TEMPLATE";
+          envsubst < "$TEMPLATE" > "$TEMPLATE";
           cat $TEMPLATE;
-          #kubectl apply -n $KUBE_NAMESPACE -f $TEMPLATE
+          kubectl apply -n $KUBE_NAMESPACE -f $TEMPLATE
       done
 
 .kubernetes-stop-deploy:
@@ -38,7 +38,9 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
-          envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
+          envsubst < "$TEMPLATE" > "$TEMPLATE";
+          cat $TEMPLATE;
+          kubectl apply -n $KUBE_NAMESPACE -f $TEMPLATE
       done
     - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
