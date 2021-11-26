@@ -32,8 +32,6 @@ cache:
 .build-docker:
   stage: build
   image: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_VERSION}
-  needs:
-    - build:jar
   services:
     - name: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
