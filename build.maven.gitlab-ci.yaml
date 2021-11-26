@@ -14,9 +14,9 @@ cache:
   image: ${PRIVATE_REGISTRY_PULL_SERVER}/maven:${MAVEN_JDK_VERSION}
   before_script:
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
-    - MVN_BUILD_FILE_NAME=$(mvn -N -q -DforceStdout help:evaluate -Dexpression="project.build.finalName").jar && echo ${MVN_BUILD_FILE_NAME}
-    - MVN_PROJECT_NAME=$(mvn -N -q -DforceStdout help:evaluate -Dexpression="project.artifactId") && echo ${MVN_PROJECT_NAME}
-    - MVN_PROJECT_GROUP_ID=$(mvn -N -q -DforceStdout help:evaluate -Dexpression="project.projectId") && echo ${MVN_PROJECT_GROUP_ID}
+    - MVN_BUILD_FILE_NAME=$(mvn -s $M2_SETTINGS_XML -N -q -DforceStdout help:evaluate -Dexpression="project.build.finalName").jar
+    - MVN_PROJECT_NAME=$(mvn -s $M2_SETTINGS_XML -N -q -DforceStdout help:evaluate -Dexpression="project.artifactId")
+    - MVN_PROJECT_GROUP_ID=$(mvn -s $M2_SETTINGS_XML -N -q -DforceStdout help:evaluate -Dexpression="project.groupId")
     - echo "JAR_FILE=$MVN_BUILD_FILE_NAME" >> deploy.env 
     - echo "PROJECT_NAME=${MVN_PROJECT_NAME}" >> deploy.env
     - echo "PROJECT_GROUP_ID=${MVN_PROJECT_GROUP_ID}" >> deploy.env
