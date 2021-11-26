@@ -26,9 +26,7 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
-          envsubst < "$TEMPLATE" > "$TEMPLATE";
-          cat $TEMPLATE;
-          kubectl apply -n $KUBE_NAMESPACE -f $TEMPLATE
+          envsubst < "$TEMPLATE" > kubectl apply -n $KUBE_NAMESPACE -f -;
       done
 
 .kubernetes-stop-deploy:
