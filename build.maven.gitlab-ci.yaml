@@ -17,9 +17,9 @@ cache:
     - JAR_FILE=$(mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS -N -q -DforceStdout help:evaluate -Dexpression="project.build.finalName").jar
     - PROJECT_NAME=$(mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS -N -q -DforceStdout help:evaluate -Dexpression="project.artifactId")
     - PROJECT_GROUP_ID=$(mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS -N -q -DforceStdout help:evaluate -Dexpression="project.projectId")
-    - echo "JAR_FILE=$JAR_FILE" >> deploy.env
-    - echo "PROJECT_NAME=$PROJECT_NAME" >> deploy.env
-    - echo "PROJECT_GROUP_ID=$PROJECT_GROUP_ID" >> deploy.env
+    - echo "JAR_FILE=${JAR_FILE}" >> deploy.env
+    - echo "PROJECT_NAME=${PROJECT_NAME}" >> deploy.env
+    - echo "PROJECT_GROUP_ID=${PROJECT_GROUP_ID}" >> deploy.env
   script:
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS package -DskipTests
   artifacts:
