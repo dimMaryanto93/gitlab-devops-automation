@@ -26,8 +26,8 @@
     - >
       for manifest in ${KUBERNETES_MANIFEST};
       do
-          envsubst < $manifest > $manifest;
           cat $manifest;
+          envsubst < $manifest > $manifest;
           kubectl apply -f $manifest -n $KUBE_NAMESPACE;
       done
 
