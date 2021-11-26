@@ -52,10 +52,11 @@ cache:
     - docker image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
     - docker image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest
   after_script:
-    - echo "PROJECT_NAME=$PROJECT_NAME" >> deploy.env
-    - echo "PROJECT_GROUP_ID=$PROJECT_GROUP_ID" >> deploy.env
-    - echo "CI_COMMIT_TAG=${CI_COMMIT_TAG}" >> deploy.env
-    - echo "CI_COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA}" >> deploy.env
+    - echo "CI_PARENT_PROJECT_NAME=$PROJECT_NAME" >> deploy.env
+    - echo "CI_PARENT_PROJECT_GROUP_ID=$PROJECT_GROUP_ID" >> deploy.env
+    - echo "CI_PARENT_COMMIT_TAG=${CI_COMMIT_TAG}" >> deploy.env
+    - echo "CI_PARENT_COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA}" >> deploy.env
+    - echo "CI_PARENT_PIPELINE_PROJECT_ID=${$CI_PROJECT_ID}" >> deploy.env
   artifacts:
     reports:
       dotenv: deploy.env
