@@ -1,9 +1,8 @@
-variables:
-    KUBECTL_VERSION: "1.21.1-release"
-
 .kubernetes-config:
   variables: 
+    KUBECTL_VERSION: "1.21.1-release"
     DOCKER_REGCRED: "nexus-regcred"
+    KUBERNETES_MANIFEST: ('src/deployment.yaml' 'src/service.yaml' 'src/config-map.yaml')
   image:
     name: ${PRIVATE_REGISTRY_PUSH_SERVER}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
@@ -24,10 +23,7 @@ variables:
     - kubectl apply -f ${CONFIGMAP_FILE} -n $KUBE_NAMESPACE
     - kubectl apply -f ${DEPLOYMENT_FILE} -n $KUBE_NAMESPACE
     - kubectl apply -f ${SERVICE_FILE} -n $KUBE_NAMESPACE
-  artifacts:
-    paths:
-      - .k8s/
-    name: $CI_PROJECT_NAME-$CI_COMMIT_TAG
+
 
 .kubernetes-stop-deploy:
   extends: .kubernetes-config
