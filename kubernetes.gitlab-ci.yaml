@@ -23,23 +23,26 @@
 .kubernetes-deploy:
   extends: .kubernetes-config
   script:
+    - mkdir -p .k8s
     - >
       for manifest in ${KUBERNETES_MANIFEST};
       do
-          cat $manifest;
-          envsubst < $manifest > $manifest;
-          kubectl apply -f $manifest -n $KUBE_NAMESPACE;
+          envsubst < $manifest > .k8s/$manifest;
+          cat .k8s/$manifest;
+          kubectl apply -f .k8s/$manifest -n $KUBE_NAMESPACE;
       done
 
 .kubernetes-stop-deploy:
   extends: .kubernetes-config
   when: manual
   script:
+    - mkdir -p .k8s
     - >
       for manifest in ${KUBERNETES_MANIFEST};
       do
-          envsubst < $manifest > $manifest;
-          kubectl apply -f $manifest -n $KUBE_NAMESPACE
+          envsubst < $manifest > .k8s/$manifest;
+          cat .k8s/$manifest;
+          kubectl apply -f .k8s/$manifest -n $KUBE_NAMESPACE
       done
     - kubectl delete secret nexus-regcred -n $KUBE_NAMESPACE
   allow_failure: true
