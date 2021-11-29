@@ -30,9 +30,8 @@
           echo "--------------------------------";
           echo "kubernetes manifest => $TEMPLATE";
           envsubst < $TEMPLATE;
-          echo "will be executed!";
           envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
-          echo "--------------------------------";
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
 
 .kubernetes-stop-deploy:
