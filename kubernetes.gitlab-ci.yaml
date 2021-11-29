@@ -26,8 +26,8 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
-          cat "--------------------------------";
-          cat "kubernetes manifest => $TEMPLATE";
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
           cat $TEMPLATE | envsubst -;
           envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
       done
