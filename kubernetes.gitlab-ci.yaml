@@ -26,6 +26,7 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
+          envsubst $TEMPLATE;
           envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
       done
 
