@@ -1,0 +1,44 @@
+.kubernetes-config:
+  variables: 
+    KUBECTL_VERSION: "1.21.1-release"
+    DOCKER_REGCRED: "nexus-regcred"
+    KUBERNETES_MANIFEST_TEMPLATES: 
+      src/deployment.yaml 
+      src/service.yaml
+      src/config-map.yaml
+  image:
+    name: ${PRIVATE_REGISTRY_PUSH_SERVER}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+  before_script:
+    - kubectl config set-context --current --namespace="$KUBE_NAMESPACE"
+    - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
+    - NEXUS_REGCRED_IS_EXIST=$(kubectl get secret "$DOCKER_REGCRED" -n "$KUBE_NAMESPACE" -o json --ignore-not-found=true | grep "$DOCKER_REGCRED" | wc -l)
+    - >
+      if [ ${NEXUS_REGCRED_IS_EXIST} -eq 0 ]; 
+        then 
+          kubectl create secret generic "$DOCKER_REGCRED" --from-file=".dockerconfigjson=.docker/config.json" --type="kubernetes.io/dockerconfigjson" --namespace="$KUBE_NAMESPACE"
+        else 
+          echo "Docker Registry Credential was created";
+      fi
+
+.kubernetes-deploy:
+  extends: .kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          envsubst < "$TEMPLATE" #| kubectl apply -n $KUBE_NAMESPACE -f -;
+      done
+
+.kubernetes-stop-deploy:
+  extends: .kubernetes-config
+  when: manual
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          envsubst < "$TEMPLATE" > "$TEMPLATE";
+          cat $TEMPLATE;
+          kubectl apply -n $KUBE_NAMESPACE -f $TEMPLATE
+      done
+    - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
+  allow_failure: true
