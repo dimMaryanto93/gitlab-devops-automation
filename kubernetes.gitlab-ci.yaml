@@ -41,7 +41,7 @@
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
-          envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
+          envsubst < $TEMPLATE | kubectl delete -n $KUBE_NAMESPACE -f -;
       done
     - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
