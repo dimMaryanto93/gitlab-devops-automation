@@ -17,8 +17,8 @@
     - echo "kubernetes registry is exist => ${NEXUS_REGCRED_IS_EXIST}"
     - >
       if [ ${NEXUS_REGCRED_IS_EXIST} -eq 0 ]; 
-      then kubectl create secret generic "$DOCKER_REGCRED" --from-file=".dockerconfigjson=.docker/config.json" --type="kubernetes.io/dockerconfigjson" --namespace="$KUBE_NAMESPACE"
-      else echo "Docker Registry Credential was created";
+        then kubectl create secret generic "$DOCKER_REGCRED" --from-file=".dockerconfigjson=.docker/config.json" --type="kubernetes.io/dockerconfigjson" --namespace="$KUBE_NAMESPACE"
+        else echo "Docker Registry Credential was created";
       fi
 
 .kubernetes-deploy:
