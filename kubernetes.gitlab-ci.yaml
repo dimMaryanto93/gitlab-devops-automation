@@ -12,6 +12,7 @@
     - echo "set kubernetes namespaces to $KUBE_NAMESPACE"
     - kubectl config set-context --current --namespace="$KUBE_NAMESPACE"
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
+    - cat .docker/config.json
     - NEXUS_REGCRED_IS_EXIST=$(kubectl get secret "$DOCKER_REGCRED" -n "$KUBE_NAMESPACE" -o json --ignore-not-found=true | grep "$DOCKER_REGCRED" | wc -l)
     - echo "kubernetes registry is exist => ${NEXUS_REGCRED_IS_EXIST}"
     - >
