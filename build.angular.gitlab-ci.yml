@@ -18,6 +18,7 @@ cache:
   before_script:
     - cat $NPM_PROXY > .npmrc
   script:
+    - apk add --no-cache git # install git required by install package
     - npm install --prod --silence
     - npm install @angular-devkit/build-angular --silent
     - node $NG_MEMORY_HEAP $NG_CLI_EXEC build $BUILD_OUTPUT_PATH --aot --build-optimizer $BUILD_CONFIGURATION --common-chunk --optimization --source-map --stats-json
