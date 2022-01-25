@@ -1,0 +1,65 @@
+variables:
+  DOCKER_VERSION: "stable"
+  DOCKER_DIND_VERSION: "18.09-dind"
+  DOCKER_CONFIG_FILE: "--config .docker"
+  NODE_VERSION: "14.15-alpine"
+
+cache:
+  paths:
+    - node_modules
+
+.build-ng:
+  image: ${PRIVATE_REGISTRY_PULL_SERVER}/node:${NODE_VERSION}
+  variables:
+    NG_CLI_EXEC: "./node_modules/@angular/cli/bin/ng"
+    NG_MEMORY_HEAP: "--max_old_space_size=2048"
+    BUILD_OUTPUT_PATH: "--output-path=dist"
+    BUILD_CONFIGURATION: "--configuration=production"
+  before_script:
+    - cat $NPM_PROXY > .npmrc
+  script:
+    - npm install --prod --silence
+    - npm install @angular-devkit/build-angular --silent
+    - node $NG_MEMORY_HEAP $NG_CLI_EXEC build $BUILD_OUTPUT_PATH --aot --build-optimizer $BUILD_CONFIGURATION --common-chunk --optimization --source-map --stats-json
+  after_script:
+    - export PROJECT_NAME=$(node -e "console.log(require('./package.json').name);")
+    - export PROJECT_GROUP_ID=$(node -e "console.log(require('./package.json').groupId);")
+    - echo "PROJECT_NAME=$PROJECT_NAME" >> deploy.env
+    - echo "PROJECT_GROUP_ID=$PROJECT_GROUP_ID" >> deploy.env
+  artifacts:
+    name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    paths:
+      - dist/*
+    reports:
+      dotenv: deploy.env
+
+.build-docker:
+  image: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_VERSION}
+  services:
+    - name: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_DIND_VERSION}
+      entrypoint: ["dockerd-entrypoint.sh"]
+      command: [
+        "--insecure-registry=192.168.100.250:8087",
+        "--insecure-registry=192.168.100.250:8088"
+      ]
+      alias: dockerd
+  variables:
+    DOCKER_HOST: tcp://dockerd:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg BUILD_FOLDER=dist/"
+    DOCKERFILE_LOCATION: "-f Dockerfile"
+  before_script:
+    - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
+  script:
+    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA -t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest .
+    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest
+  after_script:
+    - echo "CI_PARENT_PROJECT_NAME=${PROJECT_NAME}" >> deploy.env
+    - echo "CI_PARENT_PROJECT_GROUP_ID=${PROJECT_GROUP_ID}" >> deploy.env
+    - echo "CI_PARENT_COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA}" >> deploy.env
+    - echo "CI_PARENT_PIPELINE_PROJECT_ID=${CI_PROJECT_ID}" >> deploy.env
+  artifacts:
+    reports:
+      dotenv: deploy.env
