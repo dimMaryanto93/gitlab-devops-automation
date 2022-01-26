@@ -18,7 +18,7 @@ cache:
   before_script:
     - cat $NPM_PROXY > .npmrc
   script:
-    - npm install --prod --silence
+    - npm install --silence
     - npm install @angular-devkit/build-angular --silent
     - node $NG_MEMORY_HEAP $NG_CLI_EXEC build $BUILD_OUTPUT_PATH --aot --build-optimizer $BUILD_CONFIGURATION --common-chunk --optimization --source-map --stats-json
   after_script:

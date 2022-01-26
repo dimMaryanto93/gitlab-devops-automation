@@ -1,0 +1,11 @@
+## MacOS
+.DS_Store
+
+## Intellij IDEA
+.idea/
+*.iml
+*.iwl
+*.imp
+
+## visualstudio code
+.vscode/
