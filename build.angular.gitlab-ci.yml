@@ -18,8 +18,9 @@ cache:
   before_script:
     - cat $NPM_PROXY > .npmrc
   script:
-    - npm install --silence
+    - apk add --no-cache git # install git required by install package
     - npm install @angular-devkit/build-angular --silent
+    - npm install --silence
     - node $NG_MEMORY_HEAP $NG_CLI_EXEC build $BUILD_OUTPUT_PATH --aot --build-optimizer $BUILD_CONFIGURATION --common-chunk --optimization --source-map --stats-json
   after_script:
     - export PROJECT_NAME=$(node -e "console.log(require('./package.json').name);")
