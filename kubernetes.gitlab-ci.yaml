@@ -44,3 +44,29 @@
       done
     - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
+
+.kustomize-deploy:
+  extends: .kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl apply -f -;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+
+.kustomize-stop-deploy:
+  extends: .kubernetes-config
+  when: manual
+  script:
+    - |
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl delete -f -;
+      done
+    - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
+  allow_failure: true
