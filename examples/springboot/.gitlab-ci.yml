@@ -19,6 +19,7 @@ default:
 include:
   - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.maven.gitlab-ci.yml'
   - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.docker.gitlab-ci.yml'
+  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/trigger.deploy.gitlab-ci.yml'
   
 build:jar:
   stage: build
@@ -34,5 +35,16 @@ build:docker:
   needs:
     - build:jar
     - get-fact:project:info
+  only:
+    - /-release/
+
+push_deploy:
+  extends: .trigger_pipeline
+  variables:
+    CI_DEFAULT_TRIGGER_BRANCH: master
+  stage: deploy
+  needs:
+    - get-fact:project:info
+    - build:docker
   only:
     - /-release/
