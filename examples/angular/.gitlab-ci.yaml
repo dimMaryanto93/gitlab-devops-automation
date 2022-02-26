@@ -1,0 +1,17 @@
+stages:
+  - pre-build
+  - test
+  - build
+  - publish
+  - review
+  - deploy
+
+variables:
+  NODE_VERSION: "14.15-alpine"
+  DOCKER_VERSION: "stable"
+  DOCKER_DIND_VERSION: "18.09-dind"
+  DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg JAR_FILE=$JAR_FILE"
+
+default:
+  tags:
+    - docker
