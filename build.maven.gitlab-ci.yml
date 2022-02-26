@@ -1,3 +1,6 @@
+stages:
+  - pre-build
+
 variables:
   DEFAULT_MAVEN_CLI_OPTS: "--show-version -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   MAVEN_JDK_VERSION: "3.6.3-jdk-11"

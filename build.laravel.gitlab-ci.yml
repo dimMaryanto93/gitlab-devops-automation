@@ -1,3 +1,6 @@
+stages:
+  - pre-build
+
 variables:
   DOCKER_VERSION: "stable"
   DOCKER_DIND_VERSION: "18.09-dind"

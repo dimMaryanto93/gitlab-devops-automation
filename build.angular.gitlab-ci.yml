@@ -1,3 +1,6 @@
+stages:
+  - pre-build
+
 variables:
   NODE_VERSION: "14.15-alpine"
 
@@ -6,6 +9,7 @@ cache:
     - node_modules
 
 get-fact:project:info:
+  stage: pre-build
   image: private.nexus-regs.docker:8086/node:${NODE_VERSION}
   script:
     - export PROJECT_NAME=$(node -e "console.log(require('./package.json').name);")
