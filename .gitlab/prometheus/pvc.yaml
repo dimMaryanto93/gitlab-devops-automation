@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: gitlab-managed-apps
+    pv.kubernetes.io/bind-completed: "yes"
+  finalizers:
+    - kubernetes.io/pvc-protection
+  labels:
+    app: prometheus
+    app.kubernetes.io/managed-by: Helm
+    chart: prometheus-14.6.0
+    component: server
+    heritage: Helm
+    release: prometheus
+  name: prometheus-prometheus-server
+  namespace: gitlab-managed-apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+  ## add this value
+  volumeName: prometheus-prometheus-server-pv
+status:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
