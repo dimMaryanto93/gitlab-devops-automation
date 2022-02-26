@@ -8,6 +8,20 @@ cache:
   paths:
     - node_modules
 
+.get-fact:
+  image: ${PRIVATE_REGISTRY_PULL_SERVER}/node:${NODE_VERSION}
+  script:
+    - export PROJECT_NAME=$(node -e "console.log(require('./package.json').name);")
+    - export PROJECT_GROUP_ID=$(node -e "console.log(require('./package.json').groupId);")    
+    - export PROJECT_VERSION=$(node -e "console.log(require('./package.json').version);")
+    - echo "PROJECT_NAME=$PROJECT_NAME" >> deploy.env
+    - echo "PROJECT_GROUP_ID=$PROJECT_GROUP_ID" >> deploy.env
+    - echo "PROJECT_VERSION=$PROJECT_VERSION" >> deploy.env
+  artifacts:
+    name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    reports:
+      dotenv: deploy.env
+
 .build-ng:
   image: ${PRIVATE_REGISTRY_PULL_SERVER}/node:${NODE_VERSION}
   variables:
@@ -60,7 +74,7 @@ cache:
     - echo "CI_PARENT_PROJECT_NAME=${PROJECT_NAME}" >> deploy.env
     - echo "CI_PARENT_PROJECT_GROUP_ID=${PROJECT_GROUP_ID}" >> deploy.env
     - echo "CI_PARENT_COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA}" >> deploy.env
-    - echo "CI_PARENT_PIPELINE_PROJECT_ID=${CI_PROJECT_ID}" >> deploy.env
+    - echo "CI_PARENT_PIPELINE_PROJECT_ID=${PROJECT_NAME}" >> deploy.env
   artifacts:
     reports:
       dotenv: deploy.env
