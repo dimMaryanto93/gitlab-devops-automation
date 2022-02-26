@@ -27,6 +27,8 @@ get-fact:project:info:
     - echo "CI_PARENT_PIPELINE_PROJECT_ID=${CI_PROJECT_ID}" >> deploy.env
   artifacts:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    paths:
+      - deploy.env
     reports:
       dotenv: deploy.env
 
