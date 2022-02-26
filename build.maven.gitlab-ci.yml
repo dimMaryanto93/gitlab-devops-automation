@@ -31,6 +31,8 @@ get-fact:project:info:
       - deploy.env
     reports:
       dotenv: deploy.env
+  rules:
+    - if: $CI_COMMIT_TAG
 
 .build-jar:
   image: private.nexus-regs.docker:8086/maven:${MAVEN_JDK_VERSION}
