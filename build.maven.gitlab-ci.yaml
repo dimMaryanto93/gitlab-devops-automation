@@ -11,6 +11,7 @@ cache:
 
 get-fact:project:info:
   image: ${PRIVATE_REGISTRY_PULL_SERVER}/maven:${MAVEN_JDK_VERSION}
+  stage: pre-build
   script:
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
     - MVN_BUILD_FILE_NAME=$(mvn -s $M2_SETTINGS_XML -N -q -DforceStdout help:evaluate -Dexpression="project.build.finalName").jar
