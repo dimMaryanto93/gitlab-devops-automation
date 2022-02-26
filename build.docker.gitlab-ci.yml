@@ -5,9 +5,9 @@ variables:
 
 .build-docker:
   stage: build
-  image: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_VERSION}
+  image: private.nexus-regs.docker:8086/docker:${DOCKER_VERSION}
   services:
-    - name: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_DIND_VERSION}
+    - name: private.nexus-regs.docker:8086/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
       command: [
         "--insecure-registry=private.nexus-regs.docker:8087",
