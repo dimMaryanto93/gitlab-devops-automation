@@ -1,14 +1,17 @@
 .trigger_pipeline:
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: main
+  before_script:
+    - echo "Print debug property => {ProjectName => ${PROJECT_NAME}, ProjectGroupId => ${PROJECT_GROUP_ID}, CommitSHA => ${CI_COMMIT_SHORT_SHA}, ProjectId => ${CI_PROJECT_ID} }"
+    - echo "Deployed to server url => ${CI_SERVER_URL}, project id => ${CI_TRIGER_DEPLOY_PROJECT_ID}"
   script:
     - |
-      curl --fail --request POST 
-        --form token=$CI_TRIGGER_DEPLOY_TOKEN 
-        --form ref=$CI_DEFAULT_TRIGGER_BRANCH 
-        --form "variables[CI_PARENT_PROJECT_NAME]=$PROJECT_NAME" 
-        --form "variables[CI_PARENT_PROJECT_GROUP_ID]=$PROJECT_GROUP_ID" 
-        --form "variables[CI_PARENT_COMMIT_TAG]=$CI_COMMIT_TAG" 
-        --form "variables[CI_PARENT_COMMIT_SHORT_SHA]=$CI_COMMIT_SHORT_SHA" 
-        --form "variables[CI_PARENT_PIPELINE_PROJECT_ID]=$CI_PROJECT_ID" 
+      curl --fail --request POST \
+        --form token=$CI_TRIGGER_DEPLOY_TOKEN \
+        --form ref=$CI_DEFAULT_TRIGGER_BRANCH \
+        --form "variables[CI_PARENT_PROJECT_NAME]=$PROJECT_NAME" \
+        --form "variables[CI_PARENT_PROJECT_GROUP_ID]=$PROJECT_GROUP_ID" \
+        --form "variables[CI_PARENT_COMMIT_TAG]=$CI_COMMIT_TAG" \
+        --form "variables[CI_PARENT_COMMIT_SHORT_SHA]=$CI_COMMIT_SHORT_SHA" \
+        --form "variables[CI_PARENT_PIPELINE_PROJECT_ID]=$CI_PROJECT_ID" \
         "${CI_SERVER_URL}/api/v4/projects/${CI_TRIGER_DEPLOY_PROJECT_ID}/trigger/pipeline"
