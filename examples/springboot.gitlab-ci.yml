@@ -19,28 +19,7 @@ default:
 include:
   - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.maven.gitlab-ci.yml'
   - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.docker.gitlab-ci.yml'
-
-test:script:
-  image: ${PRIVATE_REGISTRY_PULL_SERVER}/maven:${MAVEN_JDK_VERSION}
-  stage: test
-  services:
-    - name: ${PRIVATE_REGISTRY_PULL_SERVER}/postgres:12.6
-      alias: spring-k8s-example
-  variables:
-    POSTGRES_DB: testing
-    POSTGRES_USER: testing
-    POSTGRES_PASSWORD: testing
-    DATABASE_HOST: spring-k8s-example
-    DATABASE_USER: $POSTGRES_USER
-    DATABASE_PASSWORD: $POSTGRES_PASSWORD
-    DATABASE_NAME: $POSTGRES_DB
-    DATABASE_PORT: 5432
-  script:
-    - mvn -s $M2_SETTINGS_XML $MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
-    - mvn -s $M2_SETTINGS_XML $MAVEN_CLI_OPTS clean test
-  only:
-    - /-release/
-
+  
 build:jar:
   stage: build
   extends: .build-jar
