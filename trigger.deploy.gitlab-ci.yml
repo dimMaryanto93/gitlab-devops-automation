@@ -3,10 +3,10 @@
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: main
   before_script:
-    - apk add --no-cache curl git
     - echo "Print debug property => {ProjectName => ${PROJECT_NAME}, ProjectGroupId => ${PROJECT_GROUP_ID}, CommitSHA => ${CI_COMMIT_SHORT_SHA}, ProjectId => ${CI_PROJECT_ID} }"
     - echo "Deployed to server url => ${CI_SERVER_URL}, project id => ${CI_TRIGER_DEPLOY_PROJECT_ID}"
   script:
+    - apk add --no-cache curl git
     - |
       curl --fail --request POST \
         --form token=$CI_TRIGGER_DEPLOY_TOKEN \
