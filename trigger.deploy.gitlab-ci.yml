@@ -1,5 +1,5 @@
 .trigger_pipeline:
-  name: private.nexus-regs.docker:8086/alpine:latest
+  image: private.nexus-regs.docker:8086/alpine:latest
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: main
   before_script:
