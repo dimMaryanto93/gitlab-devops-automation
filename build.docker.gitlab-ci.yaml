@@ -1,0 +1,30 @@
+variables:
+  DOCKER_VERSION: "stable"
+  DOCKER_DIND_VERSION: "18.09-dind"
+  DOCKER_CONFIG_FILE: "--config .docker"
+
+.build-docker:
+  stage: build
+  image: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_VERSION}
+  services:
+    - name: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_DIND_VERSION}
+      entrypoint: ["dockerd-entrypoint.sh"]
+      command: [
+        "--insecure-registry=192.168.100.250:8087",
+        "--insecure-registry=192.168.100.250:8088"
+      ]
+      alias: dockerd
+  variables:
+      DOCKER_HOST: tcp://dockerd:2375
+      DOCKER_DRIVER: overlay2
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_BUILD_ARGS_ENTRIPOINT: ""
+      DOCKERFILE_LOCATION: "-f Dockerfile"
+      DOCKER_TAG_LIST: "-t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA -t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest"
+      DOCKER_CONTEXT_PATH: "."
+  before_script:
+    - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
+  script:
+    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT $DOCKER_TAG_LIST $DOCKER_CONTEXT_PATH
+    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest

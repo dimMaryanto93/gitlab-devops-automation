@@ -9,7 +9,7 @@ cache:
   paths:
   - .m2/repository
 
-.get-fact:
+get-fact:project:info:
   image: ${PRIVATE_REGISTRY_PULL_SERVER}/maven:${MAVEN_JDK_VERSION}
   script:
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
@@ -37,29 +37,3 @@ cache:
     paths:
       - target/*.jar
     name: $CI_PROJECT_NAME-$CI_COMMIT_TAG
-
-.build-docker:
-  stage: build
-  image: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_VERSION}
-  services:
-    - name: ${PRIVATE_REGISTRY_PULL_SERVER}/docker:${DOCKER_DIND_VERSION}
-      entrypoint: ["dockerd-entrypoint.sh"]
-      command: [
-        "--insecure-registry=192.168.100.250:8087",
-        "--insecure-registry=192.168.100.250:8088"
-      ]
-      alias: dockerd
-  variables:
-      DOCKER_HOST: tcp://dockerd:2375
-      DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: ""
-      DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg JAR_FILE=$JAR_FILE"
-      DOCKERFILE_LOCATION: "-f Dockerfile"
-      DOCKER_TAG_LIST: "-t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA -t $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest"
-      DOCKER_CONTEXT_PATH: "."
-  before_script:
-    - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
-  script:
-    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT $DOCKER_TAG_LIST $DOCKER_CONTEXT_PATH
-    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
-    - docker $DOCKER_CONFIG_FILE image push $PRIVATE_REGISTRY_PUSH_SERVER/$PROJECT_GROUP_ID/$PROJECT_NAME:latest
