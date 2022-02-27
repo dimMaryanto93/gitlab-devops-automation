@@ -1,4 +1,4 @@
-## SIAP BOS/BOB Deployment
+## Deployment
 
 - docker
 - kubernetes
@@ -12,7 +12,7 @@ minikube start \
 --memory 2g \
 --nodes 3 \
 --driver virtualbox \
---insecure-registry=192.168.100.250:8088 \
+--insecure-registry=127.0.0.1:8088 \
 --addons=metrics-server,dashboard,registry-creds \
 -p siapbos \
 --kubernetes-version=1.23.3
