@@ -1,0 +1,8 @@
+---
+- name: test
+  hosts: all
+
+  tasks:
+  - name: Ensure apache is at the latest version
+    become: true
+    ping: 
