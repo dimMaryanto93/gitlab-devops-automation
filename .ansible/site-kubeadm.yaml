@@ -1,8 +1,5 @@
 ---
 - name: test
   hosts: kubernetes
-
-  tasks:
-  - name: Ensure apache is at the latest version
-    become: true
-    ping: 
+  roles: 
+    - dimmaryanto93.docker
