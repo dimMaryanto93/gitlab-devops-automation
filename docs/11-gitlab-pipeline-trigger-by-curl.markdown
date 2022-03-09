@@ -6,7 +6,7 @@ To use trigger deploy by curl
 
     ![setting-pipeline](images/gitlab-pipeline-trigger/01-pipeline-trigger.png)
 
-2. Create variables in Gitlab Instance / Project Group / Project it self
+2. Create variables in Gitlab Instance / Project Group / Project it self. Go to **Settings** -> **CI/CD** -> **Variables**
 
     ```yaml
     CI_TRIGER_DEPLOY_PROJECT_ID: <your-deployment-project-id>
