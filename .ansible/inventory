@@ -1,0 +1,17 @@
+master      ansible_host=192.168.59.10  ansible_ssh_private_key_file=.vagrant/machines/master/virtualbox/private_key 
+etcd        ansible_host=192.168.59.9   ansible_ssh_private_key_file=.vagrant/machines/etcd/virtualbox/private_key
+worker-01   ansible_host=192.168.59.11  ansible_ssh_private_key_file=.vagrant/machines/worker-01/virtualbox/private_key
+
+[all:vars]
+ansible_user=vagrant
+ansible_ssh_port=22
+
+[control_plane]
+master
+
+[node_workers]
+worker-01
+
+[kubernetes:children]
+control_plane
+node_workers

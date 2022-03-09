@@ -1,6 +1,6 @@
 ---
 - name: test
-  hosts: all
+  hosts: kubernetes
 
   tasks:
   - name: Ensure apache is at the latest version
