@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
       worker.vm.network "private_network", ip: "192.168.59.1#{idx}", name: "vboxnet0"
       worker.vm.network "forwarded_port", id: "ssh", host: "221#{idx}", guest: 22
       worker.vm.provider :virtualbox do |vm|
-        vm.memory = 2096
+        vm.memory = 2048
         vm.cpus = 1
         vm.gui = false
       end
