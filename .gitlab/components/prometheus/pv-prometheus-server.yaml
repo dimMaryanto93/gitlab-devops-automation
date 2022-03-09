@@ -19,12 +19,8 @@ spec:
     kind: PersistentVolumeClaim
     name: prometheus-prometheus-server
     namespace: gitlab-managed-apps
-  mountOptions:
-    - hard
-    - nfsvers=4.1
-  nfs:
-    ## changed this value to your nfs server
-    path: <path-nfs-server>
-    server: <ip-nfs-server>
+  hostPath:
+    path: /var/lib/data/prometheus-server
+    type: DirectoryOrCreate
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
