@@ -9,3 +9,6 @@
 
 ## visualstudio code
 .vscode/
+
+## vagrant
+.vagrant/
