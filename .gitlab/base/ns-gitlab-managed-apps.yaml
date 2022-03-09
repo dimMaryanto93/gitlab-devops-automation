@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: namespaces
 metadata:
-  name: rbac.authorization.k8s.io
+  name: gitlab-managed-apps
