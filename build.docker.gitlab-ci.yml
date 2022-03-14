@@ -11,7 +11,7 @@ variables:
       entrypoint: ["dockerd-entrypoint.sh"]
       command: [
         "--insecure-registry=private.nexus-regs.docker:8087",
-        "--insecure-registry=private.nexus-regs.docker:8088"
+        "--insecure-registry=private.nexus-regs.docker:8086"
       ]
       alias: dockerd
   variables:
