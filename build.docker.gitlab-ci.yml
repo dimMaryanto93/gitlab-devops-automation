@@ -31,11 +31,11 @@ variables:
       for TAG in ${DOCKER_TAGS};
       do
           echo "--------------------------------";
-          echo "docker image tag";
+          echo "docker image tag $TAG";
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:latest
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
-          echo "docker image push";
+          echo "docker image push $TAG";
           docker image push $TAG:latest
           docker image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
