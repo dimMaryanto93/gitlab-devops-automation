@@ -36,8 +36,8 @@ variables:
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
           echo "docker image push";
-          docker image push -q $TAG:latest
-          docker image push -q $TAG:$CI_COMMIT_SHORT_SHA
+          docker image push $TAG:latest
+          docker image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
 
