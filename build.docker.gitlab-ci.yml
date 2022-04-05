@@ -20,11 +20,24 @@ variables:
       DOCKER_TLS_CERTDIR: ""
       DOCKER_BUILD_ARGS_ENTRIPOINT: ""
       DOCKERFILE_LOCATION: "-f Dockerfile"
-      DOCKER_TAG_LIST: "-t private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA -t private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME:latest"
+      DOCKER_TAGS: 
+        private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
       DOCKER_CONTEXT_PATH: "."
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
   script:
-    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT $DOCKER_TAG_LIST $DOCKER_CONTEXT_PATH
-    - docker $DOCKER_CONFIG_FILE image push private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME:$CI_COMMIT_SHORT_SHA
-    - docker $DOCKER_CONFIG_FILE image push private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME:latest
+    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - >
+      for TAG in ${DOCKER_TAGS};
+      do
+          echo "--------------------------------";
+          echo "docker image tag";
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:latest
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+          echo "docker image push";
+          docker image push -q $TAG:latest
+          docker image push -q $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+      done
+
