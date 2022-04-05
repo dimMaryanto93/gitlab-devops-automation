@@ -26,7 +26,7 @@ variables:
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
   script:
-    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - docker  build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
     - >
       for TAG in ${DOCKER_TAGS};
       do
@@ -36,8 +36,8 @@ variables:
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
           echo "docker image push $TAG";
-          docker image push $TAG:latest
-          docker image push $TAG:$CI_COMMIT_SHORT_SHA
+          docker $DOCKER_CONFIG_FILE image push $TAG:latest
+          docker $DOCKER_CONFIG_FILE image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
 
