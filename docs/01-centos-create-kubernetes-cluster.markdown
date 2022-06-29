@@ -167,12 +167,9 @@ sudo sysctl --system
 CRI-O uses the systemd cgroup driver per default, which is likely to work fine for you. To switch to the cgroupfs cgroup driver, either edit `/etc/crio/crio.conf` or place a drop-in configuration in `/etc/crio/crio.conf.d/02-cgroup-manager.conf`, for example:
 
 ```bash
-mkdir -p /etc/crio/crio.conf.d/
-cat <<EOF | sudo tee /etc/crio/crio.conf.d/02-cgroup-manager.conf
 [crio.runtime]
 conmon_cgroup = "pod"
 cgroup_manager = "cgroupfs"
-EOF
 ```
 
 This config option supports live configuration reload to apply this change: `systemctl reload crio` or by sending SIGHUP to the crio process.
@@ -249,6 +246,11 @@ mkdir -p $HOME/.kube && \
 sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config && \
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
+Check the kubelet service is running?, troubleshooting:
+
+1. if is error message `failed to get cgroup stats for \"/system.slice/kubelet.service\"` then update/add value `KUBELET_EXTRA_ARGS=--runtime-cgroups=/systemd/system.slice --kubelet-cgroups=/systemd/system.slice` in `/etc/sysconfig/kubelet`
+2. make sure cgroup_manager is `cgroupfs` and conmon_cgroup is `pod` on `/ect/crio/crio.conf`, it will failed create container
 
 ## Installing Addons Networking and Network Policy
 
