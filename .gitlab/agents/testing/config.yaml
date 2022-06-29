@@ -1,5 +1,4 @@
 ci_access:
-  projects:
-    - id: gitlab-instance-5de00e91/test-cicd
-      access_as:
-        ci_job: {}
+  # This agent is accessible from CI jobs in projects in these groups
+  groups:
+    - id: gitlab-instance-5de00e91
