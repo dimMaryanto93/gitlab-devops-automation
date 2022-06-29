@@ -1,4 +1,5 @@
 ci_access:
   projects:
-    - id: gitlab-instance-5de00e91/Monitoring
     - id: gitlab-instance-5de00e91/test-cicd
+      access_as:
+        ci_job: {}

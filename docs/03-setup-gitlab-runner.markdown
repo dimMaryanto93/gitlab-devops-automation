@@ -20,9 +20,9 @@ Pilih yang mana? ini tergantung dari kebutuhan ada yang ingin semua project pake
 Sekarang kita register, gitlab runner agent ke gitlab dengan menggunakan perintah berikut:
 
 ```bash
-export GITLAB_URL=http://localhost:1234 && \
-export GITLAB_RUNNER_TOKEN=TY2wETK5UiFrXu6vhXHA && \
-export GITLAB_RUNNER_EXTRA_HOST='["your.company.com:127.0.0.1", "private.nexus-regs.docker:127.0.0.1"]' && \
+export GITLAB_URL=http://192.168.99.8 && \
+export GITLAB_RUNNER_TOKEN=rt8GG86dVsj9AD4s-t4T && \
+export GITLAB_RUNNER_EXTRA_HOST='["private.nexus-regs.docker:127.0.0.1"]' && \
 sudo gitlab-runner register \
 -r=${GITLAB_RUNNER_TOKEN} \
 --name=gitlab-runner-docker-executor \
@@ -34,7 +34,6 @@ sudo gitlab-runner register \
 --docker-disable-entrypoint-overwrite=false \
 --docker-oom-kill-disable=false \
 --env="DOCKER_TLS_CERTDIR=" \
---docker-extra-hosts=${GITLAB_RUNNER_EXTRA_HOST} \
 --docker-privileged=true \
 --tag-list="docker"
 ```
