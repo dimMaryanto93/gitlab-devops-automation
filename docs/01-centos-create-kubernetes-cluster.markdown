@@ -1,19 +1,19 @@
 # Installing Kubernetes cluster
 
-Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan CentOS 8 dengan konfigurasi minimal sebagai berikut:
+Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan CentOS 7 dengan konfigurasi minimal sebagai berikut:
 
 ```yaml
 Master-Node:
     - NodeName: 'k8s-master'
       CPU: '2 Cores' or more.
-      RAM: '4 GB' or more
+      RAM: '2 GB' or more
       Storage: '50 GB'
         partision: 
           - / = "20 Gb"
           - /var = "30 Gb"
           - swap = "Disabled"
       Network: # Full network connectivity between all machines in the cluster (public or private network is fine).
-        - IP4: 'Brige (192.168.88.140)'
+        - IP4: 'Brige (192.168.99.10)'
         - hostname: 'k8s-cpdev01.dimas-maryanto.com' # Unique hostname, MAC address, and product_uuid for every node.
 Worker-Nodes: 
     - NodeName: 'k8s-worker1'
@@ -44,7 +44,7 @@ Sebelum kita install, disini saya mau install dulu commons package seperti `curl
 # update system
 yum update -y && \
 yum install -y epel-release && \
-yum install -y net-tools curl wget yum-utils vim tmux tc && \
+yum install -y net-tools git nc curl wget yum-utils vim tmux tc && \
 yum install -y device-mapper-persistent-data lvm2 fuse-overlayfs
 ```
 
@@ -77,58 +77,105 @@ systemctl stop firewalld
 
 Kemudian `reboot` . 
 
-Setelah itu kita setup untuk networking (iptables) di kubernetes.
+## Installing cri-o as container runtime
+
+Kemudian tahap selanjutnya adalah setting/install container runtime yang di support oleh kubernetes, Pada kasus kali ini kita akan menggunakan [cri-o](https://cri-o.io/).
+
+1. Installing containerd, Download the `containerd-<VERSION>-<OS>-<ARCH>.tar.gz` archive from [github releases](https://github.com/containerd/containerd/releases)
+```bash
+OS=CentOS_7
+VERSION=1.17
+curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/devel:kubic:libcontainers:stable.repo
+curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:$VERSION.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/devel:kubic:libcontainers:stable:cri-o:$VERSION.repo
+yum install -y \
+	cri-o \
+	containernetworking-plugins \
+  containers-common \
+  go \
+  runc
+  
+systemctl enable --now crio
+```
+
+2. quickly get started running simple pods and containers. Install [crictl](https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md)
+
+```bash
+VERSION="v1.24.1"
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/sbin
+rm -f crictl-$VERSION-linux-amd64.tar.gz
+```
+
+3. Test cri-o working
+
+```bash
+[root@vm-k8s-worker1 go]# crictl info
+{
+  "status": {
+    "conditions": [
+      {
+        "type": "RuntimeReady",
+        "status": true,
+        "reason": "",
+        "message": ""
+      },
+      {
+        "type": "NetworkReady",
+        "status": true,
+        "reason": "",
+        "message": ""
+      }
+    ]
+  }
+}
+
+[root@vm-k8s-worker1 go]# crictl pull docker.io/library/nginx
+Image is up to date for docker.io/library/nginx@sha256:10f14ffa93f8dedf1057897b745e5ac72ac5655c299dade0aa434c71557697ea
+
+[root@vm-k8s-worker1 go]# crictl images
+IMAGE                     TAG                 IMAGE ID            SIZE
+docker.io/library/nginx   latest              55f4b40fe486a       146MB
+```
+
+## Forwarding IPv4 and letting iptables see bridged traffic
 
 Make sure that the `br_netfilter` module is loaded. This can be done by running `lsmod | grep br_netfilter`. To load it explicitly call `sudo modprobe br_netfilter`.
 As a requirement for your Linux Node’s iptables to correctly see bridged traffic, you should ensure `net.bridge.bridge-nf-call-iptables` is set to 1 in your `sysctl` config, e.g.
 
 ```bash
-lsmod | grep br_netfilter && \
-sudo modprobe br_netfilter
-
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
 br_netfilter
 EOF
 
+sudo modprobe overlay && lsmod | grep overlay
+sudo modprobe br_netfilter && lsmod | grep br_netfilter
+
+# sysctl params required by setup, params persist across reboots
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward                 = 1
 EOF
 
+# Apply sysctl params without reboot
 sudo sysctl --system
 ```
 
-## Installing docker as kubernetes runtime
+##  Configuring a cgroup driver for cri-o
 
-Install the `yum-utils` package (which provides the yum-config-manager utility) and set up the stable repository.
+CRI-O uses the systemd cgroup driver per default, which is likely to work fine for you. To switch to the cgroupfs cgroup driver, either edit `/etc/crio/crio.conf` or place a drop-in configuration in `/etc/crio/crio.conf.d/02-cgroup-manager.conf`, for example:
 
 ```bash
-yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo && \
-yum install -y docker-ce docker-ce-cli containerd.io && \
-sudo mkdir -p /etc/docker && \
-cat <<EOF | sudo tee /etc/docker/daemon.json
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m"
-  },
-  "storage-driver": "overlay2",
-  "insecure-registries": [
-    "repository.dimas-maryanto.com:8087",
-    "repository.dimas-maryanto.com:8086"
-  ]
-}
+mkdir -p /etc/crio/crio.conf.d/
+cat <<EOF | sudo tee /etc/crio/crio.conf.d/02-cgroup-manager.conf
+[crio.runtime]
+conmon_cgroup = "pod"
+cgroup_manager = "cgroupfs"
 EOF
 ```
 
-Kemudian jalankan service dockernya, dengan perintah seperti berikut:
-
-```bash
-systemctl enable --now docker
-```
+This config option supports live configuration reload to apply this change: `systemctl reload crio` or by sending SIGHUP to the crio process.
 
 ## Install Kubernetes CLI
 
@@ -147,12 +194,11 @@ name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 exclude=kubelet kubeadm kubectl
 EOF
 
-sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes && \
+sudo yum install -y kubelet-1.23.* kubeadm-1.23.* kubectl-1.23.* --disableexcludes=kubernetes && \
 sudo setenforce 0 && \
 sudo systemctl enable --now kubelet
 ```

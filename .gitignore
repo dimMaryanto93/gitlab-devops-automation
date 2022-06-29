@@ -12,3 +12,8 @@
 
 ## vagrant
 .vagrant/
+
+## kube config
+!.kube/.gitkeep
+!.kube/.bash_profile
+.kube/*
