@@ -10,8 +10,8 @@ variables:
     - name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
       command: [
-        "--insecure-registry=$(CI_REGISTRY)",
-        "--insecure-registry=$(CI_DEPENDENCY_PROXY_SERVER)",
+        "--insecure-registry=$$(CI_REGISTRY)",
+        "--insecure-registry=$$(CI_DEPENDENCY_PROXY_SERVER)",
       ]
       alias: dockerd
   variables:

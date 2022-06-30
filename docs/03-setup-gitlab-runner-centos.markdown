@@ -69,3 +69,20 @@ sudo gitlab-runner register \
 --docker-privileged=true \
 --tag-list="docker"
 ```
+
+## Docker can't link to an other container
+
+Edit file /`etc/selinux/config` ganti `SELINUX=permissive` menjadi seperti berikut:
+
+```bash
+firewall-cmd --zone=public --add-masquerade --permanent 77 
+firewall-cmd --zone=public --add-port=2375/tcp --permanent
+firewall-cmd --reload
+```
+
+then try to debug, using dind from [docker-compose.yaml](https://gist.githubusercontent.com/dimMaryanto93/d92bd18da1c73c230d7762361f738524/raw/4655f6e742b0af18a1f7dade2c4f0e4524b91f9b/11c-dind-without-tls.docker-compose.yaml)
+
+``` bash
+docker compose up -d && \
+docker compose logs
+```
