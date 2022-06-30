@@ -49,6 +49,12 @@ sudo apt-get update && \
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
+test docker can running normal, without problem 
+
+```bash
+docker run --name nginx -p 80:80 nginx
+```
+
 ## Register gitlab runner agent to gitlab
 
 Sekarang kita Register gitlab-runner agent ke Gitlab Repository ada pun yang harus di perhatikan adalah
