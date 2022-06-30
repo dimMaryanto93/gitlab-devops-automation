@@ -38,7 +38,7 @@ If you using http protocol in gitlab registry as configuration above, you need c
 ```json
 {
   "insecure-registries": [
-          "registry.dimas-maryanto.com"
+    "registry.dimas-maryanto.com", "gitlab.dimas-maryanto.com:80"
   ],
   "debug": true,
   "experimental": false
@@ -75,7 +75,8 @@ Insecure Registries:
 Then now you can login to it using this command
 
 ```bash
-docker login -u gitlab-user registry.dimas-maryanto.com
+docker login -u gitlab-user registry.dimas-maryanto.com && \
+docker login -u gitlab-uer gitlab.dimas-maryanto.com:80
 ```
 
 
