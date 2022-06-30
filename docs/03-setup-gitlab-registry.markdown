@@ -82,3 +82,4 @@ docker login -u gitlab-user registry.dimas-maryanto.com
 ## Referensi
 
 - https://docs.gitlab.com/ee/user/packages/container_registry/
+- https://docs.gitlab.com/ee/administration/packages/container_registry.html
