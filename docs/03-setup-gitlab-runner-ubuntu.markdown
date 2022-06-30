@@ -81,3 +81,6 @@ sudo gitlab-runner register \
 --docker-privileged=true \
 --tag-list="docker"
 ```
+
+## Setup docker authentication for gitlab-runner
+
