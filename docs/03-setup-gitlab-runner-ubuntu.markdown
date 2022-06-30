@@ -64,8 +64,8 @@ Pilih yang mana? ini tergantung dari kebutuhan ada yang ingin semua project pake
 Sekarang kita register, gitlab runner agent ke gitlab dengan menggunakan perintah berikut:
 
 ```bash
-export GITLAB_URL=http://192.168.99.8 && \
-export GITLAB_RUNNER_TOKEN=rt8GG86dVsj9AD4s-t4T && \
+export GITLAB_URL=<your-gitlab-ip-or-domain> && \
+export GITLAB_RUNNER_TOKEN=<your-gitlab-runner-token> && \
 export GITLAB_RUNNER_EXTRA_HOST='["private.nexus-regs.docker:127.0.0.1"]' && \
 sudo gitlab-runner register \
 -r=${GITLAB_RUNNER_TOKEN} \
