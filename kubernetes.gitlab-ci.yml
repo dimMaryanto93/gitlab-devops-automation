@@ -7,7 +7,7 @@
       src/service.yaml
       src/config-map.yaml
   image:
-    name: private.nexus-regs.docker:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
     - echo "set kubernetes namespaces to $KUBE_NAMESPACE"
     - kubectl config set-context --current --namespace="$KUBE_NAMESPACE"
