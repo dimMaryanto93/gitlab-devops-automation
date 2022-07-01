@@ -20,7 +20,8 @@ variables:
         ${CI_REGISTRY_IMAGE}
       DOCKER_CONTEXT_PATH: "."
   before_script:
-    - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
   script:
     - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
     - >
@@ -32,8 +33,8 @@ variables:
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
           echo "docker image push $TAG";
-          docker $DOCKER_CONFIG_FILE image push $TAG:latest
-          docker $DOCKER_CONFIG_FILE image push $TAG:$CI_COMMIT_SHORT_SHA
+          docker image push $TAG:latest
+          docker image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
 
