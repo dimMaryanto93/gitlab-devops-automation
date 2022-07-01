@@ -10,7 +10,7 @@ cache:
 
 get-fact:project:info:
   stage: pre-build
-  image: private.nexus-regs.docker:8086/node:${NODE_VERSION}
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
   script:
     - export PROJECT_NAME=$(node -e "console.log(require('./package.json').name);")
     - export PROJECT_GROUP_ID=$(node -e "console.log(require('./package.json').groupId);")    
@@ -30,7 +30,7 @@ get-fact:project:info:
     - if: $CI_COMMIT_TAG
 
 .build-ng:
-  image: private.nexus-regs.docker:8086/node:${NODE_VERSION}
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
   variables:
     NG_CLI_EXEC: "./node_modules/@angular/cli/bin/ng"
     NG_MEMORY_HEAP: "--max_old_space_size=2048"
