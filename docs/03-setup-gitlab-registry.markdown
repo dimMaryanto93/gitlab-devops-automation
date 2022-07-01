@@ -40,6 +40,7 @@ If you using http protocol in gitlab registry as configuration above, you need c
   "insecure-registries": [
     "registry.dimas-maryanto.com", "gitlab.dimas-maryanto.com:80"
   ],
+  "dns": ["8.8.8.8", "8.8.4.4"],
   "debug": true,
   "experimental": false
 }
