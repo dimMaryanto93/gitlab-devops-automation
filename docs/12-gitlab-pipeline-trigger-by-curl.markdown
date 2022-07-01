@@ -12,7 +12,7 @@ To use trigger deploy by curl
     CI_TRIGER_DEPLOY_PROJECT_ID: <your-deployment-project-id>
     CI_TRIGGER_DEPLOY_TOKEN: <your-cicd-pipeline-token>
     CI_DEFAULT_TRIGGER_BRANCH: <your-default-branch>
-    ## if you need triger other git 
+    ## if you need trigger other git 
     CI_SERVER_URL: <your-gitlab-server-url>
     ```
 
