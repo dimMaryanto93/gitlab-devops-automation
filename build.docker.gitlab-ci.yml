@@ -23,7 +23,7 @@ variables:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
   script:
-    - docker $DOCKER_CONFIG_FILE build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - docker build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
     - >
       for TAG in ${DOCKER_TAGS};
       do
@@ -37,4 +37,3 @@ variables:
           docker image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
-
