@@ -38,7 +38,7 @@ build:docker:
   only:
     - /-release/
 
-push_deploy:
+trigger:review:
   extends: .trigger_pipeline
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: master

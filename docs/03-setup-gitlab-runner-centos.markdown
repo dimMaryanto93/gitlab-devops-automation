@@ -75,7 +75,7 @@ sudo gitlab-runner register \
 Edit file /`etc/selinux/config` ganti `SELINUX=permissive` menjadi seperti berikut:
 
 ```bash
-firewall-cmd --zone=public --add-masquerade --permanent 77 
+firewall-cmd --zone=public --add-masquerade --permanent 
 firewall-cmd --zone=public --add-port=2375/tcp --permanent
 firewall-cmd --reload
 ```
