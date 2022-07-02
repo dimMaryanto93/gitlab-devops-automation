@@ -57,6 +57,7 @@ apt-get update && apt-get upgrade -y && \
 apt-get install -y net-tools \
   curl \
   wget \
+  iptables \
   vim \
   tmux \
   apt-transport-https \
@@ -134,6 +135,46 @@ Installing CNI plugins, Download the `cni-plugins-<OS>-<ARCH>-<VERSION>.tgz` arc
 ```bash
 mkdir -p /opt/cni/bin && \
 tar Cxzvf /opt/cni/bin cni-plugin-version.tgz
+```
+
+Installing nerdctl, for debug your container you need containerd client such as `nerdctl` but also you can used build-in `ctr`. Download the `nerdctl-<OS>-<ARCH>-<VERSION>.tar.gz` archive from [github release](https://github.com/containerd/nerdctl/releases)
+
+```bash
+wget https://github.com/containerd/nerdctl/releases/download/v0.21.0/nerdctl-0.21.0-linux-amd64.tar.gz && \
+tar Cxzvf /usr/local/bin nerdctl-0.21.0-linux-amd64.tar.gz
+```
+
+Sekarang kita coba test containerd sudah jalan dengan perintah seperti berikut:
+
+```bash
+root@k8s-master:~# nerdctl run -d -p 80 nginx:mainline
+c55f7519066aa7aee187f216570709b5cd3ec760b5e59245b13d7e2391bef55f
+
+root@k8s-master:~# nerdctl container ls
+CONTAINER ID    IMAGE                               COMMAND                   CREATED          STATUS    PORTS                    NAMES
+c55f7519066a    docker.io/library/nginx:mainline    "/docker-entrypoint.…"    9 seconds ago    Up        0.0.0.0:49153->80/tcp    nginx-c55f7
+
+root@k8s-master:~# nerdctl port nginx-c55f7
+80/tcp -> 0.0.0.0:49153
+
+root@k8s-master:~# curl -v localhost:49153
+*   Trying 127.0.0.1:49153...
+* Connected to localhost (127.0.0.1) port 49153 (#0)
+> GET / HTTP/1.1
+> Host: localhost:49153
+> User-Agent: curl/7.81.0
+> Accept: */*
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Server: nginx/1.23.0
+< Date: Sat, 02 Jul 2022 01:31:09 GMT
+< Content-Type: text/html
+< Content-Length: 615
+< Last-Modified: Tue, 21 Jun 2022 14:25:37 GMT
+< Connection: keep-alive
+< ETag: "62b1d4e1-267"
+< Accept-Ranges: bytes
 ```
 
 ## Install Kubernetes CLI
