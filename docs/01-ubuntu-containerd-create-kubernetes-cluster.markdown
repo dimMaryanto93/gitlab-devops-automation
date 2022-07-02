@@ -228,6 +228,8 @@ oom_score = 0
   [plugins."io.containerd.service.v1.tasks-service"]
     blockio_config_file = ""
     rdt_config_file = ""
+  [plugins."io.containerd.grpc.v1.cri"]
+    sandbox_image = "k8s.gcr.io/pause:3.2"
   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
       SystemdCgroup = true
@@ -248,8 +250,6 @@ systemctl daemon-reload && \
 systemctl restart containerd && \
 systemctl status containerd ## make sure this status is running  then you good to go!
 ```
-
-## 
 
 ## Install Kubernetes CLI
 
