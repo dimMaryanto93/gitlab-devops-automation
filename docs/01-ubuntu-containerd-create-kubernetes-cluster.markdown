@@ -183,57 +183,15 @@ EOF
 sudo sysctl --system
 ```
 
-Create or Edit file `/etc/containerd/config.toml` with this configuration 
+Get the `config.toml` of containerd configuration then store in `/etc/containerd/config.toml` using this command:
 
-```toml
-version = 2
-
-root = "/var/lib/containerd"
-state = "/run/containerd"
-oom_score = 0
-# imports = ["/etc/containerd/runtime_*.toml", "./debug.toml"]
-
-[grpc]
-  address = "/run/containerd/containerd.sock"
-  uid = 0
-  gid = 0
-
-[debug]
-  address = "/run/containerd/debug.sock"
-  uid = 0
-  gid = 0
-  level = "info"
-
-[metrics]
-  address = ""
-  grpc_histogram = false
-
-[cgroup]
-  path = ""
-
-[plugins]
-  [plugins."io.containerd.monitor.v1.cgroups"]
-    no_prometheus = false
-  [plugins."io.containerd.service.v1.diff-service"]
-    default = ["walking"]
-  [plugins."io.containerd.gc.v1.scheduler"]
-    pause_threshold = 0.02
-    deletion_threshold = 0
-    mutation_threshold = 100
-    schedule_delay = 0
-    startup_delay = "100ms"
-  [plugins."io.containerd.runtime.v2.task"]
-    platforms = ["linux/amd64"]
-    sched_core = true
-  [plugins."io.containerd.service.v1.tasks-service"]
-    blockio_config_file = ""
-    rdt_config_file = ""
-  [plugins."io.containerd.grpc.v1.cri"]
-    sandbox_image = "k8s.gcr.io/pause:3.2"
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-      SystemdCgroup = true
+```bash
+mkdir -p /etc/containerd && \
+containerd config default | tee /etc/containerd/config.toml
 ```
+
+At the end of this section in `/etc/containerd/config.toml` edit property `SystemCgroup = false` to `true` inside section `[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]`
+
 
 Then finally add arguments `--config` if not exists in `/usr/local/lib/systemd/system/containerd.service` like this:
 
@@ -265,12 +223,11 @@ Kita bisa menggunakan package manager Debian distribution seperti berikut:
 ## add google cloud public signing key
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
-
 ## add kubernetes apt repository
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update && \
-apt-get install -y kubelet kubeadm kubectl && \
+apt-get install -y kubelet=1.23.* kubeadm=1.23.* kubectl=1.23.* && \
 apt-mark hold kubelet kubeadm kubectl
 ```
 
@@ -281,17 +238,14 @@ The control-plane node is the machine where the control plane components run, in
 Karena disini saya menggunakan banyak network seperti pada `ip addr show up` berikut:
 
 ```bash
-root@k8s-vm-ubuntu:~# ip a | grep enp
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    inet 192.168.100.48/24 brd 192.168.100.255 scope global dynamic enp0s8
+root@k8s-master:~# ip a | grep enp
+    altname enp0s18
 ```
 
-Maka saya mau pake IP Address `192.168.xx.xx` maka saya menggunakan network `enp0s8` untuk Network cni `--apiserver-advertise-address`
+Maka saya mau pake IP Address `192.168.xx.xx` maka saya menggunakan network `enp0s18` untuk Network cni `--apiserver-advertise-address`
 
 ```bash
-export KUBE_NET_INTERFACE=enp0s8 && \
+export KUBE_NET_INTERFACE=enp0s18 && \
 kubeadm config images pull && \
 kubeadm init \
 --apiserver-advertise-address=$(ip -f inet a show $KUBE_NET_INTERFACE | grep inet | awk '{ print $2 }' | cut -d/ -f1) \
