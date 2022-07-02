@@ -83,28 +83,7 @@ Disable swap partition permanently, edit file `/etc/fstab` comment `/dev/mapper/
 #/swap.img      none    swap    sw      0       0
 ```
 
-Kemudian `reboot`. 
-
-Setelah itu kita setup untuk networking (iptables) di kubernetes.
-
-Make sure that the `br_netfilter` module is loaded. This can be done by running `lsmod | grep br_netfilter`. To load it explicitly call `sudo modprobe br_netfilter`.
-As a requirement for your Linux Node’s iptables to correctly see bridged traffic, you should ensure `net.bridge.bridge-nf-call-iptables` is set to 1 in your `sysctl` config, e.g.
-
-```bash
-lsmod | grep br_netfilter && \
-sudo modprobe br_netfilter
-
-cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
-br_netfilter
-EOF
-
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-
-sudo sysctl --system
-```
+Kemudian `reboot`.
 
 ## Installing containerd as kubernetes runtime
 
@@ -176,6 +155,101 @@ root@k8s-master:~# curl -v localhost:49153
 < ETag: "62b1d4e1-267"
 < Accept-Ranges: bytes
 ```
+
+## Kubernetes CRI runtime for containerd
+
+This section outlines the necessary steps to use containerd as CRI runtime.
+
+
+Make sure that the `br_netfilter` module is loaded. This can be done by running `lsmod | grep br_netfilter`. To load it explicitly call `sudo modprobe br_netfilter`.
+As a requirement for your Linux Node’s iptables to correctly see bridged traffic, you should ensure `net.bridge.bridge-nf-call-iptables` is set to 1 in your `sysctl` config, e.g.
+
+```bash
+cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
+overlay
+br_netfilter
+EOF
+
+sudo modprobe br_netfilter && lsmod | grep br_netfilter
+sudo modprobe overlay && lsmod | grep overlay
+
+# Setup required sysctl params, these persist across reboots.
+cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward                 = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+EOF
+
+sudo sysctl --system
+```
+
+Create or Edit file `/etc/containerd/config.toml` with this configuration 
+
+```toml
+version = 2
+
+root = "/var/lib/containerd"
+state = "/run/containerd"
+oom_score = 0
+# imports = ["/etc/containerd/runtime_*.toml", "./debug.toml"]
+
+[grpc]
+  address = "/run/containerd/containerd.sock"
+  uid = 0
+  gid = 0
+
+[debug]
+  address = "/run/containerd/debug.sock"
+  uid = 0
+  gid = 0
+  level = "info"
+
+[metrics]
+  address = ""
+  grpc_histogram = false
+
+[cgroup]
+  path = ""
+
+[plugins]
+  [plugins."io.containerd.monitor.v1.cgroups"]
+    no_prometheus = false
+  [plugins."io.containerd.service.v1.diff-service"]
+    default = ["walking"]
+  [plugins."io.containerd.gc.v1.scheduler"]
+    pause_threshold = 0.02
+    deletion_threshold = 0
+    mutation_threshold = 100
+    schedule_delay = 0
+    startup_delay = "100ms"
+  [plugins."io.containerd.runtime.v2.task"]
+    platforms = ["linux/amd64"]
+    sched_core = true
+  [plugins."io.containerd.service.v1.tasks-service"]
+    blockio_config_file = ""
+    rdt_config_file = ""
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+      SystemdCgroup = true
+```
+
+Then finally add arguments `--config` if not exists in `/usr/local/lib/systemd/system/containerd.service` like this:
+
+```service
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/local/bin/containerd --config=/etc/containerd/config.toml
+```
+
+Then reload and restart the service with this command:
+
+```bash
+systemctl daemon-reload && \
+systemctl restart containerd && \
+systemctl status containerd ## make sure this status is running  then you good to go!
+```
+
+## 
 
 ## Install Kubernetes CLI
 
