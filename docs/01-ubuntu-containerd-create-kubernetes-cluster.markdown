@@ -105,45 +105,35 @@ EOF
 sudo sysctl --system
 ```
 
-## Installing docker as kubernetes runtime
+## Installing containerd as kubernetes runtime
 
-Install the `yum-utils` package (which provides the yum-config-manager utility) and set up the stable repository.
+Installing containerd, Download the `containerd-<VERSION>-<OS>-<ARCH>.tar.gz` archive from [github releases](https://github.com/containerd/containerd/releases) , verify its `sha256sum`, and extract it under `/usr/local`:
 
 ```bash
-## add docker official gpg key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-## add docker repo
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-## install docker-ce
-apt-get update && \
-apt-get -y install docker-ce docker-ce-cli containerd.io
-
-## configure daemon
-sudo mkdir -p /etc/docker && \
-cat <<EOF | sudo tee /etc/docker/daemon.json
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m"
-  },
-  "storage-driver": "overlay2",
-  "insecure-registries": [
-    "repository.dimas-maryanto.com:8087",
-    "repository.dimas-maryanto.com:8086"
-  ]
-}
-EOF
+tar Cxzvf /usr/local containerd-version.tar.gz
 ```
 
-Kemudian jalankan service dockernya, dengan perintah seperti berikut:
+If you intend to start containerd via systemd, you should also download the [`containerd.service`](https://raw.githubusercontent.com/containerd/containerd/main/containerd.service) file, and run the following commands:
 
 ```bash
-systemctl enable --now docker
+mkdir -p /usr/local/lib/systemd/system/ && \
+wget -O /usr/local/lib/systemd/system/containerd.service https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
+systemctl daemon-reload
+systemctl enable --now containerd
+```
+
+Download the `runc.<ARCH>` binary from [github releases](https://github.com/opencontainers/runc/releases) , verify its sha256sum, and install it as `/usr/local/sbin/runc`
+
+```bash
+wget https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64 && \
+install -m 755 runc.amd64 /usr/local/sbin/runc
+```
+
+Installing CNI plugins, Download the `cni-plugins-<OS>-<ARCH>-<VERSION>.tgz` archive from [github releases](https://github.com/containernetworking/plugins/releases) , verify its `sha256sum`, and extract it under `/opt/cni/bin`:
+
+```bash
+mkdir -p /opt/cni/bin && \
+tar Cxzvf /opt/cni/bin cni-plugin-version.tgz
 ```
 
 ## Install Kubernetes CLI
