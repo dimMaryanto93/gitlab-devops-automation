@@ -1,4 +1,4 @@
-# Installing Kubernetes cluster
+# Installing Kubernetes cluster (DEPRECATED)
 
 Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan Ubuntu 20.04.3 dengan konfigurasi minimal sebagai berikut:
 
