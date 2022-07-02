@@ -54,7 +54,8 @@ Sebelum kita install, disini saya mau install dulu commons package seperti `curl
 ```bash
 # update system
 apt-get update && apt-get upgrade -y && \
-apt-get install -y net-tools \
+apt-get install -y \
+	net-tools \
   curl \
   wget \
   iptables \
