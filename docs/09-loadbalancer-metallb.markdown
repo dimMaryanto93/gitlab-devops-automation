@@ -14,8 +14,7 @@ kubectl apply -f - -n kube-system
 To install MetalLB, apply the manifest:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 ```
 
 This will deploy MetalLB to your cluster, under the metallb-system namespace. The components in the manifest are:
@@ -28,22 +27,17 @@ This will deploy MetalLB to your cluster, under the metallb-system namespace. Th
 
 MetalLB remains idle until configured. This is accomplished by creating and deploying a config map into the same namespace (metallb-system) as the deployment.
 
-There is an example config map in [manifests/example-config.yaml](https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/example-config.yaml), annotated with explanatory comments.
-
+There is an example config map in [manifests/example-config.yaml](https://metallb.universe.tf/configuration/), annotated with explanatory comments.
 
 ```yaml
-apiVersion: v1
-kind: ConfigMap
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
 metadata:
+  name: microtik-ip-pool
   namespace: metallb-system
-  name: config
-data:
-  config: |
-    address-pools:
-    - name: metallb.domain.example/address-pool
-      protocol: layer2
-      addresses:
-      - 192.168.100.11-192.168.100.15
+spec:
+  addresses:
+  - 192.168.88.11-192.168.88.25
 ```
 
 Save as `metallb-config.yaml` then `kubectl apply -f metallb-config.yaml`
