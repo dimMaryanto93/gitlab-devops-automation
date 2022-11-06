@@ -6,5 +6,6 @@
     minio_volume_bind: "/var/lib/s3/minio"
     minio_ports_api: "9000"
     minio_ports_console: "9664"
+    minio_browser_enabled: "on"
   roles:
     - {role: dimmaryanto93.minio_server }
