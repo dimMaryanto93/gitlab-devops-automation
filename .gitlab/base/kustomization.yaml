@@ -1,2 +1,8 @@
-resources:
-  - ns-gitlab-managed-apps.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+components:
+  - ../components/efk
+  - ../components/gitlab
+  - ../components/metallb
+  - ../components/prometheus
