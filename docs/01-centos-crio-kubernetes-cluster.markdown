@@ -1,4 +1,4 @@
-# Installing Kubernetes cluster
+# Installing Kubernetes cluster (Not Tested yet!!! becareful)
 
 Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan CentOS 7 dengan konfigurasi minimal sebagai berikut:
 
