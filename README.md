@@ -18,3 +18,23 @@ Untuk menggunakan workflow GitOps temen-temen bisa menggunakan branch
 - `feature/gitlab-kas` (development version)
 
 Semua branch di sertai dengan contoh penggunaanya, temen-temen bisa lihat pada folder `examples/<modules>`
+
+## System requirement
+
+Untuk menggunakan system ini ada beberapa hal yang harus temen-temen siapkan yaitu
+
+- Gitlab CE/EE
+- Gitlab Runner with container executor (docker, podman)
+- Kubernetes Cluster
+- Object storage (AWS s3, Google Cloud Storage, [min.io](https://min.io/))
+- Files storage (NFS, Google Cloud Filestore, AWS fileshare, etc)
+
+Jika kita gambarkan dengan diagram seperti berikut:
+
+1. Kubernetes Cluster
+
+    ![kubernetes cluster](docs/images/kubernetes-cluster/k8s-cluster-architecture.png)
+
+2. DevOps Workflows
+
+    ![devops workflow](docs/images/workflow/workflow-devops.png)
