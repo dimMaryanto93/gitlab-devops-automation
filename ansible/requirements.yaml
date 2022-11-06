@@ -2,5 +2,6 @@ roles:
   - dimmaryanto93.containerd
   - dimmaryanto93.helm_charts
   - dimmaryanto93.kubeadm
+  - dimmaryanto93.minio_server
 collections:
   - ansible.posix
