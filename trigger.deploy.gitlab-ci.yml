@@ -6,7 +6,7 @@
     CI_GITLAB_SERVER_URL: $CI_SERVER_URL
   before_script:
     - echo "Print debug property => {ProjectName => ${PROJECT_NAME}, ProjectGroupId => ${PROJECT_GROUP_ID}, CommitSHA => ${CI_COMMIT_SHORT_SHA}, ProjectId => ${CI_PROJECT_ID} }"
-    - echo "Deployed to server url => ${CI_GITLAB_SERVER_URL}, project id => ${CI_TRIGER_DEPLOY_PROJECT_ID}"
+    - echo "Deployed to server url => ${CI_GITLAB_SERVER_URL}, project id => ${CI_TRIGGER_DEPLOY_PROJECT_ID}"
   script:
     - apk add --no-cache curl git
     - |
@@ -20,4 +20,4 @@
         --form "variables[CI_PARENT_COMMIT_SHORT_SHA]=$CI_COMMIT_SHORT_SHA" \
         --form "variables[CI_PARENT_PIPELINE_PROJECT_ID]=$CI_PROJECT_ID" \
         --form "variables[CI_ENV_TRIGGERED]=true" \
-        "${CI_GITLAB_SERVER_URL}/api/v4/projects/${CI_TRIGER_DEPLOY_PROJECT_ID}/trigger/pipeline"
+        "${CI_GITLAB_SERVER_URL}/api/v4/projects/${CI_TRIGGER_DEPLOY_PROJECT_ID}/trigger/pipeline"

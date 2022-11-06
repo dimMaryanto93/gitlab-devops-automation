@@ -1,0 +1,6 @@
+- hosts: ['cluster']
+  become: true
+  roles: 
+    - {role: dimmaryanto93.containerd }
+    - {role: dimmaryanto93.kubeadm }
+    - {role: dimmaryanto93.helm_charts }

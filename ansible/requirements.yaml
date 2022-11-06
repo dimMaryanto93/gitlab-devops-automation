@@ -1,0 +1,6 @@
+roles:
+  - dimmaryanto93.containerd
+  - dimmaryanto93.helm_charts
+  - dimmaryanto93.kubeadm
+collections:
+  - ansible.posix

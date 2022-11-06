@@ -9,7 +9,7 @@ To use trigger deploy by curl
 2. Create variables in Gitlab Instance / Project Group / Project it self. Go to **Settings** -> **CI/CD** -> **Variables**
 
     ```yaml
-    CI_TRIGER_DEPLOY_PROJECT_ID: <your-deployment-project-id>
+    CI_TRIGGER_DEPLOY_PROJECT_ID: <your-deployment-project-id>
     CI_TRIGGER_DEPLOY_TOKEN: <your-cicd-pipeline-token>
     CI_DEFAULT_TRIGGER_BRANCH: <your-default-branch>
     ## if you need trigger other git 
