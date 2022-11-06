@@ -1,4 +1,4 @@
-- hosts: ['cluster']
+- hosts: ['kubernetes']
   become: true
   roles: 
     - {role: dimmaryanto93.containerd }
