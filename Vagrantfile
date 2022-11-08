@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "gitlab" do |gitlab|
     gitlab.vm.hostname = "gitlab.dimas-maryanto.com"
-    gitlab.vm.network "private_network", ip: "192.168.99.8", name: "vboxnet0"
+    gitlab.vm.network "private_network", ip: "192.168.56.8", name: "vboxnet0"
     gitlab.vm.network "forwarded_port", id: "ssh", host: "2208", guest: 22
     gitlab.vm.provider :virtualbox do |vm|
       vm.memory = 4096
