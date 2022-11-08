@@ -29,7 +29,7 @@ spec:
               name: inter-node
               protocol: TCP
           volumeMounts:
-            - name: data
+            - name: elk-data
               mountPath: /usr/share/elasticsearch/data
           env:
             - name: cluster.name
@@ -57,7 +57,7 @@ spec:
           securityContext:
             privileged: true
           volumeMounts:
-            - name: data
+            - name: elk-data
               mountPath: /usr/share/elasticsearch/data
         - name: increase-vm-max-map
           image: busybox
@@ -71,12 +71,12 @@ spec:
             privileged: true
   volumeClaimTemplates:
     - metadata:
-        name: data
+        name: elk-data
         labels:
           app: elasticsearch
       spec:
-        accessModes: [ "ReadWriteMany" ]
-        # storageClassName: ""
+        accessModes: [ "ReadWriteOnce" ]
+        #        storageClassName: ""
         volumeName: elk-data-pv
         resources:
           requests:

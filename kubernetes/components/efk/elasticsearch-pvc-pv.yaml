@@ -7,6 +7,6 @@ spec:
     path: /var/lib/elk-data/stored
     type: DirectoryOrCreate
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   capacity:
     storage: 15Gi

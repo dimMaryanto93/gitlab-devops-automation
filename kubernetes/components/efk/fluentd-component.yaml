@@ -3,26 +3,15 @@ kind: ConfigMap
 metadata:
   name: fluentd-config
 data:
-  fluentd.conf: |
-    <source>
-      type tail
-      format none
-      path /var/log/1.log
-      pos_file /var/log/1.log.pos
-      tag count.format1
-    </source>
-
-    <source>
-      type tail
-      format none
-      path /var/log/2.log
-      pos_file /var/log/2.log.pos
-      tag count.format2
-    </source>
-
-    <match **>
-      type google_cloud
-    </match>
+  tail_container_parse.conf: |
+    <parse>
+      @type "#{ENV['FLUENT_CONTAINER_TAIL_PARSER_TYPE'] || 'json'}"
+      <parse>
+        @type json
+        time_key time
+        time_format "#{ENV['FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT'] || '%Y-%m-%dT%H:%M:%S.%N%:z'}"
+      </parse>
+    </parse>
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -42,8 +31,15 @@ spec:
       serviceAccountName: fluentd
       containers:
         - name: fluentd
-          image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
+          image: fluent/fluentd-kubernetes-daemonset:v1.15-debian-elasticsearch7-1
+          securityContext:
+            privileged: true
           env:
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
             - name: FLUENT_ELASTICSEARCH_HOST
               value: "elasticsearch"
             - name: FLUENT_ELASTICSEARCH_PORT
@@ -52,6 +48,10 @@ spec:
               value: "http"
             - name: FLUENTD_SYSTEMD_CONF
               value: disable
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+              value: "%Y-%m-%dT%H:%M:%S.%N%:z"
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+              value: "cri"
           resources:
             limits:
               memory: 512Mi
@@ -60,18 +60,22 @@ spec:
               memory: 200Mi
           volumeMounts:
             - name: varlog
-              mountPath: /var/log/containers
-            - name: varlibdockercontainers
-              mountPath: /var/lib/containerd
-              readOnly: true
+              mountPath: /var/log/containers/
+              readOnly: false
+            - name: tailcontainerparse
+              mountPath: /fluentd/etc/tail_container_parse.conf
+              subPath: tail_container_parse.conf
       terminationGracePeriodSeconds: 30
       volumes:
         - name: varlog
           hostPath:
-            path: /var/log/containers
-        - name: varlibdockercontainers
-          hostPath:
-            path: /var/lib/containerd
+            path: /var/log/containers/
+        - name: tailcontainerparse
+          configMap:
+            name: fluentd-config
+            items:
+              - key: tail_container_parse.conf
+                path: tail_container_parse.conf
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
