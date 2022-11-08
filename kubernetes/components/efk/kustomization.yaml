@@ -7,5 +7,3 @@ resources:
   - fluentd-component.yaml
   - kibana-component.yaml
   - elasticsearch-pvc-pv.yaml
-
-namespace: logging-system

@@ -3,9 +3,9 @@ kind: Kustomization
 
 components:
   - components/efk
-#  - components/gitlab
-#  - components/metallb
-#  - components/prometheus
-#  - components/kubernetes-dashboard
-#  - components/metrics-server
-#  - components/cert-manager
+  - components/gitlab
+  - components/metallb
+  - components/prometheus
+  - components/kubernetes-dashboard
+  - components/metrics-server
+  - components/cert-manager

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: es-cluster
+  namespace: logging-system
 spec:
   replicas: 1
   serviceName: elasticsearch
@@ -86,6 +87,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: elasticsearch
+  namespace: logging-system
   labels:
     app: elasticsearch
 spec:
