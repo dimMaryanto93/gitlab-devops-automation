@@ -5,3 +5,4 @@ roles:
   - dimmaryanto93.minio_server
 collections:
   - ansible.posix
+  - community.general
