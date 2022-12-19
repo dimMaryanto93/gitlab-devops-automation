@@ -6,4 +6,4 @@ resources:
   - elasticsearch-component.yaml
   - fluentd-component.yaml
   - kibana-component.yaml
-  - elasticsearch-pvc-pv.yaml
+  - elasticsearch-pv.yaml
