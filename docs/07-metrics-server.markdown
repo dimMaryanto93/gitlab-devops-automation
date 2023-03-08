@@ -3,7 +3,7 @@
 Enable [metrics-server](https://github.com/kubernetes-sigs/metrics-server) for auto scale horizontal/vertical pod scaler. Metrics Server can be installed either directly from YAML manifest or via the official [Helm chart](https://artifacthub.io/packages/helm/metrics-server/metrics-server). To install the latest Metrics Server release from the components.yaml manifest, run the following command.
 
 ```bash
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.2/components.yaml
 ```
 
 ### Configuration
