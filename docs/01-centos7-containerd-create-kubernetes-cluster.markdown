@@ -183,7 +183,16 @@ mkdir -p /etc/containerd && \
 containerd config default | tee /etc/containerd/config.toml
 ```
 
-At the end of this section in `/etc/containerd/config.toml` edit property `SystemCgroup = false` to `true` inside section `[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]`
+At the end of this section in `/etc/containerd/config.toml` edit property `SystemCgroup = false` to `true` and `version = 2` to `1` look like this:
+
+```toml
+version = 1
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  ...
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
+```
 
 
 Then finally add arguments `--config` if not exists in `/usr/local/lib/systemd/system/containerd.service` like this:
