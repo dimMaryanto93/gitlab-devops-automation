@@ -50,7 +50,7 @@ kubeadm token create --print-join-command
 By default, your cluster will not schedule Pods on the control-plane node for security reasons. If you want to be able to schedule Pods on the control-plane node, for example for a single-machine Kubernetes cluster for development, run:
 
 ```bash
-kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 ```
 
 ## Adding a ip address to the Kubernetes API Server Certificate
