@@ -210,16 +210,23 @@ You will install these packages on all of your machines:
 2. `kubelet`: the component that runs on all of the machines in your cluster and does things like starting pods and containers. 
 3. `kubectl`: the command line util to talk to your cluster.
 
-Kita bisa menggunakan package manager Debian distribution seperti berikut:
+Kita bisa menggunakan package manager Centos/Redhat distribution seperti berikut:
 
 ```bash
-## add google cloud public signing key
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+EOF
 
-## add kubernetes apt repository
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-apt-get update && \
-apt-get install -y kubelet=1.23.* kubeadm=1.23.* kubectl=1.23.* && \
-apt-mark hold kubelet kubeadm kubectl
+yum update && \
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes && \
+systemctl enable --now kubelet
 ```
