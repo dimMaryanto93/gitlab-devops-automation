@@ -1,6 +1,6 @@
 # Installing Kubernetes cluster
 
-Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan Ubuntu 20.04.3 dengan konfigurasi minimal sebagai berikut:
+Kita siapkan host yang akan di install kubernetes, sebagai contoh disini saya menggunakan Centos 7 (2009) dengan konfigurasi minimal sebagai berikut:
 
 ```yaml
 Master-Node:
@@ -53,18 +53,10 @@ Sebelum kita install, disini saya mau install dulu commons package seperti `curl
 
 ```bash
 # update system
-apt-get update && apt-get upgrade -y && \
-apt-get install -y \
-	net-tools \
-  curl \
-  wget \
-  iptables \
-  vim \
-  tmux \
-  apt-transport-https \
-  ca-certificates \
-  gnupg \
-  lsb-release
+yum update -y && \
+yum install -y epel-release && \
+yum install -y net-tools git nc curl wget yum-utils vim tmux tc && \
+yum install -y device-mapper-persistent-data lvm2 fuse-overlayfs
 ```
 
 Disable swap partition permanently, edit file `/etc/fstab` comment `/dev/mapper/cl-swap` like this:
