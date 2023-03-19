@@ -3,10 +3,10 @@ kind: PersistentVolume
 metadata:
   name: elk-data-pv
 spec:
-  hostPath:
-    path: /var/lib/elk-data/stored
-    type: DirectoryOrCreate
+  nfs:
+    path: /var/lib/data/nfs/elasticsearch
+    server: 10.15.38.31
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 15Gi
+    storage: 100Gi
