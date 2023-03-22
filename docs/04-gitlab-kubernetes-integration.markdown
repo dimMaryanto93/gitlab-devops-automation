@@ -64,12 +64,13 @@ the one-liner installation method to install the agent in your cluster.
 
 ```bash
 export GITLAB_KAS_WSS="ws://<domain-or-ip-server>/-/kubernetes-agent/" && \
-export GITLAB_ACCESS_TOKEN=<access-token-from-gitlab-kas>
+export GITLAB_ACCESS_TOKEN=<access-token-from-gitlab-kas> && \
+export KUBERNETES_NS=gitlab-agent-devel
 
 helm repo add gitlab https://charts.gitlab.io
 helm repo update
 helm upgrade --install devel gitlab/gitlab-agent \
-    --namespace gitlab-agent-devel \
+    --namespace $KUBERNETES_NS \
     --create-namespace \
     --set image.tag=v15.9.0 \
     --set config.token=$GITLAB_ACCESS_TOKEN \
