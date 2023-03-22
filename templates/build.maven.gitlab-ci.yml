@@ -53,3 +53,20 @@ cache:
 .gitlab-registry-build-jar:
   extend: .build-jar
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
+
+.test:junit:sonarqube:
+  image: private.nexus-regs.docker:8086/maven:${MAVEN_JDK_VERSION}
+  before_script: 
+    - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
+  script:
+    - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS test jacoco:report
+    - mvn -s $M2_SETTINGS_XML sonar:sonar -Dsonar.projectKey=$CI_PROJECT_ID-$CI_DEFAULT_BRANCH -Dsonar.host.url=$URL_SONAR -Dsonar.login=$AUTH_SONAR -Dmaven.test.failure.ignore=false
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+        - target/failsafe-reports/TEST-*.xml
+  
+.gitlab-registry-test:junit:sonarqube:
+  extend: .test:junit:sonarqube
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
