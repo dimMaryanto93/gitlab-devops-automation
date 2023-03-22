@@ -2,63 +2,63 @@
     {
         "name": "kubeadm v26",
         "ring": "Assess",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "TRUE",
         "description": "Kubernetes cluster provisioning for vm or on premise"
     },
     {
         "name": "kubeadm v25",
         "ring": "Adopt",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Kubernetes cluster provisioning for vm or on premise"
     },
     {
         "name": "kubeadm v24",
         "ring": "Deprecated",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Kubernetes cluster provisioning for vm or on premise"
     },
     {
         "name": "Nutanix Kubernetes Engine (NKE) v23",
         "ring": "Assess",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "TRUE",
         "description": "Kubernetes cluster provisioning for Nutanix machine"
     },
     {
         "name": "Nutanix Kubernetes Engine (NKE) v22",
         "ring": "Adopt",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Kubernetes cluster provisioning for Nutanix machine"
     },
     {
         "name": "Nutanix Kubernetes Engine (NKE) v21",
         "ring": "Deprecated",
-        "quadrant": "Provisioning",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Kubernetes cluster provisioning for Nutanix machine"
     },
     {
         "name": "Centos 7 (2009)",
         "ring": "Adopt",
-        "quadrant": "Operation System",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Operation system underlying kubernetes cluster"
     },
     {
         "name": "Centos 8 (stream)",
         "ring": "Hold",
-        "quadrant": "Operation System",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Operation system underlying kubernetes cluster"
     },
     {
         "name": "Ubuntu server LTS (2204)",
         "ring": "Adopt",
-        "quadrant": "Operation System",
+        "quadrant": "Infrastructure",
         "isNew": "FALSE",
         "description": "Operation system underlying kubernetes cluster"
     },
@@ -168,10 +168,74 @@
         "description": "Enable metrics resource (cpu, memory) from node and pod"
     },
     {
+        "name": "istio",
+        "ring": "Hold",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Kubernetes for service-mesh"
+    },
+    {
         "name": "elastic-fluend-kibana (EFK)",
         "ring": "Adopt",
         "quadrant": "Kubernetes addons",
         "isNew": "FALSE",
         "description": "Enable logging aggregate from containers"
+    },
+    {
+        "name": "Gitlab",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "distribute git repository, with gitlab can be used on gitlab saas or on-premise"
+    },
+    {
+        "name": "Gitlab runner",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "agent to automate deployment using gitlab and git repository"
+    },
+    {
+        "name": "Ansible",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "one of many tool for handle infrastructure as a code (IaC)"
+    },
+    {
+        "name": "Helm",
+        "ring": "Hold",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "kubernetes package manager, to allow provision kubernetes resources"
+    },
+    {
+        "name": "Kustomize",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Kubernetes client templating, with this we can overlay yaml or json files"
+    },
+    {
+        "name": "kubectl",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Default kubernetes client to access cluster"
+    },
+    {
+        "name": "Jenkis",
+        "ring": "Hold",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Alternative gitlab ci for ci/cd workflow"
+    },
+    {
+        "name": "Argo CD",
+        "ring": "Hold",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Alternative gitlab ci for gitops workflow"
     }
+
 ]
