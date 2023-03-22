@@ -1,0 +1,121 @@
+[
+    {
+        "name": "kubeadm v26",
+        "ring": "Assess",
+        "quadrant": "Provisioning",
+        "isNew": "TRUE",
+        "description": "Kubernetes cluster provisioning for vm or on premise"
+    },
+    {
+        "name": "kubeadm v25",
+        "ring": "Adopt",
+        "quadrant": "Provisioning",
+        "isNew": "FALSE",
+        "description": "Kubernetes cluster provisioning for vm or on premise"
+    },
+    {
+        "name": "kubeadm v24",
+        "ring": "Deprecated",
+        "quadrant": "Provisioning",
+        "isNew": "FALSE",
+        "description": "Kubernetes cluster provisioning for vm or on premise"
+    },
+    {
+        "name": "Nutanix Kubernetes Engine (NKE) v23",
+        "ring": "Assess",
+        "quadrant": "Provisioning",
+        "isNew": "TRUE",
+        "description": "Kubernetes cluster provisioning for Nutanix machine"
+    },
+    {
+        "name": "Nutanix Kubernetes Engine (NKE) v22",
+        "ring": "Adopt",
+        "quadrant": "Provisioning",
+        "isNew": "FALSE",
+        "description": "Kubernetes cluster provisioning for Nutanix machine"
+    },
+    {
+        "name": "Nutanix Kubernetes Engine (NKE) v21",
+        "ring": "Deprecated",
+        "quadrant": "Provisioning",
+        "isNew": "FALSE",
+        "description": "Kubernetes cluster provisioning for Nutanix machine"
+    },
+    {
+        "name": "Centos 7 (2009)",
+        "ring": "Adopt",
+        "quadrant": "Operation System",
+        "isNew": "FALSE",
+        "description": "Operation system underlying kubernetes cluster"
+    },
+    {
+        "name": "Centos 8 (stream)",
+        "ring": "Hold",
+        "quadrant": "Operation System",
+        "isNew": "FALSE",
+        "description": "Operation system underlying kubernetes cluster"
+    },
+    {
+        "name": "Ubuntu server LTS (2204)",
+        "ring": "Adopt",
+        "quadrant": "Operation System",
+        "isNew": "FALSE",
+        "description": "Operation system underlying kubernetes cluster"
+    },
+    {
+        "name": "Docker (docker-shim)",
+        "ring": "Deprecated",
+        "quadrant": "Container Runtime",
+        "isNew": "FALSE",
+        "description": "Kubernetes has remove this connector since v1.24 but this connector very stable"
+    },
+    {
+        "name": "Docker-Mirantis (cri-dockerd)",
+        "ring": "Hold",
+        "quadrant": "Container Runtime",
+        "isNew": "FALSE",
+        "description": "Alternative docker-shim connector for kubernetes cluster since the status has been removed, but only work on specific operation system such ubuntu 2204"
+    },
+    {
+        "name": "Containerd v1.6.x",
+        "ring": "Adopt",
+        "quadrant": "Container Runtime",
+        "isNew": "FALSE",
+        "description": "Default container runtime for kubernetes cluster for 1.24 or later but there is any problems like: <ul><li>When container image pull sometime failed because failed unpacked</li><li>Container logs sometime can't read</li></ul>"
+    },
+    {
+        "name": "Containerd v1.7.x",
+        "ring": "Assess",
+        "quadrant": "Container Runtime",
+        "isNew": "TRUE",
+        "description": "Default container runtime for kubernetes cluster for 1.24 or later"
+    },
+    {
+        "name": "CRI-O",
+        "ring": "Hold",
+        "quadrant": "Container Runtime",
+        "isNew": "FALSE",
+        "description": "Container runtime alternative containerd, but has problem pod logs not show properly"
+    },
+    {
+        "name": "github.com/flannel-io/flannel v0.21.4",
+        "ring": "Adopt",
+        "quadrant": "CNI Network",
+        "isNew": "TRUE",
+        "description": "Default networking for kubernetes cluster v1.24 or later"
+    },
+    {
+        "name": "tigera.io/project-calico v3.25.0",
+        "ring": "Assess",
+        "quadrant": "CNI Network",
+        "isNew": "FALSE",
+        "description": "More advanced networking for kubernetes cluster v1.24 or later"
+    },
+    {
+        "name": "MetalLB v0.13.9",
+        "ring": "Assess",
+        "quadrant": "CNI Network",
+        "isNew": "FALSE",
+        "description": "Loadbalancer on kubernetes cluster for on-premise and has deferent implementation (BGP, and Layer2) "
+    }
+]
