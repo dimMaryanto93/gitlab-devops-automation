@@ -100,22 +100,78 @@
     {
         "name": "github.com/flannel-io/flannel v0.21.4",
         "ring": "Adopt",
-        "quadrant": "CNI Network",
+        "quadrant": "Container Runtime",
         "isNew": "TRUE",
         "description": "Default networking for kubernetes cluster v1.24 or later"
     },
     {
         "name": "tigera.io/project-calico v3.25.0",
         "ring": "Assess",
-        "quadrant": "CNI Network",
+        "quadrant": "Container Runtime",
         "isNew": "FALSE",
         "description": "More advanced networking for kubernetes cluster v1.24 or later"
     },
     {
         "name": "MetalLB v0.13.9",
         "ring": "Assess",
-        "quadrant": "CNI Network",
+        "quadrant": "Kubernetes addons",
         "isNew": "FALSE",
-        "description": "Loadbalancer on kubernetes cluster for on-premise and has deferent implementation (BGP, and Layer2) "
+        "description": "Loadbalancer on kubernetes cluster for on-premise and has deferent implementation (BGP, and Layer2)"
+    },
+    {
+        "name": "Kubernetes Dashboard UI",
+        "ring": "Adopt",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Alternative access kubernetes using webapp"
+    },
+    {
+        "name": "cert-manager",
+        "ring": "Assess",
+        "quadrant": "Kubernetes addons",
+        "isNew": "TRUE",
+        "description": "letsencrypt can be generate certificate automaticly in kubernetes cluaster for ingress"
+    },
+    {
+        "name": "Nginx Ingress (community)",
+        "ring": "Adopt",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Ingress controler free edition support by kubernetes community"
+    },
+    {
+        "name": "Nginx Ingress (f5)",
+        "ring": "Adopt",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Ingress controler support by nginx f5, free edition available"
+    },
+    {
+        "name": "Nginx Ingress (f5)",
+        "ring": "Assess",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Ingress controler support by nginx f5, free edition available"
+    },
+    {
+        "name": "jaeger-operator",
+        "ring": "Assess",
+        "quadrant": "Kubernetes addons",
+        "isNew": "TRUE",
+        "description": "Distribute tracing for container workload"
+    },
+    {
+        "name": "metrics-server",
+        "ring": "Adopt",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Enable metrics resource (cpu, memory) from node and pod"
+    },
+    {
+        "name": "elastic-fluend-kibana (EFK)",
+        "ring": "Adopt",
+        "quadrant": "Kubernetes addons",
+        "isNew": "FALSE",
+        "description": "Enable logging aggregate from containers"
     }
 ]
