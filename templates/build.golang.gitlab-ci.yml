@@ -20,6 +20,10 @@ variables:
     reports:
       dotenv: deploy.env
 
+.gitlab-registry-get-fact:project:info:
+  extend: .get-fact:project:info
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}
+  
 .build-golang:
   image: private.nexus-regs.docker:8086/golang:${GOLANG_VERSION}
   script:
@@ -31,3 +35,7 @@ variables:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     paths:
       - build/*
+
+.gitlab-registry-build-golang:
+  extend: .build-golang
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}

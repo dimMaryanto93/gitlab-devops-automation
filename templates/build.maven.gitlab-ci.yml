@@ -35,6 +35,10 @@ cache:
     reports:
       dotenv: deploy.env
 
+.gitlab-registry-get-fact:project:info:
+  extend: .get-fact:project:info
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
+  
 .build-jar:
   image: private.nexus-regs.docker:8086/maven:${MAVEN_JDK_VERSION}
   before_script: 
@@ -45,3 +49,7 @@ cache:
     paths:
       - target/*.jar
     name: $CI_PROJECT_NAME-$CI_COMMIT_TAG
+
+.gitlab-registry-build-jar:
+  extend: .build-jar
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}

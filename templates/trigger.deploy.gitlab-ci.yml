@@ -21,3 +21,8 @@
         --form "variables[CI_PARENT_PIPELINE_PROJECT_ID]=$CI_PROJECT_ID" \
         --form "variables[CI_ENV_TRIGGERED]=true" \
         "${CI_GITLAB_SERVER_URL}/api/v4/projects/${CI_TRIGGER_DEPLOY_PROJECT_ID}/trigger/pipeline"
+
+.gitlab-registry-trigger_pipeline:
+  extend: .trigger_pipeline
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
+  

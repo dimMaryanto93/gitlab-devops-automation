@@ -27,6 +27,10 @@ cache:
     reports:
       dotenv: deploy.env
 
+.gitlab-registry-get-fact:project:info:
+  extend: .get-fact:project:info
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
+  
 .build-ng:
   image: private.nexus-regs.docker:8086/node:${NODE_VERSION}
   variables:
@@ -45,3 +49,9 @@ cache:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     paths:
       - dist/*
+
+.gitlab-registry-build-ng:
+  extend: .build-ng
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
+  before_script:
+    - cat $NPM_PROXY > .npmrc

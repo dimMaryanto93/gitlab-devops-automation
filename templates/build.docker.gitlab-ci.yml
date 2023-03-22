@@ -40,3 +40,13 @@ variables:
           docker image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
+
+.gitlab-registry-build-docker:
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}//docker:${DOCKER_VERSION}
+  services:
+    - name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}//docker:${DOCKER_DIND_VERSION}
+      entrypoint: ["dockerd-entrypoint.sh"]
+      alias: dockerd
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER

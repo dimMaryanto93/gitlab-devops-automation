@@ -20,8 +20,26 @@
         else echo "Docker Registry Credential was created";
       fi
 
+.gitlab-registry-kubernetes-config:
+  extend: .kubernetes-config
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+
 .kubernetes-deploy:
   extends: .kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          envsubst < $TEMPLATE;
+          envsubst < $TEMPLATE | kubectl apply -n $KUBE_NAMESPACE -f -;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+
+.gitlab-registry-kubernetes-deploy:
+  extends: .gitlab-registry-kubernetes-config
   script:
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
@@ -45,6 +63,18 @@
     - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
 
+.gitlab-registry-kubernetes-stop-deploy:
+  extends: .gitlab-registry-kubernetes-config
+  when: manual
+  script:
+    - |
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          envsubst < $TEMPLATE | kubectl delete -n $KUBE_NAMESPACE -f -;
+      done
+    - kubectl delete secret $DOCKER_REGCRED -n $KUBE_NAMESPACE
+  allow_failure: true
+
 .kustomize-deploy:
   extends: .kubernetes-config
   script:
@@ -58,8 +88,34 @@
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
 
+.gitlab-registry-kustomize-deploy:
+  extends: .gitlab-registry-kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl apply -f -;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+
 .kustomize-stop-deploy:
   extends: .kubernetes-config
+  when: manual
+  script:
+    - |
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl delete --ignore-not-found=true -f -;
+      done
+    - kubectl delete secret --ignore-not-found=true $DOCKER_REGCRED -n $KUBE_NAMESPACE
+  allow_failure: true
+
+.gitlab-registry-kustomize-stop-deploy:
+  extends: .gitlab-registry-kubernetes-config
   when: manual
   script:
     - |
