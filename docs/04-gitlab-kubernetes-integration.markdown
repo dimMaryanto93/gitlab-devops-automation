@@ -44,3 +44,42 @@ To create an agent configuration file:
 You can leave the file blank for now, and commit & push.
 
 ![config.yaml](images/gitlab-integration/01-configuration-files.png)
+
+## Register the agent with GitLab
+
+You must register an agent before you can install the agent in your cluster. To register an agent:
+
+1. On the top bar, select **Main menu > Projects** and find your project. If you have an agent configuration file, it must be in this project. Your cluster manifest files should also be in this project.
+
+2. From the left sidebar, select **Infrastructure > Kubernetes clusters**.
+    ![kubernetes-agent](images/gitlab-integration/02-gitlab-kas.png)
+
+3. Select Connect a cluster (agent). then select agent-name has been created before
+    ![select-agent](images/gitlab-integration/02a-select-agent.png)
+
+4. Click button Register. GitLab generates an access token for the agent. You need this token to install the agent in your cluster.
+
+5. Copy the command under **Recommended installation** method. You need it when you use
+the one-liner installation method to install the agent in your cluster.
+
+```bash
+export GITLAB_KAS_WSS="ws://<domain-or-ip-server>/-/kubernetes-agent/" && \
+export GITLAB_ACCESS_TOKEN=<access-token-from-gitlab-kas>
+
+helm repo add gitlab https://charts.gitlab.io
+helm repo update
+helm upgrade --install devel gitlab/gitlab-agent \
+    --namespace gitlab-agent-devel \
+    --create-namespace \
+    --set image.tag=v15.9.0 \
+    --set config.token=$GITLAB_ACCESS_TOKEN \
+    --set config.kasAddress=$GITLAB_KAS_WSS
+```
+
+Jika diexecute hasilnya seperti berikut:
+
+![install-kubernetes-resources](images/gitlab-integration/02b-kubernetes-resources.png)
+
+After that, now you can see status in list cluster look like this:
+
+![list cluster](images/gitlab-integration/02c-list-cluster.png)
