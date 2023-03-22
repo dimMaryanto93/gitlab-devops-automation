@@ -1,4 +1,10 @@
-ci_access:
-  # This agent is accessible from CI jobs in projects in these groups
-  groups:
-    - id: gitlab-instance-5de00e91
+gitops:
+  manifest_projects:
+    - paths:
+        - glob: '.kube/*.yaml'
+      reconcile_timeout: 3600s
+      dry_run_strategy: none
+      prune: true
+      prune_timeout: 3600s
+      prune_propagation_policy: foreground
+      inventory_policy: must_match
