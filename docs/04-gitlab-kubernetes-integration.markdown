@@ -1,86 +1,54 @@
-## To connect a Kubernetes cluster to GitLab
+## How to Integrate Gitlab with Existing kubernetes cluster
 
-Before you can install the agent in your cluster, you need:
+Pertama, create project misalnya dengan nama `springboot-gitlab-cicd-k8s-example`. 
 
-An existing Kubernetes cluster. If you don't have a cluster, you can create one on a cloud provider, like:
+## Register kubernetes cluster
 
-- Google Kubernetes Engine (GKE)
-- Amazon Elastic Kubernetes Service (EKS)
-- Digital Ocean
+Kemudian ke menu `Infrastructure -> Kubernetes cluster -> Integrate with a cluster certificate` seperti berikut:
 
-On self-managed GitLab instances, a GitLab administrator must set up the
-agent server. In `gitlab.rb` when `external_url` property look like
+![integrate-cluster](images/gitlab-integration/01-integrate-cluster.png)
 
-```rb
-external_url 'http://192.168.88.99'
+Setelah itu pilih `Connect existing cluster` seperti berikut:
+
+![connect-exist-cluster](images/gitlab-integration/02-connect-existing.png)
+ 
+Kemudian isi fieldnya sesuai dengan kubernetes cluster.
+
+- Kubernetes cluster name: `dev.cluster.k8s.dimas-maryanto.com`
+- Environment scope: `*`
+- API URL: jalankan perintah `kubectl cluster-info | grep -E 'Kubernetes master|Kubernetes control plane' | awk '/http/ {print $NF}'`
+- CA Certificate: cari secret dengan prefix `default-token-xxxxx` menggunakan perintah `kubectl get sercrets`, kemudian ambil menggunakan perintah `kubectl get secret <secret name> -o jsonpath="{['data']['ca\.crt']}" | base64 --decode` or `kubectl get secret $(kubectl get secret | awk '/^default-token/ {print $1}') -o jsonpath="{['data']['ca\.crt']}" | base64 --decode`
+- Service Token: jalankan file `kubectl create namespace gitlab-managed-apps && kubectl apply -f .gitlab/gitlab-service-account.yaml`, kemudian ambil tokennya dengan perintah `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab | awk '{print $1}')`
+
+Jika sudah maka hasilnya, seperti berikut:
+
+![cluster-registered](images/gitlab-integration/03-cluster-registered.png)
+
+Setelah itu set `Settings -> CI/CD -> Variables` seperti berikut:
+
+![cicd-variables](images/gitlab-integration/04-cicd-variables.png)
+
+CI/CD Variables description:
+
+```yaml
+- CI_REGISTRY:
+    Value: "docker.io" # diisi dengan url docker registry atau insecure registry (hosted)
+    Type: "Variable"
+    Environtment scope: "All"
+- CI_REGISTRY_PULL:
+    Value: "docker.io" # diisi dengan url docker registry atau insecure registry (proxy atau group)
+    Type: "Variable"
+    Environtment scope: "All"
+- DOCKER_CONF_JSON:
+    Value: "{ auths: { ... }}" # ambil dari file `cat .docker/config.json`
+    Type: "File"
+    Environtment scope: "All"
+- KUBE_CONFIG: 
+    Value: "apiVersion: v1 clusters: - cluster:..." # ambil dari file `cat .kube/config`
+    Type: "File"
+    Environtment scope: "All"
+- M2_SETTINGS_XML:
+    Value: "<?xml version=\"1.0\" encoding=\"" # jika punya maven repo boleh tambahin di sini, ambil dari file `cat ~/.m2/settings.xml`
+    Type: "File"
+    Environtment scope: "All"
 ```
-
-Then it is available by default at `wss://192.168.88.99/-/kubernetes-agent/`.
-On GitLab.com, the agent server is available at `wss://192.168.88.99`.
-
-ref: 
-- https://docs.gitlab.com/ee/user/clusters/agent/install/
-
-## Create an agent configuration file
-
-After `gitlab_kas` enabled, then we need configure file using a YAML file in the GitLab project/repository.
-
-To create an agent configuration file:
-
-1. Choose a name for your agent. The agent name follows the [DNS label standard from RFC 1123](https://www.rfc-editor.org/rfc/rfc1123). The name must:
-    - Be unique in the project.
-    - Contain at most 63 characters.
-    - Contain only lowercase alphanumeric characters or -.
-    - Start with an alphanumeric character.
-    - End with an alphanumeric character.
-2. In the repository, in the default branch, create this directory at the root:
-
-    ```bash
-    .gitlab/agents/<agent-name>
-    ```
-
-3. In the directory, create a `config.yaml` file. Ensure the filename ends in `.yaml`, not `.yml`.
-
-You can leave the file blank for now, and commit & push.
-
-![config.yaml](images/gitlab-integration/01-configuration-files.png)
-
-## Register the agent with GitLab
-
-You must register an agent before you can install the agent in your cluster. To register an agent:
-
-1. On the top bar, select **Main menu > Projects** and find your project. If you have an agent configuration file, it must be in this project. Your cluster manifest files should also be in this project.
-
-2. From the left sidebar, select **Infrastructure > Kubernetes clusters**.
-    ![kubernetes-agent](images/gitlab-integration/02-gitlab-kas.png)
-
-3. Select Connect a cluster (agent). then select agent-name has been created before
-    ![select-agent](images/gitlab-integration/02a-select-agent.png)
-
-4. Click button Register. GitLab generates an access token for the agent. You need this token to install the agent in your cluster.
-
-5. Copy the command under **Recommended installation** method. You need it when you use
-the one-liner installation method to install the agent in your cluster.
-
-```bash
-export GITLAB_KAS_WSS="ws://<domain-or-ip-server>/-/kubernetes-agent/" && \
-export GITLAB_ACCESS_TOKEN=<access-token-from-gitlab-kas> && \
-export KUBERNETES_NS=gitlab-agent-devel
-
-helm repo add gitlab https://charts.gitlab.io
-helm repo update
-helm upgrade --install devel gitlab/gitlab-agent \
-    --namespace $KUBERNETES_NS \
-    --create-namespace \
-    --set image.tag=v15.9.0 \
-    --set config.token=$GITLAB_ACCESS_TOKEN \
-    --set config.kasAddress=$GITLAB_KAS_WSS
-```
-
-Jika diexecute hasilnya seperti berikut:
-
-![install-kubernetes-resources](images/gitlab-integration/02b-kubernetes-resources.png)
-
-After that, now you can see status in list cluster look like this:
-
-![list cluster](images/gitlab-integration/02c-list-cluster.png)
