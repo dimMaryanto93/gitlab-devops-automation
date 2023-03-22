@@ -12,8 +12,8 @@ cache:
   paths:
   - .m2/repository
 
-get-fact:project:info:
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
+.get-fact:project:info:
+  image: private.nexus-regs.docker:8086/maven:${MAVEN_JDK_VERSION}
   stage: pre-build
   script:
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
@@ -34,11 +34,9 @@ get-fact:project:info:
       - deploy.env
     reports:
       dotenv: deploy.env
-  rules:
-    - if: $CI_COMMIT_TAG
 
 .build-jar:
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
+  image: private.nexus-regs.docker:8086/maven:${MAVEN_JDK_VERSION}
   before_script: 
     - mvn -s $M2_SETTINGS_XML $DEFAULT_MAVEN_CLI_OPTS versions:set -DnewVersion=$CI_COMMIT_TAG
   script:
