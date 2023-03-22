@@ -141,7 +141,7 @@
     },
     {
         "name": "Nginx Ingress (f5)",
-        "ring": "Adopt",
+        "ring": "Assess",
         "quadrant": "Kubernetes addons",
         "isNew": "FALSE",
         "description": "Ingress controler support by nginx f5, free edition available"
