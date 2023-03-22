@@ -236,6 +236,26 @@
         "quadrant": "DevOps Tools",
         "isNew": "FALSE",
         "description": "Alternative gitlab ci for gitops workflow"
+    },
+    {
+        "name": "Gitlab kubernetes integration (certificate based)",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Allow deploy kubernetes resources using gitlab ci/cd workflow"
+    },
+    {
+        "name": "Gitlab kubernetes agent (gitlab-kas)",
+        "ring": "Assess",
+        "quadrant": "DevOps Tools",
+        "isNew": "TRUE",
+        "description": "Allow deploy kubernetes resources using gitlab ci/cd and gitops workflow"
+    },
+    {
+        "name": "Docker Desktop",
+        "ring": "Adopt",
+        "quadrant": "DevOps Tools",
+        "isNew": "FALSE",
+        "description": "Docker for development, testing"
     }
-
 ]
