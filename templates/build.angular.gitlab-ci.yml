@@ -8,7 +8,7 @@ cache:
   paths:
     - node_modules
 
-.get-fact:project:info:
+.get-fact-project-info:
   stage: pre-build
   image: private.nexus-regs.docker:8086/node:${NODE_VERSION}
   script:
@@ -27,8 +27,8 @@ cache:
     reports:
       dotenv: deploy.env
 
-.gitlab-registry-get-fact:project:info:
-  extend: .get-fact:project:info
+.gitlab-registry-get-fact-project-info:
+  extend: .get-fact-project-info
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
   
 .build-ng:
