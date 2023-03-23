@@ -1,5 +1,5 @@
 .trigger-pipeline:
-  image: private.nexus-regs.docker:8086/alpine:latest
+  image: private.nexus-registry.docker.local:8086/alpine:latest
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: main
     CI_DEPLOYMENT_ENV: review

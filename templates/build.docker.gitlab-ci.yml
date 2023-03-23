@@ -5,13 +5,13 @@ variables:
 
 .insecure-registry-build-docker:
   stage: build
-  image: private.nexus-regs.docker:8086/docker:${DOCKER_VERSION}
+  image: private.nexus-registry.docker.local:8086/docker:${DOCKER_VERSION}
   services:
-    - name: private.nexus-regs.docker:8086/docker:${DOCKER_DIND_VERSION}
+    - name: private.nexus-registry.docker.local:8086/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
       command: [
-        "--insecure-registry=private.nexus-regs.docker:8087",
-        "--insecure-registry=private.nexus-regs.docker:8086"
+        "--insecure-registry=private.nexus-registry.docker.local:8087",
+        "--insecure-registry=private.nexus-registry.docker.local:8086"
       ]
       alias: dockerd
   variables:
@@ -21,7 +21,7 @@ variables:
       DOCKER_BUILD_ARGS_ENTRIPOINT: ""
       DOCKERFILE_LOCATION: "-f Dockerfile"
       DOCKER_TAGS: 
-        private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
+        private.nexus-registry.docker.local:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
       DOCKER_CONTEXT_PATH: "."
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
