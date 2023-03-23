@@ -2,49 +2,36 @@ stages:
   - pre-build
   - test
   - build
-  - publish
-  - review
-  - deploy
 
 variables:
-  MAVEN_JDK_VERSION: "3.6.3-jdk-11"
-  DOCKER_VERSION: "stable"
-  DOCKER_DIND_VERSION: "18.09-dind"
-  DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg JAR_FILE=$JAR_FILE"
+  MAVEN_JDK_VERSION: "3.8-openjdk-18"
 
-default:
-  tags:
-    - docker
-  
 include:
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.maven.gitlab-ci.yml'
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/build.docker.gitlab-ci.yml'
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/trigger.deploy.gitlab-ci.yml'
-  
+  - remote: https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/build.maven.gitlab-ci.yml
+  - remote: https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/build.docker.gitlab-ci.yml
+
+
+get-fact:project-metadata:
+  extends: .gitlab-registry-get-fact-project-info
+  stage: pre-build
+
+test:junit:
+  stage: test
+  extends: .gitlab-registry-test-junit
+  allow_failure: true
+
 build:jar:
   stage: build
-  extends: .build-jar
-  only:
-    - /-release/
-  
-build:docker:
+  extends: .gitlab-registry-build-jar
+  needs:
+    - get-fact:project-metadata
+
+build:docker:x64-linux:
   stage: build
-  extends: .build-docker
+  extends: .docker-registry-build-docker
   variables:
     DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg JAR_FILE=$JAR_FILE"
   needs:
+    - get-fact:project-metadata
     - build:jar
-    - get-fact:project:info
-  only:
-    - /-release/
 
-trigger:review:
-  extends: .trigger_pipeline
-  variables:
-    CI_DEFAULT_TRIGGER_BRANCH: master
-  stage: deploy
-  needs:
-    - get-fact:project:info
-    - build:docker
-  only:
-    - /-release/
