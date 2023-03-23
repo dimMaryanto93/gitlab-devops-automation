@@ -1,4 +1,4 @@
-.trigger_pipeline:
+.trigger-pipeline:
   image: private.nexus-regs.docker:8086/alpine:latest
   variables:
     CI_DEFAULT_TRIGGER_BRANCH: main
@@ -22,7 +22,7 @@
         --form "variables[CI_ENV_TRIGGERED]=true" \
         "${CI_GITLAB_SERVER_URL}/api/v4/projects/${CI_TRIGGER_DEPLOY_PROJECT_ID}/trigger/pipeline"
 
-.gitlab-registry-trigger_pipeline:
-  extend: .trigger_pipeline
+.gitlab-registry-trigger-pipeline:
+  extends: .trigger_pipeline
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
   

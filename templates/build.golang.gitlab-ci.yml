@@ -4,7 +4,7 @@ stages:
 variables:
   GOLANG_VERSION: "1.19-alpine"
 
-.get-fact:project:info:
+.get-fact-project-info:
   image: private.nexus-regs.docker:8086/golang:${GOLANG_VERSION}
   stage: pre-build
   script:
@@ -20,8 +20,8 @@ variables:
     reports:
       dotenv: deploy.env
 
-.gitlab-registry-get-fact:project:info:
-  extend: .get-fact:project:info
+.gitlab-registry-get-fact-project-info:
+  extends: .get-fact-project-info
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}
   
 .build-golang:
@@ -37,5 +37,5 @@ variables:
       - build/*
 
 .gitlab-registry-build-golang:
-  extend: .build-golang
+  extends: .build-golang
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}

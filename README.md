@@ -38,3 +38,9 @@ Jika kita gambarkan dengan diagram seperti berikut:
 2. DevOps Workflows
 
     ![devops workflow](docs/images/workflow/workflow-devops.png)
+
+## Tech radar
+
+Berikut adalah beberapa technology yang nantinya masih tetep digunakan, ditinggalkan, serta rencannya akan digunakan dimasa depan:
+
+[click disini: tech-radar by thoughtwork](https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fraw.githubusercontent.com%2FdimMaryanto93%2Fgitlab-devops-automation%2Fgitlab-kas%2Fdevops-stack.json)
