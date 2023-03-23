@@ -17,7 +17,7 @@ variables:
   variables:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: "/certs"
+      DOCKER_TLS_CERTDIR: ""
       DOCKER_BUILD_ARGS_ENTRIPOINT: ""
       DOCKERFILE_LOCATION: "-f Dockerfile"
       DOCKER_TAGS: 
