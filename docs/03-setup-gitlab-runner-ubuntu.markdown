@@ -93,5 +93,33 @@ sudo gitlab-runner register \
 --tag-list="docker"
 ```
 
-## Setup docker authentication for gitlab-runner
+## Authenticate docker to handle insecure registry
 
+Set `/etc/hosts` add your private registry domain to your nexus registry host ex: 
+
+```ini
+127.0.0.1   private.nexus-registry.docker.local
+```
+
+Set `insecure-registry` property in `/etc/docker/daemon.json` look like:
+
+```json
+{
+  "insecure-registries": [
+    "private.nexus-registry.docker.local:8086",
+    "private.nexus-registry.docker.local:8087"
+  ],
+  "debug": true,
+  "experimental": false
+}
+```
+
+Authenticate gitlab runner using `docker login` command, look like this:
+
+```bash
+## login for docker hosted registry
+docker login -u admin private.nexus-regs.docker:8087
+
+## login for docker proxy registry
+docker login -u admin private.nexus-regs.docker:8086
+```
