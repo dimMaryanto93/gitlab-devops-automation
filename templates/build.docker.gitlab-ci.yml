@@ -42,9 +42,9 @@ variables:
       done
 
 .gitlab-registry-build-docker:
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}//docker:${DOCKER_VERSION}
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:${DOCKER_VERSION}
   services:
-    - name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}//docker:${DOCKER_DIND_VERSION}
+    - name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
       alias: dockerd
   before_script:
