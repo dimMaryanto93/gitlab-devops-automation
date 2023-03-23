@@ -21,7 +21,7 @@ variables:
       DOCKER_BUILD_ARGS_ENTRIPOINT: ""
       DOCKERFILE_LOCATION: "-f Dockerfile"
       DOCKER_TAGS: 
-        ${CI_REGISTRY_IMAGE}
+        private.nexus-regs.docker:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
       DOCKER_CONTEXT_PATH: "."
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
