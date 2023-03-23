@@ -1,6 +1,6 @@
 variables:
-  DOCKER_VERSION: "20.10.16"
-  DOCKER_DIND_VERSION: "20.10.16-dind"
+  DOCKER_VERSION: "stable"
+  DOCKER_DIND_VERSION: "18.09-dind"
   DOCKER_CONFIG_FILE: "--config .docker"
 
 .insecure-registry-build-docker:
