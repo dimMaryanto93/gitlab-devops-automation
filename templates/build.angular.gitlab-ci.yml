@@ -28,7 +28,7 @@ cache:
       dotenv: deploy.env
 
 .gitlab-registry-get-fact-project-info:
-  extend: .get-fact-project-info
+  extends: .get-fact-project-info
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
   
 .build-ng:
@@ -51,7 +51,7 @@ cache:
       - dist/*
 
 .gitlab-registry-build-ng:
-  extend: .build-ng
+  extends: .build-ng
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:${NODE_VERSION}
   before_script:
     - cat $NPM_PROXY > .npmrc

@@ -36,7 +36,7 @@ cache:
       dotenv: deploy.env
 
 .gitlab-registry-get-fact-project-info:
-  extend: .get-fact-project-info
+  extends: .get-fact-project-info
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
   
 .build-jar:
@@ -51,7 +51,7 @@ cache:
     name: $CI_PROJECT_NAME-$CI_COMMIT_TAG
 
 .gitlab-registry-build-jar:
-  extend: .build-jar
+  extends: .build-jar
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}
 
 .test:junit:sonarqube:
@@ -68,5 +68,5 @@ cache:
         - target/failsafe-reports/TEST-*.xml
   
 .gitlab-registry-test:junit:sonarqube:
-  extend: .test:junit:sonarqube
+  extends: .test:junit:sonarqube
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/maven:${MAVEN_JDK_VERSION}

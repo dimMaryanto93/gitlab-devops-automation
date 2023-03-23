@@ -21,7 +21,7 @@ variables:
       dotenv: deploy.env
 
 .gitlab-registry-get-fact-project-info:
-  extend: .get-fact-project-info
+  extends: .get-fact-project-info
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}
   
 .build-golang:
@@ -37,5 +37,5 @@ variables:
       - build/*
 
 .gitlab-registry-build-golang:
-  extend: .build-golang
+  extends: .build-golang
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golang:${GOLANG_VERSION}
