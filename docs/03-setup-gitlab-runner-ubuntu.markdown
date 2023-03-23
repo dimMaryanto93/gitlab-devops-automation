@@ -70,9 +70,11 @@ Pilih yang mana? ini tergantung dari kebutuhan ada yang ingin semua project pake
 Sekarang kita register, gitlab runner agent ke gitlab dengan menggunakan perintah berikut:
 
 ```bash
-export GITLAB_URL=<your-gitlab-ip-or-domain> && \
-export GITLAB_RUNNER_TOKEN=<your-gitlab-runner-token> && \
-export GITLAB_RUNNER_EXTRA_HOST='["private.nexus-regs.docker:127.0.0.1"]' && \
+export GITLAB_URL='<your-gitlab-ip-or-domain>'
+export GITLAB_RUNNER_TOKEN='<your-gitlab-runner-token>'
+export GITLAB_RUNNER_EXTRA_HOST='private.nexus-registry.docker.local:<ip-nexus-oss-server>'
+export GITLAB_RUNNER_DOCKER_VOLUMES=( "/certs/client" "/cache" )
+
 sudo gitlab-runner register \
 -r=${GITLAB_RUNNER_TOKEN} \
 --name=gitlab-runner-docker-executor \
@@ -80,13 +82,44 @@ sudo gitlab-runner register \
 --url=${GITLAB_URL} \
 --clone-url=${GITLAB_URL} \
 --executor="docker" \
+--docker-tlsverify=false \
 --docker-image="alpine:latest" \
 --docker-disable-entrypoint-overwrite=false \
 --docker-oom-kill-disable=false \
+--docker-extra-hosts=${GITLAB_RUNNER_EXTRA_HOST} \
+--docker-volumes=${GITLAB_RUNNER_DOCKER_VOLUMES[@]} \
 --env="DOCKER_TLS_CERTDIR=" \
 --docker-privileged=true \
 --tag-list="docker"
 ```
 
-## Setup docker authentication for gitlab-runner
+## Authenticate docker to handle insecure registry
 
+Set `/etc/hosts` add your private registry domain to your nexus registry host ex: 
+
+```ini
+127.0.0.1   private.nexus-registry.docker.local
+```
+
+Set `insecure-registry` property in `/etc/docker/daemon.json` look like:
+
+```json
+{
+  "insecure-registries": [
+    "private.nexus-registry.docker.local:8086",
+    "private.nexus-registry.docker.local:8087"
+  ],
+  "debug": true,
+  "experimental": false
+}
+```
+
+Authenticate gitlab runner using `docker login` command, look like this:
+
+```bash
+## login for docker hosted registry
+docker login -u admin private.nexus-regs.docker:8087
+
+## login for docker proxy registry
+docker login -u admin private.nexus-regs.docker:8086
+```
