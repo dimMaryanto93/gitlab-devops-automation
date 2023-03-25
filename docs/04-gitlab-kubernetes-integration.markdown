@@ -69,7 +69,7 @@ export KUBERNETES_NS=gitlab-agent-devel
 
 helm repo add gitlab https://charts.gitlab.io
 helm repo update
-helm upgrade --install devel gitlab/gitlab-agent \
+helm upgrade --install gitlab-kas gitlab/gitlab-agent \
     --namespace $KUBERNETES_NS \
     --create-namespace \
     --set image.tag=v15.9.0 \

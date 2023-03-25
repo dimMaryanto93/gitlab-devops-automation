@@ -1,34 +1,20 @@
 stages:
-  - review
-  - staging
-  - production
+  - deploy
 
-default:
-  tags:
-    - docker
-
-variables:
-  DOCKER_REGCRED: "nexus-regcred"
-
-include:
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/kubernetes.gitlab-ci.yml'
-
-deploy:springboot-app:
-  extends: .kustomize-deploy
+deploy:
+  stage: deploy
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+    entrypoint: ['']
   variables:
-    CI_IMAGE_EXPOSE_PORT: 8080
-    CI_REGISTRY_NAMESPACE: "com.example.project-name"
-    CI_REGISTRY_IMAGE: "springboot-app"
-    KUBERNETES_MANIFEST_TEMPLATES:
-      src/services/api/overlay/ci
-  rules:
-    - if: $CI_PARENT_PIPELINE_PROJECT_ID == $CI_REGISTRY_IMAGE
-      variables:
-        CI_IMAGE_VERSION: "$CI_PARENT_COMMIT_SHORT_SHA"
-      when: always
-    - when: manual
-      variables:
-        CI_IMAGE_VERSION: "latest"
-  stage: review
+    KUBE_CONTEXT: gitlab-instance-817290d7/springboot-gitlab-kas-cicd:testing
+    KUBECTL_VERSION: "1.21.1-release"
   environment:
-    name: review
+    kubernetes:
+      namespace: backend-cicd
+    name: development
+  before_script:
+    - kubectl config get-contexts
+    - kubectl config use-context "$KUBE_CONTEXT"
+  script:
+    - kubectl get pods --insecure-skip-tls-verify=true

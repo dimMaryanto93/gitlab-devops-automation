@@ -1,0 +1,9 @@
+ci_access:
+  projects:
+    - id: gitlab-instance-817290d7/gitlab-gitops-worklflow-example:develop
+      environments:
+        - development
+        - review/*
+    - id: gitlab-instance-817290d7/gitlab-gitops-worklflow-example:production
+      environments:
+        - production
