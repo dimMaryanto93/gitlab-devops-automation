@@ -105,6 +105,6 @@ Temporary Items
 
 ## testscript
 *.log
-test/dist/**
-!test/dist/.gitkeep
+manifest/**
+!manifest/.gitkeep
 

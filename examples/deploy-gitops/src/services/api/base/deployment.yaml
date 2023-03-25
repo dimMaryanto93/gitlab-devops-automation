@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+  labels:
+    app: springboot-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: springboot-app
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+        - name: springboot-app
+          image: 192.168.100.250:8086/example/springboot-app:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: base-config
+                optional: true
+            - configMapRef:
+                name: springboot-app
+                optional: false
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: "100Mi"
+            limits:
+              cpu: "0.3"
+              memory: "500Mi"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: springboot-app

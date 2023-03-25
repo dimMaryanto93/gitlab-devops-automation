@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: springboot-app
+          image: ${PRIVATE_REGISTRY_PULL}/${CI_REGISTRY_NAMESPACE}/${CI_REGISTRY_IMAGE}:${CI_IMAGE_VERSION}
+          imagePullPolicy: Always
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: ${DOCKER_REGCRED}
+  selector:
+    matchLabels:
+      app: springboot-app

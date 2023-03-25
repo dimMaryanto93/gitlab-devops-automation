@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      name: springboot-app
+      kind: Deployment
+    path: deployment.yaml
+  - target:
+      name: db-config
+      kind: ConfigMap
+    path: configmap-db.yaml
+
+commonAnnotations:
+  app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+  app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+
+namespace: $KUBE_NAMESPACE
