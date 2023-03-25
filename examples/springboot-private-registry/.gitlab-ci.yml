@@ -1,0 +1,36 @@
+stages:
+  - pre-build
+  - test
+  - build
+
+variables:
+  MAVEN_JDK_VERSION: "3.8-openjdk-18"
+
+include:
+  - remote: https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/build.maven.gitlab-ci.yml
+  - remote: https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/build.docker.gitlab-ci.yml
+
+
+get-fact:project-metadata:
+  extends: .get-fact-project-info
+  stage: pre-build
+
+test:junit:
+  stage: test
+  extends: .test-junit
+  allow_failure: true
+
+build:jar:
+  stage: build
+  extends: .build-jar
+  needs:
+    - get-fact:project-metadata
+
+build:docker:x64-linux:
+  stage: build
+  extends: .insecure-registry-build-docker
+  variables:
+    DOCKER_BUILD_ARGS_ENTRIPOINT: "--build-arg JAR_FILE=$JAR_FILE"
+  needs:
+    - get-fact:project-metadata
+    - build:jar
