@@ -2,7 +2,7 @@ stages:
   - deploy
 
 include:
-  - remote: https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/kubernetes.gitlab-ci.yml
+  - local: templates/kubernetes.gitlab-ci.yml
 
 deploy:
   stage: deploy
