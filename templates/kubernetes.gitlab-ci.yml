@@ -10,7 +10,6 @@
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
-    before_script:
     - kubectl config get-contexts
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl config set-context --current --namespace="$KUBE_NAMESPACE"
