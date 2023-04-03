@@ -12,7 +12,7 @@ deploy:
   variables:
     KUBE_CONTEXT: "$CI_PROJECT_PATH:testing"
     CI_IMAGE_EXPOSE_PORT: 8080
-    CI_REGISTRY_NAMESPACE: "dimmaryanto"
+    CI_REGISTRY_NAMESPACE: "dimmaryanto93"
     CI_REGISTRY_IMAGE: "springboot-k8s-example"
     CI_IMAGE_VERSION: "0.0.1-SNAPSHOT"
     PRIVATE_REGISTRY_PULL: "docker.io"
