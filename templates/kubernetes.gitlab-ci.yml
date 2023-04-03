@@ -1,6 +1,6 @@
 .kubernetes-config:
   variables: 
-    KUBECTL_VERSION: "1.21.1-release"
+    KUBECTL_VERSION: "1.23.14-release"
     DOCKER_REGCRED: "nexus-regcred"
     KUBE_CONTEXT: "$CI_PROJECT_PATH:$AGENT_NAME"
     KUBERNETES_MANIFEST_TEMPLATES: 
