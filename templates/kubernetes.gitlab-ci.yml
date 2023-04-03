@@ -23,7 +23,7 @@
       fi
 
 .gitlab-registry-kubernetes-config:
-  extend: .kubernetes-config
+  extends: .kubernetes-config
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
 
