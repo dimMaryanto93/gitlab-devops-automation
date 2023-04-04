@@ -12,11 +12,10 @@ On self-managed GitLab instances, a GitLab administrator must set up the
 agent server. In `gitlab.rb` when `external_url` property look like
 
 ```rb
-external_url 'http://192.168.88.99'
+external_url 'https://domain.example.com'
 ```
 
-Then it is available by default at `wss://192.168.88.99/-/kubernetes-agent/`.
-On GitLab.com, the agent server is available at `wss://192.168.88.99`.
+Then it is available by default at `wss://domain.example.com/-/kubernetes-agent/`. The agent server is available at `wss://domain.example.com`.
 
 ref: 
 - https://docs.gitlab.com/ee/user/clusters/agent/install/
@@ -109,8 +108,8 @@ spec:
         spec:
             hostAliases:
             - ip: "192.168.88.5"
-            hostnames:
-            - "gitlab.dimas-maryanto.com"
+              hostnames:
+              - "gitlab.dimas-maryanto.com"
 ```
 
 Quit and save, then you need check again the logs
