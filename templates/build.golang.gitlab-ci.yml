@@ -26,11 +26,13 @@ variables:
   
 .build-golang:
   image: private.nexus-registry.docker.local:8086/golang:${GOLANG_VERSION}
+  variables: 
+    GO_BUILD_FILENAME=${CI_PARENT_PROJECT_NAME}
   script:
     - apk add --no-cache git
-    - go mod download
-    - go mod tidy # install git required by install package
-    - go build -o build/${CI_PARENT_PROJECT_NAME} main.go
+    - go $GO_CHANGE_DIR mod download
+    - go $GO_CHANGE_DIR mod tidy # install git required by install package
+    - go $GO_CHANGE_DIR build -o build/$GO_BUILD_FILENAME $GO_MAINFILE
   artifacts:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     paths:
