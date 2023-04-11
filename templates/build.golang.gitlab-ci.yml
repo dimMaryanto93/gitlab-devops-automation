@@ -38,7 +38,7 @@ variables:
   artifacts:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     paths:
-      - $CI_PROJECT_DIR/build/*
+      - $GO_PROJECT_DIR/build/*
 
 .gitlab-registry-build-golang:
   extends: .build-golang
