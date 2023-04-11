@@ -28,17 +28,17 @@ variables:
   image: private.nexus-registry.docker.local:8086/golang:${GOLANG_VERSION}
   variables: 
     GO_BUILD_FILENAME=${CI_PARENT_PROJECT_NAME}
-    GO_CHANGE_DIR="-C "
     GO_PROJECT_DIR=$CI_PROJECT_DIR
+    GO_BUILD_OPTS=""
   script:
     - apk add --no-cache git
-    - go $GO_CHANGE_DIR $GO_PROJECT_DIR mod download
-    - go $GO_CHANGE_DIR $GO_PROJECT_DIR mod tidy # install git required by install package
-    - go $GO_CHANGE_DIR $GO_PROJECT_DIR build -o build/$GO_BUILD_FILENAME $GO_MAINFILE
+    - go mod download
+    - go mod tidy # install git required by install package
+    - go $GO_BUILD_OPTS build -o build/$GO_BUILD_FILENAME $GO_MAINFILE
   artifacts:
     name: $CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     paths:
-      - $GO_PROJECT_DIR/build/*
+      - build/*
 
 .gitlab-registry-build-golang:
   extends: .build-golang
