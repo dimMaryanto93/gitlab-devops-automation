@@ -129,7 +129,7 @@
     - kubectl delete secret --ignore-not-found=true $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
 
-  .kustomize-rollout-restart:
+.kustomize-rollout-restart:
   extends: .kubernetes-config
   script:
     - >
@@ -142,7 +142,7 @@
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
 
- .gitlab-registry-kustomize-rollout-restart:
+.gitlab-registry-kustomize-rollout-restart:
   extends: .gitlab-registry-kubernetes-config
   script:
     - >
