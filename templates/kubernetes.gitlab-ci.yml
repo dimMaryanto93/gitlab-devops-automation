@@ -1,6 +1,6 @@
 .kubernetes-config:
   variables: 
-    KUBECTL_VERSION: "1.21.1-release"
+    KUBECTL_VERSION: "1.23.14-release"
     DOCKER_REGCRED: "nexus-regcred"
     KUBERNETES_MANIFEST_TEMPLATES: 
       src/deployment.yaml 
@@ -21,7 +21,7 @@
       fi
 
 .gitlab-registry-kubernetes-config:
-  extend: .kubernetes-config
+  extends: .kubernetes-config
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
 
@@ -126,3 +126,29 @@
       done
     - kubectl delete secret --ignore-not-found=true $DOCKER_REGCRED -n $KUBE_NAMESPACE
   allow_failure: true
+
+  .kustomize-rollout-restart:
+  extends: .kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl rollout restart -f -;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+
+ .gitlab-registry-kustomize-rollout-restart:
+  extends: .gitlab-registry-kubernetes-config
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          kubectl kustomize $TEMPLATE
+          kubectl kustomize $TEMPLATE | envsubst | kubectl rollout restart -f -;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done

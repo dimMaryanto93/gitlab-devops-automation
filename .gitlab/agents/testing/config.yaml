@@ -8,3 +8,6 @@ gitops:
       prune_timeout: 3600s
       prune_propagation_policy: foreground
       inventory_policy: must_match
+ci_access:
+  projects:
+    - id: examples/gitlab-ci-cd/gitlab-kas-cicd-example:testing

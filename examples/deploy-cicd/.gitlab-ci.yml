@@ -1,20 +1,19 @@
 stages:
   - deploy
 
+include:
+  - local: templates/kubernetes.gitlab-ci.yml
+
 deploy:
   stage: deploy
-  image:
-    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
-    entrypoint: ['']
-  variables:
-    KUBE_CONTEXT: gitlab-instance-817290d7/springboot-gitlab-kas-cicd:testing
-    KUBECTL_VERSION: "1.21.1-release"
+  extends: .gitlab-registry-kustomize-deploy
   environment:
-    kubernetes:
-      namespace: backend-cicd
-    name: development
-  before_script:
-    - kubectl config get-contexts
-    - kubectl config use-context "$KUBE_CONTEXT"
-  script:
-    - kubectl get pods --insecure-skip-tls-verify=true
+    name: review
+  variables:
+    KUBE_CONTEXT: "$CI_PROJECT_PATH:testing"
+    CI_REGISTRY_NAMESPACE: "dimmaryanto93"
+    CI_REGISTRY_IMAGE: "springboot-k8s-example"
+    CI_IMAGE_VERSION: "0.0.1-SNAPSHOT"
+    PRIVATE_REGISTRY_PULL: "docker.io"
+    KUBERNETES_MANIFEST_TEMPLATES:
+      examples/deploy-cicd/src/services/api/overlay/ci
