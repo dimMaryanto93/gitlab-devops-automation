@@ -11,6 +11,8 @@ variables:
       src/config-map.yaml
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+  before_script:
+    - mkdir -p $DIR_BUILD
   script:
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
