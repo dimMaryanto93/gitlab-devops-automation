@@ -1,0 +1,50 @@
+.kubectl-build:
+  variables:
+    KUBECTL_VERSION: "1.23.14-release"
+    DOCKER_REGCRED: "nexus-regcred"
+    KUBERNETES_MANIFEST_TEMPLATES:
+      src/deployment.yaml
+      src/service.yaml
+      src/config-map.yaml
+  image:
+    name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          envsubst < $TEMPLATE > build/$CI_JOB_NAME_SLUG.yaml;
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+  artifacts:
+    name: ${CI_JOB_NAME_SLUG}
+    paths:
+      - build/*
+
+.gitlab-registry-kubectl-build:
+  extends: .kubectl-build
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+
+.kustomize-build:
+  extends: .kubectl-build
+  variables:
+    KUBERNETES_MANIFEST_TEMPLATES:
+      src/services/api/overlay/ci
+  image:
+    name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
+  script:
+    - >
+      for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
+      do
+          echo "--------------------------------";
+          echo "kubernetes manifest => $TEMPLATE";
+          kubectl kustomize $TEMPLATE | envsubst > build/$CI_JOB_NAME_SLUG.yaml
+          echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+      done
+
+.gitlab-registry-kustomize-build:
+  extends: .kustomize-build
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
