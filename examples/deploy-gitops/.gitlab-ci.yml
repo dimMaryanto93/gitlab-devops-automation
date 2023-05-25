@@ -12,7 +12,7 @@ variables:
   DOCKER_REGCRED: "nexus-regcred"
 
 include:
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/gitops-flow.gitlab-ci.yml'
+  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-devops-automation/gitlab-kas/templates/gitops-flow.gitlab-ci.yml'
 
 build-configmap:
   stage: build
