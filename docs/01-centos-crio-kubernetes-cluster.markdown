@@ -85,8 +85,8 @@ Kemudian tahap selanjutnya adalah setting/install container runtime yang di supp
 ```bash
 OS=CentOS_7
 VERSION=1.17
-curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/devel:kubic:libcontainers:stable.repo
-curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:$VERSION.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/devel:kubic:libcontainers:stable:cri-o:$VERSION.repo
+curl -L -o /etc/yum.repos.d/review:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/review:kubic:libcontainers:stable.repo
+curl -L -o /etc/yum.repos.d/review:kubic:libcontainers:stable:cri-o:$VERSION.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/review:kubic:libcontainers:stable:cri-o:$VERSION.repo
 yum install -y \
 	cri-o \
 	containernetworking-plugins \

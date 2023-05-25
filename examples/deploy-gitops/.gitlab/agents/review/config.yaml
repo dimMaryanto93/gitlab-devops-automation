@@ -1,0 +1,14 @@
+gitops:
+  manifest_projects:
+    - ref:
+        branch: review-env
+      id: devops/dimasm93/gitops-flow
+      paths:
+        - glob: '*.yaml'
+      default_namespace: gitops-flows
+      reconcile_timeout: 3600s
+      dry_run_strategy: none
+      prune: true
+      prune_timeout: 3600s
+      prune_propagation_policy: foreground
+      inventory_policy: must_match

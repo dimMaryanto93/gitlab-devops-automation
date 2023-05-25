@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: base-config
-data:
-  LOG_LEVEL: "ERROR"

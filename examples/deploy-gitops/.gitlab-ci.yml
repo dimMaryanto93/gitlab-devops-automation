@@ -9,6 +9,7 @@ default:
     - docker
 
 variables:
+  DIR_BUILD: build
   DOCKER_REGCRED: "nexus-regcred"
 
 include:
@@ -21,9 +22,19 @@ build-configmap:
     KUBERNETES_MANIFEST_TEMPLATES:
       src/base
 
-deploy-review:
+build-webapp:
+  stage: build
+  extends: .kustomize-build
+  variables:
+    KUBERNETES_MANIFEST_TEMPLATES:
+      src/services/webapp
+
+deploy-review-test:
   extends: .git-deploy
   stage: review
+  needs:
+    - build-configmap
+    - build-webapp
   variables:
     GIT_REMOTE_BRANCH: review-env
 
