@@ -1,4 +1,5 @@
 stages:
+  - build
   - review
   - staging
   - production
@@ -11,24 +12,18 @@ variables:
   DOCKER_REGCRED: "nexus-regcred"
 
 include:
-  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/kubernetes.gitlab-ci.yml'
+  - remote: 'https://raw.githubusercontent.com/dimMaryanto93/gitlab-cicd-templates/main/gitops-flow.gitlab-ci.yml'
 
-deploy:springboot-app:
-  extends: .kustomize-deploy
+build-configmap:
+  stage: build
+  extends: .kustomize-build
   variables:
-    CI_IMAGE_EXPOSE_PORT: 8080
-    CI_REGISTRY_NAMESPACE: "com.example.project-name"
-    CI_REGISTRY_IMAGE: "springboot-app"
     KUBERNETES_MANIFEST_TEMPLATES:
-      src/services/api/overlay/ci
-  rules:
-    - if: $CI_PARENT_PIPELINE_PROJECT_ID == $CI_REGISTRY_IMAGE
-      variables:
-        CI_IMAGE_VERSION: "$CI_PARENT_COMMIT_SHORT_SHA"
-      when: always
-    - when: manual
-      variables:
-        CI_IMAGE_VERSION: "latest"
+      src/base
+
+deploy-review:
+  extends: .git-deploy
   stage: review
-  environment:
-    name: review
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+
