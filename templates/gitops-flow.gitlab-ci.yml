@@ -18,8 +18,7 @@ variables:
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
-    - mkdir -p $DIR_BUILD
-  script:
+    - mkdir -p {$DIR_BUILD,source}
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
@@ -28,7 +27,7 @@ variables:
           envsubst < $TEMPLATE > $DIR_BUILD/$CI_JOB_NAME_SLUG.yaml;
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
-  after_script:
+  script:
     - cd source
     - git init -b $GIT_LOCAL_BRANCH
     - git remote add local $GIT_REMOTE_REPO
@@ -56,7 +55,8 @@ variables:
       src/services/api/overlay/ci
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
-  script:
+  before_script:
+    - mkdir -p {$DIR_BUILD,source}
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
