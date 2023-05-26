@@ -39,7 +39,7 @@ variables:
         then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
         else echo "Branch: $GIT_REMOTE_BRANCH is not available!";
       fi
-    - cp -R $CI_BUILDS_DIR/$DIR_BUILD/* .
+    - cp ../$DIR_BUILD/* .
     - git add .
     - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
     - git push $PUSH_OPTIONS $GIT_REMOTE_REPO $GIT_LOCAL_BRANCH:$GIT_REMOTE_BRANCH
@@ -81,7 +81,7 @@ variables:
         then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
         else echo "Branch: $GIT_REMOTE_BRANCH is not available!";
       fi
-    - cp -R $CI_BUILDS_DIR/$DIR_BUILD/* .
+    - cp -R ../$DIR_BUILD/* .
     - git add .
     - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
     - git push $PUSH_OPTIONS $GIT_REMOTE_REPO $GIT_LOCAL_BRANCH:$GIT_REMOTE_BRANCH
