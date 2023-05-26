@@ -18,7 +18,7 @@ variables:
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
     entrypoint: ['']
-  before_script:
+  script:
     - mkdir -p $DIR_BUILD
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
@@ -28,7 +28,6 @@ variables:
           envsubst < $TEMPLATE > $DIR_BUILD/$CI_JOB_NAME_SLUG.yaml;
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
-  script:
     - mkdir -p source && cd source
     - git init -b $GIT_LOCAL_BRANCH
     - git remote add local $GIT_REMOTE_REPO
@@ -56,7 +55,7 @@ variables:
       src/services/api/overlay/ci
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
-  before_script:
+  script:
     - mkdir -p $DIR_BUILD
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
@@ -66,6 +65,16 @@ variables:
           kubectl kustomize $TEMPLATE | envsubst > $DIR_BUILD/$CI_JOB_NAME_SLUG.yaml
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
+    - mkdir -p source && cd source
+    - git init -b $GIT_LOCAL_BRANCH
+    - git remote add local $GIT_REMOTE_REPO
+    - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
+    - git config --global user.name "bot-gitlab-ci"
+    - git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH
+    - cp -R ${DIR_BUILD}/* .
+    - git add .
+    - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
+    - git push $PUSH_OPTIONS $GIT_REMOTE_REPO $GIT_LOCAL_BRANCH:$GIT_REMOTE_BRANCH
 
 .gitlab-registry-kustomize-build:
   extends: .kustomize-build
