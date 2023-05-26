@@ -19,7 +19,7 @@ variables:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
     entrypoint: ['']
   before_script:
-    - mkdir -p {$DIR_BUILD,source}
+    - mkdir -p $DIR_BUILD
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
@@ -29,7 +29,7 @@ variables:
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
   script:
-    - cd source
+    - mkdir -p source && cd source
     - git init -b $GIT_LOCAL_BRANCH
     - git remote add local $GIT_REMOTE_REPO
     - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
@@ -57,7 +57,7 @@ variables:
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
-    - mkdir -p {$DIR_BUILD,source}
+    - mkdir -p $DIR_BUILD
     - >
       for TEMPLATE in ${KUBERNETES_MANIFEST_TEMPLATES};
       do
