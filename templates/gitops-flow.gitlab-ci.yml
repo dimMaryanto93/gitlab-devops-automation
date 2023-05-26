@@ -3,12 +3,18 @@ variables:
 
 .kubectl-build:
   variables:
-    KUBECTL_VERSION: "1.23.14-release"
+    KUBECTL_VERSION: "1.23.15-release"
     DOCKER_REGCRED: "nexus-regcred"
     KUBERNETES_MANIFEST_TEMPLATES:
       src/deployment.yaml
       src/service.yaml
       src/config-map.yaml
+    PUSH_OPTIONS: --force
+    PULL_OPTIONS: --force
+    COMMIT_MESSAGE: "build project ${CI_COMMIT_SHORT_SHA} on branch ${CI_COMMIT_BRANCH} at ${CI_COMMIT_TIMESTAMP}"
+    GIT_LOCAL_BRANCH: main
+    GIT_REMOTE_BRANCH: github-pages
+    GIT_REMOTE_REPO: "$CI_SERVER_PROTOCOL://${GIT_ACCESS_TOKEN}:${GIT_ACCESS_TOKEN}@$CI_SERVER_HOST:$CI_SERVER_PORT/$CI_PROJECT_PATH.git"
   image:
     name: private.nexus-registry.docker.local:8086/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
   before_script:
@@ -22,6 +28,17 @@ variables:
           envsubst < $TEMPLATE > $DIR_BUILD/$CI_JOB_NAME_SLUG.yaml;
           echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
       done
+  after_script:
+    - cd source
+    - git init -b $GIT_LOCAL_BRANCH
+    - git remote add local $GIT_REMOTE_REPO
+    - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
+    - git config --global user.name "bot-gitlab-ci"
+    - git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH
+    - cp -R ${DIR_BUILD}/* .
+    - git add .
+    - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
+    - git push $PUSH_OPTIONS $GIT_REMOTE_REPO $GIT_LOCAL_BRANCH:$GIT_REMOTE_BRANCH
   artifacts:
     name: ${CI_JOB_NAME_SLUG}
     paths:
@@ -53,24 +70,3 @@ variables:
   extends: .kustomize-build
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/dimmaryanto93/k8s-kubectl-helm:${KUBECTL_VERSION}
-
-.git-deploy:
-  image:
-    entrypoint: [ '' ]
-    name: alpine/git:${GIT_VERSION}
-  variables:
-    GIT_VERSION: v2.30.1
-    PUSH_OPTIONS: --force
-    COMMIT_MESSAGE: "build project ${CI_COMMIT_SHORT_SHA} on branch ${CI_COMMIT_BRANCH} at ${CI_COMMIT_TIMESTAMP}"
-    GIT_LOCAL_BRANCH: main
-    GIT_REMOTE_BRANCH: github-pages
-    GIT_REMOTE_REPO: "$CI_SERVER_PROTOCOL://${GIT_ACCESS_TOKEN}:${GIT_ACCESS_TOKEN}@$CI_SERVER_HOST:$CI_SERVER_PORT/$CI_PROJECT_PATH.git"
-  before_script:
-    - cd ${DIR_BUILD}
-    - git init -b $GIT_LOCAL_BRANCH
-    - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
-    - git config --global user.name "bot-gitlab-ci"
-  script:
-    - git add .
-    - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
-    - git push $PUSH_OPTIONS $GIT_REMOTE_REPO $GIT_LOCAL_BRANCH:$GIT_REMOTE_BRANCH
