@@ -33,7 +33,7 @@ variables:
     - git remote add local $GIT_REMOTE_REPO
     - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
     - git config --global user.name "bot-gitlab-ci"
-    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote origin --refs heads/$GIT_REMOTE_BRANCH | wc -l);
+    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote local --refs heads/$GIT_REMOTE_BRANCH | wc -l);
     - |
       if [ ${GIT_EXISTING_REMOTE_BRANCH} -eq 1 ]; 
         then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
@@ -75,7 +75,7 @@ variables:
     - git remote add local $GIT_REMOTE_REPO
     - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
     - git config --global user.name "bot-gitlab-ci"
-    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote origin --refs heads/$GIT_REMOTE_BRANCH | wc -l);
+    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote local --refs heads/$GIT_REMOTE_BRANCH | wc -l);
     - |
       if [ ${GIT_EXISTING_REMOTE_BRANCH} -eq 1 ]; 
         then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
