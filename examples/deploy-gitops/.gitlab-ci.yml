@@ -18,23 +18,17 @@ include:
 build-configmap:
   stage: build
   extends: .kustomize-build
+  resource_group: deploy/review
   variables:
+    GIT_REMOTE_BRANCH: review-env
     KUBERNETES_MANIFEST_TEMPLATES:
       src/base
 
 build-webapp:
   stage: build
+  resource_group: deploy/review
   extends: .kustomize-build
   variables:
+    GIT_REMOTE_BRANCH: review-env
     KUBERNETES_MANIFEST_TEMPLATES:
       src/services/webapp
-
-deploy-review-test:
-  extends: .git-deploy
-  stage: review
-  needs:
-    - build-configmap
-    - build-webapp
-  variables:
-    GIT_REMOTE_BRANCH: review-env
-
