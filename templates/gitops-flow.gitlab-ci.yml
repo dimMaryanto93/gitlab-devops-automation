@@ -11,6 +11,7 @@ variables:
       src/config-map.yaml
     PUSH_OPTIONS: --force
     PULL_OPTIONS: --force
+    COMMIT_OPTIONS: --allow-empty
     COMMIT_MESSAGE: "build project ${CI_COMMIT_SHORT_SHA} on branch ${CI_COMMIT_BRANCH} at ${CI_COMMIT_TIMESTAMP}"
     GIT_LOCAL_BRANCH: main
     GIT_REMOTE_BRANCH: github-pages
