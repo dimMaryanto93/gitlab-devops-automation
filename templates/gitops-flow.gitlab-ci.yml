@@ -33,7 +33,12 @@ variables:
     - git remote add local $GIT_REMOTE_REPO
     - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
     - git config --global user.name "bot-gitlab-ci"
-    - git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH
+    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote origin --refs heads/$GIT_REMOTE_BRANCH | wc -l);
+    - |
+      if [ ${GIT_EXISTING_REMOTE_BRANCH} -eq 1 ]; 
+        then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
+        else echo "Branch: $GIT_REMOTE_BRANCH is not available!";
+      fi
     - cp -R ${DIR_BUILD}/* .
     - git add .
     - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
@@ -70,7 +75,12 @@ variables:
     - git remote add local $GIT_REMOTE_REPO
     - git config --global user.email "bot-gitlab-ci@$CI_SERVER_HOST"
     - git config --global user.name "bot-gitlab-ci"
-    - git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH
+    - export GIT_EXISTING_REMOTE_BRANCH=$(git ls-remote origin --refs heads/$GIT_REMOTE_BRANCH | wc -l);
+    - |
+      if [ ${GIT_EXISTING_REMOTE_BRANCH} -eq 1 ]; 
+        then git pull $PULL_OPTIONS local $GIT_REMOTE_BRANCH:$GIT_LOCAL_BRANCH;
+        else echo "Branch: $GIT_REMOTE_BRANCH is not available!";
+      fi
     - cp -R ${DIR_BUILD}/* .
     - git add .
     - git commit $COMMIT_OPTIONS -m "${COMMIT_MESSAGE}"
