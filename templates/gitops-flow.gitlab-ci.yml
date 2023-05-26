@@ -1,9 +1,9 @@
 variables:
   DIR_BUILD: build
+  KUBECTL_VERSION: "1.23.15-alpine"
 
 .kubectl-build:
   variables:
-    KUBECTL_VERSION: "1.23.15-release"
     DOCKER_REGCRED: "nexus-regcred"
     KUBERNETES_MANIFEST_TEMPLATES:
       src/deployment.yaml
