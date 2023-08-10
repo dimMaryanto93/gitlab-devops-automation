@@ -65,6 +65,10 @@ Ensure that the configuration of the Prism Element (PE) cluster meets the follow
 
 Sebelum meng-enabled Nutanix Kubernetes Engine (NKE) pada menu `services -> Kubernetes` pastikan NKE engine pada LCM sudah running version yang terbaru seperti berikut contohnya:
 
-![lcm-nke-version]()
+![lcm-nke-version](images/nutanix-nke/08-lcm-nke-version.png)
 
-Setelah component NKE diupdate ke latest version, sekarang kita bisa enable NKE services nya, setelah aktif kita bisa download OS image atau jika tidak ada jaringan internet bisa menggunakan airgap.
+Setelah component NKE diupdate ke latest version, sekarang kita bisa enable NKE services nya seperti berikut:
+
+![enable-nke](images/nutanix-nke/02a-enable-karbon.png)
+
+Setelah aktif kita bisa download OS image atau jika tidak ada jaringan internet bisa menggunakan airgap.
