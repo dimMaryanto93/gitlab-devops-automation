@@ -71,9 +71,9 @@ Setelah component NKE diupdate ke latest version, sekarang kita bisa enable NKE 
 
 ![enable-nke](images/nutanix-nke/02a-enable-karbon.png)
 
-Setelah aktif kita bisa download OS image atau jika tidak ada jaringan internet bisa menggunakan airgap.
+Setelah aktif kita bisa download OS image atau jika tidak ada jaringan internet bisa menggunakan darksite dan airgap seperti pada penjelasan selanjutnya.
 
-## Install darksite using web-server for airgap
+## Install darksite using web-server for airgap (Optional)
 
 Untuk membuat darksite, basicly kita bisa menggunakan lightwight web server seperti `httpd` atau `apache`. Jadi kita perlu siapkan Virtual Machine (VM) linux contohnya seperti Centos 7/8, Oracle Linux 8 dan lain-lain, kita bisa pasang menggunakan repository
 
@@ -123,6 +123,50 @@ export KARBONCTL_STATIC_IP='<ip-outsite-ip-pool>'
 --static-ip=$KARBONCTL_STATIC_IP
 ```
 
-Setelah itu kita bisa lihat hasilnya dengan perintah `karbonctl airgap list` atau pada list vm terdapat virtualmachine baru dengan nama `airgap-n`.
+Setelah itu kita bisa lihat hasilnya dengan perintah `karbonctl airgap list` seperti berikut:
+
+![airgap-enabled](images/nutanix-nke/02b-enable-airgap.png)
 
 ## Preparing subnet for Karbon
+
+Seperti yang telah di jabarkan pada informasi requirement, sebelum deploy kubernetes cluster dengan menggunakan Nutanix Kubernetes Engine (NKE) kita perlu buat subnet / vlan. Kita buat dulu subnet di menu `Network` -> `Subnet` seperti berikut:
+
+Maka hasilnya seperti berikut:
+
+![subnet-dhcp-for-nke](images/nutanix-nke/01-setting-network-subnet.png)
+
+## Create cluster kubernetes
+
+Jika sudah sekarang kita bisa kubernetes cluster, berikut adalah contoh dalam membuat kubernetes cluster dengan mode Development:
+
+- Click `Create Cluster` dan pilih `Development Cluster` seperti berikut:
+    
+    ![nke-create-cluster](images/nutanix-nke/09a-nke-create-cluster.png)
+
+- Next, Input `nama cluster`, lokasi cluster, `version kubernetes` seperti berikut:
+
+    ![nke-env](images/nutanix-nke/09b-nke-name-env.png)
+
+- Next, Customize node resource configuration seperti berikut:
+
+    ![nke-node-config](images/nutanix-nke/09c-nke-node-config.png)
+
+- Next, Pilih cni provider, Input service CIDR range seperti berikut
+
+    ![node-network-config](images/nutanix-nke/09d-nke-network-config.png)
+
+- Next, Pilih storage container seperti berikut:
+
+    ![node-storage-config](images/nutanix-nke/09e-nke-storage-class.png)
+
+- Next, berikut adalah summarynya:
+
+    ![node-summary](images/nutanix-nke/09f-nke-summary-cluster.png)
+
+    ![nke-control-plane](images/nutanix-nke/09g-nke-node-master.png)
+
+    ![nke-worker](images/nutanix-nke/09h-nke-node-woker.png)
+
+    ![nke-etcd](images/nutanix-nke/09i-nke-node-etcd.png)
+
+    ![nke-pvc](images/nutanix-nke/09j-nke-storage-pvc.png)
