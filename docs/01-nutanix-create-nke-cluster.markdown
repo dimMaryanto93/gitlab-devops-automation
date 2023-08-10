@@ -42,17 +42,17 @@ Ensure that the configuration of the Prism Element (PE) cluster meets the follow
 
     - Etcd (config node)
 
-    | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
-    | :---          | :---  | :---          | :---          | :---          |
-    | Production    | 4     | 8             | 120           | 3             |
-    | Development   | 4     | 4             | 120           | 1             |
+        | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
+        | :---          | :---  | :---          | :---          | :---          |
+        | Production    | 4     | 8             | 120           | 3             |
+        | Development   | 4     | 4             | 120           | 1             |
 
     - Worker (worker node)
 
-    | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
-    | :---          | :---  | :---          | :---          | :---          |
-    | Production    | 8     | 8             | 200           | 3             |
-    | Development   | 4     | 4             | 120           | 1             |
+        | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
+        | :---          | :---  | :---          | :---          | :---          |
+        | Production    | 8     | 8             | 200           | 3             |
+        | Development   | 4     | 4             | 120           | 1             |
 
 - Ip addresses settings
 
@@ -67,3 +67,4 @@ Sebelum meng-enabled Nutanix Kubernetes Engine (NKE) pada menu `services -> Kube
 
 ![lcm-nke-version]()
 
+Setelah component NKE diupdate ke latest version, sekarang kita bisa enable NKE services nya, setelah aktif kita bisa download OS image atau jika tidak ada jaringan internet bisa menggunakan airgap.
