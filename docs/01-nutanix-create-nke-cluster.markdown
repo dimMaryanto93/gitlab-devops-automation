@@ -33,33 +33,37 @@ Ensure that the configuration of the Prism Element (PE) cluster meets the follow
 
 - Node Resource Default Settings
 
-Control-Plane (master node)
+    - Control-Plane (master node)
 
-| Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
-| :---          | :---  | :---          | :---          | :---          |
-| Production    | 8     | 8             | 120           | 2             |
-| Development   | 4     | 4             | 120           | 1             |
+        | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
+        | :---          | :---  | :---          | :---          | :---          |
+        | Production    | 8     | 8             | 120           | 2             |
+        | Development   | 4     | 4             | 120           | 1             |
 
-Etcd (config node)
+    - Etcd (config node)
 
-| Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
-| :---          | :---  | :---          | :---          | :---          |
-| Production    | 4     | 8             | 120           | 3             |
-| Development   | 4     | 4             | 120           | 1             |
+    | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
+    | :---          | :---  | :---          | :---          | :---          |
+    | Production    | 4     | 8             | 120           | 3             |
+    | Development   | 4     | 4             | 120           | 1             |
 
-Worker (worker node)
+    - Worker (worker node)
 
-| Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
-| :---          | :---  | :---          | :---          | :---          |
-| Production    | 8     | 8             | 200           | 3             |
-| Development   | 4     | 4             | 120           | 1             |
+    | Cluster Type  | vCpu  | Memory (GiB)  | Storage (GiB) | Nodes (vm)    |
+    | :---          | :---  | :---          | :---          | :---          |
+    | Production    | 8     | 8             | 200           | 3             |
+    | Development   | 4     | 4             | 120           | 1             |
 
 - Ip addresses settings
 
-| Cluster Type  | control-plane | etcd      | worker    | virtual-ip            | Total |
-| :---          | :---          | :---      | :---      | :---                  | :---  |
-| Production    | 2             | 3         | 3         | 1 (diluar ip-pools)   | 9 ip  |  
-| Development   | 1             | 1         | 1         | -                     | 3 ip  |
+    | Cluster Type  | control-plane | etcd      | worker    | virtual-ip            | Total |
+    | :---          | :---          | :---      | :---      | :---                  | :---  |
+    | Production    | 2             | 3         | 3         | 1 (diluar ip-pools)   | 9 ip  |  
+    | Development   | 1             | 1         | 1         | -                     | 3 ip  |
 
 ## Enable Nutanix kubernetes Engine (NKE)
+
+Sebelum meng-enabled Nutanix Kubernetes Engine (NKE) pada menu `services -> Kubernetes` pastikan NKE engine pada LCM sudah running version yang terbaru seperti berikut contohnya:
+
+![lcm-nke-version]()
 
