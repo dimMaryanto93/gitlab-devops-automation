@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 components:
-  - components/gitlab
-  - components/metallb
-  - components/prometheus
+  # - components/gitlab
+  # - components/prometheus
   - components/kubernetes-dashboard
   - components/metrics-server
-  - components/cert-manager
+  - components/metallb
+  # - components/cert-manager

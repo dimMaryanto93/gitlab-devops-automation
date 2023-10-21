@@ -1,8 +1,9 @@
+
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: microtik-ip-pool
+  name: default-ip-pool
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.100.11-192.168.100.25
+  - 10.42.29.101-10.42.29.110
