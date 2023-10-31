@@ -1,0 +1,25 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nutanix-files-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  # Provide Nutanix Files access such as .
+  nfsPath: nke-files-share
+  nfsServerName: files-nke
+  nfsServer: 10.38.187.48
+  csi.storage.k8s.io/node-publish-secret-name: ntnx-files-secret
+  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system
+  csi.storage.k8s.io/controller-expand-secret-name: ntnx-files-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system
+  csi.storage.k8s.io/provisioner-secret-name: ntnx-files-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+  squashType: root-squash
+mountOptions:
+  - hard
+  - vers=4
+allowVolumeExpansion: true
+reclaimPolicy: Retain

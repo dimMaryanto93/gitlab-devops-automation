@@ -9,4 +9,3 @@ components:
   - components/metrics-server
   - components/metallb
   - components/nginx-community-ingress
-  # - components/cert-manager
