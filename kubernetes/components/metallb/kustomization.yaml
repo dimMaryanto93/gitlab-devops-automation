@@ -3,7 +3,5 @@ kind: Component
 
 resources:
   - git@github.com:/metallb/metallb.git//config/native?ref=v0.13.12
-  - IpAddressPool.yaml
-  - L2Advertisement.yaml
 
 namespace: metallb-system

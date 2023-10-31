@@ -2,4 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - deployment.yaml
+  - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.4/components.yaml
+
+patches:
+  - path: deployment.yaml
+    target:
+      kind: Deployment
+      name: metrics-server
