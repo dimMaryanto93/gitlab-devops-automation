@@ -4,8 +4,8 @@ kind: Kustomization
 components:
   # - components/gitlab
   # - components/prometheus
-  - components/cert-manager
+#  - components/cert-manager
   - components/kubernetes-dashboard
   - components/metrics-server
-  - components/metallb
+#  - components/metallb
   - components/nginx-community-ingress
