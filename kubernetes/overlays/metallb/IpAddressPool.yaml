@@ -1,8 +1,7 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: default-ip-pool
-  namespace: metallb-system
+  name: default-ips-pool
 spec:
   addresses:
   - 10.38.47.121-10.38.47.123
