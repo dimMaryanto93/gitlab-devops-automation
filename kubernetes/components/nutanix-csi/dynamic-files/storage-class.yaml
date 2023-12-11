@@ -8,7 +8,7 @@ provisioner: csi.nutanix.com
 parameters:
   nfsPath: nke-files-dynamic-share
   nfsServerName: files-nke
-  nfsServer: 10.38.187.48
+  nfsServer: localhost
   csi.storage.k8s.io/node-publish-secret-name: ntnx-files-secret
   csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system
   csi.storage.k8s.io/controller-expand-secret-name: ntnx-files-secret
