@@ -7,6 +7,24 @@ The an other way for storing/accessing container image can be accessed locally i
 3. Setup Container registry
 4. Setup authentication
 
+## System requirement
+
+Virtual Machine: requirement
+
+1. OS recommendation linux, Oracle Linux 9.3
+
+    Recommendation for medium size: `< 50 repositories`
+    CPU: 8 cpus
+    Memory: 8 GB 
+    Storage: 500 GB
+
+2. Engine requirement
+
+    - OpenJDK 8
+
+        ```bash
+        yum install java-1.8.0-openjdk
+        ```
 
 ## Installing Nexus OSS
 
