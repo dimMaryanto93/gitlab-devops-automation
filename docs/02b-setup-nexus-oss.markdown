@@ -2,9 +2,10 @@
 
 The an other way for storing/accessing container image can be accessed locally is using Nexus OSS, The installation i'll cover is:
 
-1. Installing Nexus OSS
-2. Setup Container registry
-3. Setup authentication
+1. System requirement
+2. Installing Nexus OSS
+3. Setup Container registry
+4. Setup authentication
 
 
 ## Installing Nexus OSS
