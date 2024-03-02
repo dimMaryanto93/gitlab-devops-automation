@@ -14,6 +14,22 @@ Enable security for Code Scanning, Dependency Vulnerability, Code coverage. we'l
 - Oracle JDK 17
 - PostgreSQL 15
 
+Harderning os (required) to start sonarqube apps
+
+- Set `vm.max_map_count` and `fs.file-max` into `/etc/sysctl.d/99-sonarqube.conf`
+    ```conf
+    # add this line
+    vm.max_map_count=524288
+    fs.file-max=131072
+    ```
+
+- Set open descriptors into `/etc/security/limits.d/99-sonarqube.conf` 
+    ```conf
+    sonarqube   -   nofile   131072
+    sonarqube   -   nproc    8192
+    ```
+- Then reboot system, to apply the changes
+
 ## Installation
 
 Download Oracle JDK 17 from [Oracle Website](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
@@ -78,7 +94,7 @@ Download sonarqube community edition
 wget 'https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.4.1.88267.zip' -O Downloads/sonarqube-10.4.1.88267.zip && \
 sudo mkdir -p /opt/sonarqube && \
 sudo unzip Download/sonarqube-10.4.1.88267.zip -d /opt/sonarqube/ && \
-sudo mkdir -p /var/opt/sonarqube/{data,temp} && \
+sudo mkdir -p /var/opt/sonarqube/{data,temp}
 ```
 
 Create user linux to sonar running application
@@ -87,7 +103,7 @@ Create user linux to sonar running application
 sudo adduser sonarqube && \
 sudo chown -R sonarqube:sonarqube /opt/sonarqube/** && \
 sudo chown -R sonarqube:sonarqube /var/opt/sonarqube/** && \
-sudo chmod -R 777 /var/opt/sonarqube/**
+sudo chmod -R 777 /var/opt/sonarqube/** 
 ```
 
 Setelah itu update config file `sonar.properties` seperti berikut:
@@ -111,4 +127,91 @@ sonar.search.javaOpts=-Xmx512m -Xms512m -XX:MaxDirectMemorySize=256m -XX:+HeapDu
 # OTHERS
 sonar.path.data=/var/opt/sonarqube/data
 sonar.path.temp=/var/opt/sonarqube/temp
+```
+
+Selanjutnya tambahkan env pada os untuk override version java, tambahkan property `SONAR_JAVA_PATH` pada file `/etc/environment` seperti berikut:
+
+```bash
+SONAR_JAVA_PATH=/usr/lib/jvm/jdk-17-oracle-x64/bin/java
+```
+
+Setelah itu kita coba jalankan dengan perintah berikut:
+
+```bash
+# give granted port 9000 to access from outside
+firewall-cmd --zone=public --add-port=9000/tcp --permanent && \
+firewall-cmd --reload
+# login use sonarqube user
+su sonarqube
+/opt/sonarqube/sonarqube-10.4.1.88267/bin/linux-x86-64/sonar.sh console
+```
+
+Makesure service elastic, tomcat, database connected seperti pada log berikut:
+
+```log
+2024.03.02 16:37:19 INFO  web[][o.s.s.p.Platform] Web Server is operational
+2024.03.02 16:37:20 INFO  ce[][o.s.d.DefaultDatabase] Create JDBC data source for jdbc:postgresql://localhost:5432/sonarqube?currentSchema=public
+2024.03.02 16:37:20 INFO  ce[][c.z.h.HikariDataSource] HikariPool-1 - Starting...
+2024.03.02 16:37:20 INFO  ce[][c.z.h.p.HikariPool] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e24be4d
+2024.03.02 16:37:20 INFO  ce[][c.z.h.HikariDataSource] HikariPool-1 - Start completed.
+2024.03.02 16:37:21 INFO  ce[][o.s.s.p.ServerFileSystemImpl] SonarQube home: /opt/sonarqube/sonarqube-10.4.1.88267
+2024.03.02 16:37:21 INFO  ce[][o.s.c.c.CePluginRepository] Load plugins
+2024.03.02 16:37:21 INFO  ce[][o.s.c.c.ComputeEngineContainerImpl] Running Community edition
+2024.03.02 16:37:21 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is started
+2024.03.02 16:37:22 INFO  app[][o.s.a.SchedulerImpl] Process[ce] is up
+2024.03.02 16:37:22 INFO  app[][o.s.a.SchedulerImpl] SonarQube is operational
+```
+
+Setelah itu kita bisa akses webnya di alamat [http://your-ip:9000](http://localhost:9000) maka akan muncul seperti berikut:
+
+![sonarqube](images/sonarqube/01-console.png)
+
+Kemudian login menggunakan user `admin` password `admin` setelah itu ganti default admin user. Kemudian kita akan diarahkan ke halaman dashboard utama seperti berikut:
+
+![dashboard](images/sonarqube/01a-default-dashboard.png)
+
+Tahap selanjutnya kita akan stop servicenya dengan menggunakan `CTRL + C`, kemudian kita buat file `.service` supaya begitu server restart bisa auto start. caranya kita buat file `/etc/systemd/system/sonarqube.service` seperti berikut:
+
+```service
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=sonarqube
+Group=sonarqube
+PermissionsStartOnly=true
+ExecStart=/bin/nohup /usr/lib/jvm/jdk-17-oracle-x64/bin/java -Xms32m -Xmx32m -Djava.net.preferIPv4Stack=true -jar /opt/sonarqube/sonar-application.jar
+StandardOutput=journal
+LimitNOFILE=131072
+LimitNPROC=8192
+TimeoutStartSec=5
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Kemudian kita buat symlink untuk file `sonar-application.jar` seperti berikut:
+
+```bash
+# login to sonarqube
+so sonarqube
+
+# change dir to /opt/sonarqube
+cd /opt/sonarqube/
+
+# create symlimk
+ln -s sonarqube-10.4.1.88267/lib/sonar-application-10.4.1.88267.jar sonar-application.jar
+
+exit
+```
+
+Kemudian kita coba jalankan servicenya dengan perintah berikut:
+
+```bash
+systemctl daemon-reload && \
+systemctl enable --now sonarqube
 ```
