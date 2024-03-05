@@ -4,4 +4,4 @@ metadata:
   name: default-ips-pool
 spec:
   addresses:
-  - 10.12.1.211-10.12.1.220
+  - 10.12.12.10-10.12.12.20
