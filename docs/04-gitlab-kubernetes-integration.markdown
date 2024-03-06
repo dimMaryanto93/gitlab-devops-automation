@@ -62,8 +62,8 @@ You must register an agent before you can install the agent in your cluster. To 
 the one-liner installation method to install the agent in your cluster.
 
 ```bash
-export GITLAB_KAS_WSS="wss://<domain-or-ip-server>/-/kubernetes-agent/" && \
-export GITLAB_ACCESS_TOKEN=<access-token-from-gitlab-kas> && \
+export GITLAB_KAS_WSS='wss://<domain-or-ip-server>/-/kubernetes-agent/'
+export GITLAB_ACCESS_TOKEN='<access-token-from-gitlab-kas>'
 export KUBERNETES_NS=gitlab-agent
 export PROJECT_NAME=example
 
@@ -72,7 +72,7 @@ helm repo update
 helm upgrade --install $PROJECT_NAME gitlab/gitlab-agent \
     --namespace $KUBERNETES_NS \
     --create-namespace \
-    --set image.tag=v15.9.0 \
+    --set image.tag=v16.9.2 \
     --set config.token=$GITLAB_ACCESS_TOKEN \
     --set config.kasAddress=$GITLAB_KAS_WSS
 ```
