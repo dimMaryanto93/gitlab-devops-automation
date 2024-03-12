@@ -1,0 +1,4 @@
+- name: Install Nexus OSS
+  hosts: ["nexus-oss"]
+  roles: 
+    - role: dimmaryanto93.sonatype_nexus_oss_registry

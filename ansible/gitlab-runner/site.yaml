@@ -1,0 +1,26 @@
+---
+- name: Install gitlab-runner
+  hosts: ["gitlab-runner"]
+  become: true
+  vars:
+    docker_insecure_registries_enabled: true
+    docker_insecure_registries_conf:
+      - url: "private.nexus-registry.docker.local:8086"
+        auth:
+          docker_login: true      
+          user: test
+          password: test
+      - url: "private.nexus-registry.docker.local:8087"
+        auth:
+          docker_login: true      
+          user: test
+          password: test
+    gitlab_register_token: default-token-runner
+    gitlab_url: http://10.12.12.1
+    gitlab_runner_extra_host: 
+      - 'private.nexus-registry.docker.local:10.12.12.5'
+    gitlab_runner_docker_volumes: 
+      - "/certs/client"
+      - "/cache"
+  roles: 
+    - role: dimmaryanto93.gitlab_runner_docker_executor

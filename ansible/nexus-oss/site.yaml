@@ -1,0 +1,6 @@
+---
+- name: Install Nexus OSS
+  hosts: ["nexus-oss"]
+  become: true
+  roles: 
+    - role: dimmaryanto93.sonatype_nexus_oss

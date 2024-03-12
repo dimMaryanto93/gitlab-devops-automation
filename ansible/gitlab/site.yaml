@@ -1,0 +1,10 @@
+- name: Install gitlab-ce
+  hosts: ["gitlab"]
+  become: true
+  vars:
+    gitlab_external_url: http://10.12.12.1
+    gitlab_root_password_print: false
+    gitlab_init_shared_runner_registration_token: default-token-runner
+    gitlab_init_root_password: passwordnyaR00t
+  roles: 
+    - role: dimmaryanto93.gitlab

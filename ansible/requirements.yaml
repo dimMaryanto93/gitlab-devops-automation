@@ -1,8 +1,10 @@
+---
 roles:
-  - dimmaryanto93.containerd
-  - dimmaryanto93.helm_charts
-  - dimmaryanto93.kubeadm
-  - dimmaryanto93.minio_server
+  - dimmaryanto93.docker
+  - dimmaryanto93.gitlab_runner
+  - dimmaryanto93.gitlab_runner_docker_executor
+  - dimmaryanto93.gitlab
 collections:
   - ansible.posix
   - community.general
+  - community.docker
