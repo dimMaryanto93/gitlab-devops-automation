@@ -7,12 +7,12 @@
     docker_insecure_registries_conf:
       - url: "private.nexus-registry.docker.local:8086"
         auth:
-          docker_login: true      
+          docker_login: false      
           user: test
           password: test
       - url: "private.nexus-registry.docker.local:8087"
         auth:
-          docker_login: true      
+          docker_login: false      
           user: test
           password: test
     gitlab_register_token: default-token-runner
