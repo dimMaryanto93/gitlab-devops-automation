@@ -4,14 +4,15 @@
   become: true
   vars:
     nexus_oss_ip: 10.12.12.5
+    registry_domain: private.nexus-registry.docker.local
     docker_insecure_registries_enabled: true
     docker_insecure_registries_conf:
-      - url: "private.nexus-registry.docker.local:8086"
+      - url: "{{registry_domain}}:8086"
         auth:
           docker_login: false      
           user: test
           password: test
-      - url: "private.nexus-registry.docker.local:8087"
+      - url: "{{registry_domain}}:8087"
         auth:
           docker_login: false      
           user: test
@@ -19,15 +20,17 @@
     gitlab_register_token: default-token-runner
     gitlab_url: http://10.12.12.1
     gitlab_runner_extra_host: 
-      - 'private.nexus-registry.docker.local:{{ nexus_oss_ip }}'
+      - '{{registry_domain}}:{{ nexus_oss_ip }}'
     gitlab_runner_docker_volumes: 
-      - "/certs/client"
-      - "/cache"
+      - '/certs/client'
+      - '/cache'
   tasks:
     - name: Add IP address of all hosts to all hosts
       lineinfile:
         dest: /etc/hosts
-        line: "{{ nexus_oss_ip }}\tprivate.nexus-registry.docker.local"
+        line: "{{ nexus_oss_ip }}\t{{registry_domain}}"
         state: present
-  # roles: 
-  #   - role: dimmaryanto93.gitlab_runner_docker_executor
+  roles: 
+    - role: dimmaryanto93.docker
+    - role: dimmaryanto93.gitlab_runner
+    - role: dimmaryanto93.gitlab_runner_docker_executor
