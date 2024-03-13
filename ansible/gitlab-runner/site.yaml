@@ -4,19 +4,21 @@
   become: true
   vars:
     nexus_oss_ip: 10.12.12.5
+    nexus_username: admin
+    nexus_password: passwordnyaR00t
     registry_domain: private.nexus-registry.docker.local
     docker_insecure_registries_enabled: true
     docker_insecure_registries_conf:
       - url: "{{registry_domain}}:8086"
         auth:
-          docker_login: false      
-          user: test
-          password: test
+          docker_login: true      
+          user: "{{ nexus_username }}"
+          password: "{{ nexus_password }}"
       - url: "{{registry_domain}}:8087"
         auth:
-          docker_login: false      
-          user: test
-          password: test
+          docker_login: true      
+          user: "{{ nexus_username }}"
+          password: "{{ nexus_password }}"
     gitlab_register_token: default-token-runner
     gitlab_url: http://10.12.12.1
     gitlab_runner_extra_host: 
