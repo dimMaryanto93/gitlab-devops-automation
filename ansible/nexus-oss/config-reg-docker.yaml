@@ -1,4 +1,4 @@
-- name: Install Nexus OSS
+- name: Setup registry for docker with custom user and roles
   hosts: ["nexus-oss"]
   vars:
     nexus_username: admin # changed the user name of your nexus username cred
