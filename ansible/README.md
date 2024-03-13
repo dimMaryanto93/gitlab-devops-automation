@@ -116,7 +116,7 @@ Dan menggunakan **credential yang sama** untuk memudahkan provision by ansible, 
 
 ```yaml
 username: admin
-password: admin
+password: admin123!
 ```
 
 seperti berikut:
