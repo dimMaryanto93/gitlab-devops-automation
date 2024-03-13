@@ -150,3 +150,175 @@ Kemudian ada beberapa file yang perlu di edit seperti:
 - `nexus-oss/config-reg-docker.yaml`, file ini digunakan untuk memprovision docker registry di nexus-oss. Jadi kita perlu update config sehingga bisa connect ke nexus-oss
     ![update-nexus-oss-reg](docs/01a-nexus-oss-registry.png)
 
+Untuk provision perlu step-by-step flownya seperti berikut
+
+- Setup commons task
+- Install gitlab
+- Install Nexus OSS & Configure registry
+- Install gitlab-runner with docker executor
+- Install sonarqube
+
+### Execute commons task
+
+Ada beberapa hal yang dilakukan commons-task yaitu add qfcn ke file `/etc/hosts` dan upgrade system to latest serta install commons package dengan cara seperti berikut:
+
+```bash
+ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass
+```
+
+Jika dijalankan outpunya seperti berikut:
+
+```bash
+~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass 
+BECOME password: 
+[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+TASK [Add IP address of all hosts to all hosts] *************************************************************
+ok: [gitlab_host] => (item=signoz_host)
+changed: [gitlab-runner01_host] => (item=signoz_host)
+changed: [nexus-oss_host] => (item=signoz_host)
+ok: [gitlab_host] => (item=gitlab_host)
+changed: [gitlab-runner01_host] => (item=gitlab_host)
+ok: [gitlab_host] => (item=gitlab-runner01_host)
+changed: [gitlab-runner01_host] => (item=gitlab-runner01_host)
+changed: [nexus-oss_host] => (item=gitlab_host)
+changed: [gitlab-runner01_host] => (item=nexus-oss_host)
+ok: [gitlab_host] => (item=nexus-oss_host)
+ok: [gitlab_host] => (item=sonarqube_host)
+changed: [gitlab-runner01_host] => (item=sonarqube_host)
+changed: [nexus-oss_host] => (item=gitlab-runner01_host)
+ok: [gitlab_host] => (item=jmeter_host)
+changed: [gitlab-runner01_host] => (item=jmeter_host)
+changed: [nexus-oss_host] => (item=nexus-oss_host)
+changed: [nexus-oss_host] => (item=sonarqube_host)
+changed: [nexus-oss_host] => (item=jmeter_host)
+```
+
+### Execute gitlab task
+
+Pada task ini, fungsi utamanya adalah install gitlab dengan cara seperti berikut:
+
+```bash
+ansible-playbook -i inventory.ini ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass
+```
+
+Jika diexecute maka hasilnya seperti berikut:
+
+```bash
+~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass  
+BECOME password:
+
+PLAY RECAP **************************************************************************************************
+gitlab_host                : ok=5    changed=1    unreachable=0    failed=0    skipped=7    rescued=0    ignored=0
+```
+
+Sekarang kita bisa login ke gitlab dengan menggunakan ip `10.12.12.1` login sebagai `root` dan passwordnya `passwordnyaR00t` seperti berikut:
+
+![gitlab-login](docs/02-gitlab-ce.png)
+
+### Execute Nexus OSS
+
+Pada task ini, fungsi utamanya adalah untuk Install, Membuat docker registry repository, serta Membuat user, roles terkait specific authentication pada Nexus OSS.
+
+Pertama kita jalankan dulu untuk install dengan script berikut:
+
+```bash
+ansible-playbook -i inventory.ini nexus-oss/site.yaml --ask-become-pass
+```
+
+Jika dijalankan maka hasilnya berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini nexus-oss/site.yaml --ask-become-pass                            -!?[📂 gitlab-kas]
+BECOME password: 
+[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+PLAY [Install Nexus OSS] ********************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************
+[WARNING]: Platform linux on host nexus-oss_host is using the discovered Python interpreter at /usr/bin/python3.9, but future installation
+of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.16/reference_appendices/interpreter_discovery.html for more information.
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Load a variable file based on the OS type] *********************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Ensure group 'nexus' exists] ***********************************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Add the user 'nexus' exists] ***********************************************************************
+[WARNING]: 'append' is set, but no 'groups' are specified. Use 'groups' for appending new groups.This will change to an error in Ansible
+2.14.
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Create a directory ==> /opt/nexus if it does not exist] ********************************************
+changed: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Install OpenJDK 8] *********************************************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Unarchive sonatype nexus-oss] **********************************************************************
+changed: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Give access to user 'nexus' recusively] ************************************************************
+changed: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : shell] *********************************************************************************************
+changed: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Create a symbolic link] ****************************************************************************
+changed: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Put SELinux in permissive mode] ********************************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Setup firewall-cmd for RedHat family] **************************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Setup ufw for Debian family] ***********************************************************************
+skipping: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : nexus.service file] ********************************************************************************
+ok: [nexus-oss_host]
+
+TASK [dimmaryanto93.sonatype_nexus_oss : Restart service nexus] *****************************************************************************
+changed: [nexus-oss_host]
+
+PLAY RECAP **********************************************************************************************************************************
+nexus-oss_host             : ok=14   changed=6    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+```
+
+Tunggu sampai `nexus.service` running, klo sudah bisa diakses dari browser dengan menggunakan url `10.12.12.5:8081` seperti berikut:
+
+![nexus-oss](docs/03-nexus-login.png)
+
+Sekarang login menggunakan user `admin` passwordnya ambil dari file `/opt/nexus/sonatype-work/nexus3/admin.password` klo sudah ganti passwordnya misalnya `passwordnyaR00t`. Klo sudah maka kita bisa execute script selanjutnya seperti berikut:
+
+```bash
+ansible-playbook -i inventory.ini nexus-oss/config-reg-docker.yaml --ask-become-pass
+```
+
+Jika sudah maka sekarang beberapa repository baru akan terbentuk seperti berikut:
+
+![nexus-docker-registry](docs/03a-nexus-docker-registry.png)
+
+Dan juga user serta role baru akan terbuat seperti berikut:
+
+![nexus-user-roles](docs/03b-nexus-user.png)
+
+### Execute gitlab-runner task
+
+Pada task ini, fungsi utamanya adalah Install gitlab-runner, Install docker-ce, Registry gitlab-runner to gitlab as docker executor and login to private registry nexus oss. Kita bisa execute script berikut:
+
+```bash
+ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
+```
+
+Jika sudah selesai di execute maka, hasilnya gitlab sudah teregister di gitlab seperti berikut:
+
+![gitlab-runner-registered](docs/03c-gitlab-runner.png)
+
+Setelah ini, kita set runner supaya bisa running tanpa `tags` pada `gitlab-ci.yml` seperti berikut:
+
+![gitlab-runner-run-untag](docs/03d-gitlab-runner-run-untag.png)

@@ -8,3 +8,4 @@
         line: "{{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}"
         state: present
       with_items: "{{ groups.all }}"
+
