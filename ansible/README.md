@@ -66,7 +66,7 @@ nexus-oss:
     os: OracleLinux 9.3
     network:
         type: static
-        ip: 10.12.12.3 # contoh, silahkan sesuaikan dengan kondisi infra
+        ip: 10.12.12.5 # contoh, silahkan sesuaikan dengan kondisi infra
         gw: 10.12.12.254
     storage:
         partisions:
@@ -77,15 +77,36 @@ sonarqube:
     cpus: 4 cores
     ram: 8 GB
     os: OracleLinux 9.3
+    network:
+        type: static
+        ip: 10.12.12.3 # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
     storage:
         partisions:
             "/": 20 GB
             "/var": at least 80 GB
+signoz:
+    vms: 1
+    cpus: 4 cores
+    ram: 8 GB
+    os: CentOS 7
+    network:
+        type: static
+        ip: 10.12.12.3 # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
+    storage:
+        partisions:
+            "/": 20 GB
+            "/var": at least 120 GB
 jmeter:
     vms: at least 1
     cpus: 8 cores
     ram: 8 GB
     os: OracleLinux 9.3
+    network:
+        type: static
+        ip: 10.12.12.6 # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
     storage:
         partisions:
             "/": 50 GB
