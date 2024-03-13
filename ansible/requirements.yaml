@@ -5,6 +5,7 @@ roles:
   - dimmaryanto93.gitlab_runner_docker_executor
   - dimmaryanto93.gitlab
   - dimmaryanto93.sonatype_nexus_oss
+  - dimmaryanto93.sonatype_nexus_oss_registry
 collections:
   - ansible.posix
   - community.general
