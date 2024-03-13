@@ -38,6 +38,10 @@ gitlab:
     cpus: 4 core
     ram: 8 GB
     os: OracleLinux 9.3
+    network:
+        type: static
+        ip: 10.12.12.1 # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
     storage: 
         partisions:
             "/": 50 GB
@@ -47,6 +51,10 @@ gitlab-runner:
     cpus: 4 core
     ram: 8 GB
     os: CentOS 7
+    network:
+        type: static/dhcp
+        ip: 10.12.12.xx # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
     storage:
         partisions:
             "/": 30 GB
@@ -56,6 +64,10 @@ nexus-oss:
     cpus: 4 core
     ram: 8 GB
     os: OracleLinux 9.3
+    network:
+        type: static
+        ip: 10.12.12.3 # contoh, silahkan sesuaikan dengan kondisi infra
+        gw: 10.12.12.254
     storage:
         partisions:
             "/": 20 GB
@@ -85,6 +97,10 @@ Dan menggunakan **credential yang sama** untuk memudahkan provision by ansible, 
 username: admin
 password: admin
 ```
+
+seperti berikut:
+
+![list-vms](docs/01-list-vms.png)
 
 ## Using this Ansible Playbook
 
