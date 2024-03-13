@@ -148,4 +148,5 @@ Kemudian ada beberapa file yang perlu di edit seperti:
 - `gitlab-runner/site.yaml`, file ini digunakan untuk memprovision tools gitlab runner dan meregister agent ke gitlab. Jadi kita perlu update config sehingga bisa connect ke gitlab seperti berikut:
     ![update-gitlab-runner-config](docs/01a-gitlab-runner.png)
 - `nexus-oss/config-reg-docker.yaml`, file ini digunakan untuk memprovision docker registry di nexus-oss. Jadi kita perlu update config sehingga bisa connect ke nexus-oss
-    ![update-nexus-oss-reg]()
+    ![update-nexus-oss-reg](docs/01a-nexus-oss-registry.png)
+
