@@ -6,6 +6,7 @@ roles:
   - dimmaryanto93.gitlab
   - dimmaryanto93.sonatype_nexus_oss
   - dimmaryanto93.sonatype_nexus_oss_registry
+  - dimmaryanto93.sonarqube
 collections:
   - ansible.posix
   - community.general

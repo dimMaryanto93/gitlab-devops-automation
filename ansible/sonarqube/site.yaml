@@ -1,0 +1,8 @@
+---
+- name: Install Nexus OSS
+  hosts: ["sonarqube"]
+  become: true
+  vars:
+    java_bin_path: /usr/lib/jvm/jdk-17-oracle-x64/bin/java    
+  roles: 
+    - role: dimmaryanto93.sonarqube
