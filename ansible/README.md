@@ -312,7 +312,12 @@ Dan juga user serta role baru akan terbuat seperti berikut:
 Pada task ini, fungsi utamanya adalah Install gitlab-runner, Install docker-ce, Registry gitlab-runner to gitlab as docker executor and login to private registry nexus oss. Kita bisa execute script berikut:
 
 ```bash
+## install docker and gitlab-runner binnary
 ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
+## configure docker daemon.json and login to registry
+ansible-playbook -i inventory.ini gitlab-runner/post-install.yaml --ask-become-pass
+## register gitlab-runner to gitlab
+ansible-playbook -i inventory.ini gitlab-runner/register-agent.yaml --ask-become-pass
 ```
 
 Jika sudah selesai di execute maka, hasilnya gitlab sudah teregister di gitlab seperti berikut:
