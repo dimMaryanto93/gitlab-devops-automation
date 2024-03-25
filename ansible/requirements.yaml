@@ -1,6 +1,7 @@
 ---
 roles:
   - dimmaryanto93.docker
+  - dimmaryanto93.docker_post_install
   - dimmaryanto93.gitlab_runner
   - dimmaryanto93.gitlab_runner_docker_executor
   - dimmaryanto93.gitlab
