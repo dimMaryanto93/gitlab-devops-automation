@@ -207,13 +207,13 @@ ssh-copy-id user@host-ip
 Ada beberapa hal yang dilakukan commons-task yaitu add qfcn ke file `/etc/hosts` dan upgrade system to latest serta install commons package dengan cara seperti berikut:
 
 ```bash
-ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' common-tasks/site.yaml --ask-become-pass
 ```
 
 Jika dijalankan outpunya seperti berikut:
 
 ```bash
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass 
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' common-tasks/site.yaml --ask-become-pass 
 BECOME password: ## enter admin password for sudo access
 
 playbook: common-tasks/site.yaml
@@ -234,13 +234,13 @@ sonarqube_host             : ok=2    changed=1    unreachable=0    failed=0    s
 Pada task ini, fungsi utamanya adalah install gitlab dengan cara seperti berikut:
 
 ```bash
-ansible-playbook -i inventory.ini ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass
+ansible-playbook -i inventory.ini ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/site.yaml --ask-become-pass
 ```
 
 Jika diexecute maka hasilnya seperti berikut:
 
 ```bash
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass  
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/site.yaml --ask-become-pass  
 BECOME password:
 
 playbook: gitlab/site.yaml
@@ -273,13 +273,13 @@ Pada task ini, fungsi utamanya adalah untuk Install, Membuat docker registry rep
 Pertama kita jalankan dulu untuk install dengan script berikut:
 
 ```bash
-ansible-playbook -i inventory.ini nexus-oss/site.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' nexus-oss/site.yaml --ask-become-pass
 ```
 
 Jika dijalankan maka hasilnya berikut:
 
 ```bash
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini nexus-oss/site.yaml --ask-become-pass                            -!?[📂 gitlab-kas]
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' nexus-oss/site.yaml --ask-become-pass
 BECOME password: 
 
 playbook: nexus-oss/site.yaml
@@ -311,13 +311,13 @@ Tunggu sampai `nexus.service` running, klo sudah bisa diakses dari browser denga
 Sekarang login menggunakan user `admin` passwordnya ambil dari file `/opt/nexus/sonatype-work/nexus3/admin.password` klo sudah ganti passwordnya misalnya `passwordnyaR00t`. Klo sudah maka kita bisa execute script selanjutnya seperti berikut:
 
 ```bash
-ansible-playbook -i inventory.ini nexus-oss/config-reg-docker.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' nexus-oss/config-reg-docker.yaml --ask-become-pass
 ```
 
 Outputnya seperti berikut:
 
 ```bash
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini nexus-oss/config-reg-docker.yaml --ask-become-pass
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' nexus-oss/config-reg-docker.yaml --ask-become-pass
 BECOME password: 
 
 playbook: nexus-oss/config-reg-docker.yaml
@@ -349,17 +349,17 @@ Pada task ini, fungsi utamanya adalah Install gitlab-runner, Install docker-ce, 
 
 ```bash
 ## install docker and gitlab-runner binnary
-ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/site.yaml --ask-become-pass
 ## configure docker daemon.json and login to registry
-ansible-playbook -i inventory.ini gitlab-runner/post-install.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/post-install.yaml --ask-become-pass
 ## register gitlab-runner to gitlab
-ansible-playbook -i inventory.ini gitlab-runner/register-agent.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/register-agent.yaml --ask-become-pass
 ```
 
 Jika dijalankan output nya seperti berikut:
 
 ```bash
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/site.yaml --ask-become-pass
 BECOME password:
 
 playbook: gitlab-runner/site.yaml
@@ -380,7 +380,7 @@ playbook: gitlab-runner/site.yaml
 PLAY RECAP ***********************************************************************************************************************
 gitlab-runner01_host       : ok=14   changed=0    unreachable=0    failed=0    skipped=7    rescued=0    ignored=0
 
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/post-instal.yaml --ask-become-pass
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/post-instal.yaml --ask-become-pass
 BECOME password:
 
 playbook: gitlab-runner/post-instal.yaml
@@ -396,7 +396,7 @@ playbook: gitlab-runner/post-instal.yaml
 PLAY RECAP ***********************************************************************************************************************
 gitlab-runner01_host       : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 
-💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/register-agent.yaml --ask-become-pass
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab-runner/register-agent.yaml --ask-become-pass
 BECOME password:
 
 playbook: gitlab-runner/register-agent.yaml

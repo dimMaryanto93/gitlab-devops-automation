@@ -2,24 +2,5 @@
 - name: Install gitlab-runner
   hosts: ["gitlab-runner"]
   become: true
-  vars:
-    nexus_oss_ip: 10.12.20.53 # changed the ip address of your nexus
-    nexus_username: nke-user # changed the user name of your nexus username cred
-    nexus_password: nke-user # change the password of your nexus password cred
-    registry_domain: private.nexus-registry.docker.local
-    docker_insecure_registries_enabled: true
-    docker_insecure_registries_conf:
-      - url: "{{registry_domain}}:8086"
-        auth:
-          docker_login: true
-          user: "{{ nexus_username }}"
-          password: "{{ nexus_password }}"
-      - url: "{{registry_domain}}:8087"
-        auth:
-          docker_login: true
-          user: "{{ nexus_username }}"
-          password: "{{ nexus_password }}"
-    gitlab_runner_extra_host: 
-      - '{{registry_domain}}:{{ nexus_oss_ip }}'
   roles: 
     - role: dimmaryanto93.docker_post_install

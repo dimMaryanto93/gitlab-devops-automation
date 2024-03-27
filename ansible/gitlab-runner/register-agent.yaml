@@ -2,18 +2,5 @@
 - name: Install gitlab-runner
   hosts: ["gitlab-runner"]
   become: true
-  vars:
-    nexus_oss_ip: 10.12.20.53 # changed the ip address of your nexus
-    gitlab_address: 10.12.20.50 # changed the ip address or domain of your gitlab
-    gitlab_proto: http # default protocol is `http`, you can changed this to `https`
-    gitlab_register_token: default-token-runner # get this token from gitlab in admin protal on menu CI/CD -> Runner
-    docker_insecure_registries_enabled: true
-    gitlab_url: "{{ gitlab_proto }}://{{ gitlab_address }}"
-    registry_domain: private.nexus-registry.docker.local
-    gitlab_runner_extra_host: 
-      - '{{registry_domain}}:{{ nexus_oss_ip }}'
-    gitlab_runner_docker_volumes: 
-      - '/certs/client'
-      - '/cache'
   roles: 
     - role: dimmaryanto93.gitlab_runner_docker_executor
