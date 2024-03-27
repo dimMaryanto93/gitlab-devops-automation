@@ -158,6 +158,17 @@ Untuk provision perlu step-by-step flownya seperti berikut
 - Install gitlab-runner with docker executor
 - Install sonarqube
 
+## Setup auth to Ansible client
+
+Auth need to be setup for all vms to communicate, to setup this you need [generate ssh private-public key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+Setelah kita buat, kita gunakan perintah `ssh-copy-id` kesetiap vm seperti berikut:
+
+```bash
+ssh-copy-id user@host-ip
+# ex: ssh-copy-id admin@10.12.10.50
+```
+
 ### Execute commons task
 
 Ada beberapa hal yang dilakukan commons-task yaitu add qfcn ke file `/etc/hosts` dan upgrade system to latest serta install commons package dengan cara seperti berikut:
