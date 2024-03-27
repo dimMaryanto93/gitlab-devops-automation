@@ -8,6 +8,7 @@ roles:
   - dimmaryanto93.sonatype_nexus_oss
   - dimmaryanto93.sonatype_nexus_oss_registry
   - dimmaryanto93.sonarqube
+  - dimmaryanto93.oracle_java
 collections:
   - ansible.posix
   - community.general

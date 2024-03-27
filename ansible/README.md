@@ -410,3 +410,7 @@ Jika sudah selesai di execute maka, hasilnya gitlab sudah teregister di gitlab s
 Setelah ini, kita set runner supaya bisa running tanpa `tags` pada `gitlab-ci.yml` seperti berikut:
 
 ![gitlab-runner-run-untag](docs/03d-gitlab-runner-run-untag.png)
+
+### Execute sonarqube task
+
+Pada task ini, fungsi utama adalah meng-install sonarqube serta menjankan sonarqube menggunakan database postgresql
