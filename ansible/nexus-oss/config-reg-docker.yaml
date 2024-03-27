@@ -4,7 +4,7 @@
     nexus_admin_user: admin # changed this username of your nexus user admin
     nexus_admin_password: passwordnyaR00t # changed this username of your password of user admin
     nexus_create_new_user: true # set true if you want create an other user
-    nexus_new_user: test # change this for new user account of nexus user
-    nexus_new_user_pass: test # change this for new user credential password
+    nexus_new_user: nke-user # change this for new user account of nexus user
+    nexus_new_user_pass: nke-user # change this for new user credential password
   roles:
     - role: dimmaryanto93.sonatype_nexus_oss_registry

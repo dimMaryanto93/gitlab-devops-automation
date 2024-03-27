@@ -158,7 +158,7 @@ Untuk provision perlu step-by-step flownya seperti berikut
 - Install gitlab-runner with docker executor
 - Install sonarqube
 
-## Setup auth to Ansible client
+### Setup auth to Ansible client
 
 Auth need to be setup for all vms to communicate, to setup this you need [generate ssh private-public key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
@@ -166,7 +166,40 @@ Setelah kita buat, kita gunakan perintah `ssh-copy-id` kesetiap vm seperti berik
 
 ```bash
 ssh-copy-id user@host-ip
-# ex: ssh-copy-id admin@10.12.10.50
+
+# 💻 ~/D/p/n/g/ansible ➡  ssh-copy-id admin@10.12.20.51
+# /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/Users/dimasm93/.ssh/id_ed25519.pub"
+# The authenticity of host '10.12.20.51 (10.12.20.51)' can't be established.
+# ED25519 key fingerprint is SHA256:1W39EqeSK/qz1QBBcknpg+oVOahp7cvXm2vkOii3Opw.
+# This host key is known by the following other names/addresses:
+#    ~/.ssh/known_hosts:6: 10.12.11.234
+# Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+# /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+# /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+# admin@10.12.20.51's password: ## enter your password
+# Number of key(s) added:        1
+# Now try logging into the machine, with:   "ssh 'admin@10.12.20.51'"
+# and check to make sure that only the key(s) you wanted were added.
+
+# 💻 ~/D/p/n/g/ansible ➡  ssh-copy-id admin@10.12.20.52
+# admin@10.12.20.52's password: 
+# Number of key(s) added:        1
+# Now try logging into the machine, with:   "ssh 'admin@10.12.20.52'"
+
+# 💻 ~/D/p/n/g/ansible ➡  ssh-copy-id admin@10.12.20.53
+# admin@10.12.20.53's password: 
+# Number of key(s) added:        1
+# Now try logging into the machine, with:   "ssh 'admin@10.12.20.53'"
+
+# 💻 ~/D/p/n/g/ansible ➡  ssh-copy-id admin@10.12.20.54
+# admin@10.12.20.54's password: 
+# Number of key(s) added:        1
+# Now try logging into the machine, with:   "ssh 'admin@10.12.20.54'"
+
+# 💻 ~/D/p/n/g/ansible ➡ ssh-copy-id admin@10.12.20.55
+# admin@10.12.20.55's password: 
+# Number of key(s) added:        1
+# Now try logging into the machine, with:   "ssh 'admin@10.12.20.55'"
 ```
 
 ### Execute commons task
@@ -180,29 +213,20 @@ ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass
 Jika dijalankan outpunya seperti berikut:
 
 ```bash
-~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass 
-BECOME password: 
-[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini common-tasks/site.yaml --ask-become-pass 
+BECOME password: ## enter admin password for sudo access
 
-TASK [Add IP address of all hosts to all hosts] *************************************************************
-ok: [gitlab_host] => (item=signoz_host)
-changed: [gitlab-runner01_host] => (item=signoz_host)
-changed: [nexus-oss_host] => (item=signoz_host)
-ok: [gitlab_host] => (item=gitlab_host)
-changed: [gitlab-runner01_host] => (item=gitlab_host)
-ok: [gitlab_host] => (item=gitlab-runner01_host)
-changed: [gitlab-runner01_host] => (item=gitlab-runner01_host)
-changed: [nexus-oss_host] => (item=gitlab_host)
-changed: [gitlab-runner01_host] => (item=nexus-oss_host)
-ok: [gitlab_host] => (item=nexus-oss_host)
-ok: [gitlab_host] => (item=sonarqube_host)
-changed: [gitlab-runner01_host] => (item=sonarqube_host)
-changed: [nexus-oss_host] => (item=gitlab-runner01_host)
-ok: [gitlab_host] => (item=jmeter_host)
-changed: [gitlab-runner01_host] => (item=jmeter_host)
-changed: [nexus-oss_host] => (item=nexus-oss_host)
-changed: [nexus-oss_host] => (item=sonarqube_host)
-changed: [nexus-oss_host] => (item=jmeter_host)
+playbook: common-tasks/site.yaml
+  play #1 (all): Modify file /etc/hosts to add inventory ip     TAGS: []
+    tasks:
+      Add IP address of all hosts to all hosts  TAGS: []
+      
+PLAY RECAP ***********************************************************************************************************************************
+gitlab-runner01_host       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+gitlab_host                : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+jmeter_host                : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+nexus-oss_host             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+sonarqube_host             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 ### Execute gitlab task
@@ -216,11 +240,26 @@ ansible-playbook -i inventory.ini ansible-playbook -i inventory.ini gitlab/site.
 Jika diexecute maka hasilnya seperti berikut:
 
 ```bash
-~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass  
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab/site.yaml --ask-become-pass  
 BECOME password:
 
-PLAY RECAP **************************************************************************************************
-gitlab_host                : ok=5    changed=1    unreachable=0    failed=0    skipped=7    rescued=0    ignored=0
+playbook: gitlab/site.yaml
+  play #1 (gitlab): Install gitlab-ce   TAGS: []
+    tasks:
+      dimmaryanto93.gitlab : Load a variable file based on the OS type  TAGS: []
+      dimmaryanto93.gitlab : Install dependencies     TAGS: []
+      dimmaryanto93.gitlab : Check if GitLab configuration file already exists. TAGS: []
+      dimmaryanto93.gitlab : Check if GitLab is already installed.      TAGS: []
+      dimmaryanto93.gitlab : Download GitLab repository installation script.    TAGS: []
+      dimmaryanto93.gitlab : Install GitLab repository. TAGS: []
+      dimmaryanto93.gitlab : Install Gitlab     TAGS: []
+      dimmaryanto93.gitlab : Reconfigure GitLab (first run).    TAGS: []
+      dimmaryanto93.gitlab : get info init root password for gitlab     TAGS: []
+      dimmaryanto93.gitlab : Debug root password        TAGS: []
+      dimmaryanto93.gitlab : Setup firewall config TAGS: []
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+gitlab_host                : ok=8    changed=4    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0
 ```
 
 Sekarang kita bisa login ke gitlab dengan menggunakan ip `10.12.12.1` login sebagai `root` dan passwordnya `passwordnyaR00t` seperti berikut:
@@ -242,62 +281,27 @@ Jika dijalankan maka hasilnya berikut:
 ```bash
 💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini nexus-oss/site.yaml --ask-become-pass                            -!?[📂 gitlab-kas]
 BECOME password: 
-[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
 
-PLAY [Install Nexus OSS] ********************************************************************************************************************
+playbook: nexus-oss/site.yaml
+  play #1 (nexus-oss): Install Nexus OSS        TAGS: []
+    tasks:
+      dimmaryanto93.sonatype_nexus_oss : Load a variable file based on the OS type      TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Ensure group 'nexus' exists    TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Add the user 'nexus' exists    TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Create a directory ==> {{ nexus_installation_path }} if it does not exist      TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Install OpenJDK 8      TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Unarchive sonatype nexus-oss   TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Give access to user 'nexus' recusively TAGS: []
+      shell     TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Create a symbolic link TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Put SELinux in permissive mode TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Setup firewall-cmd for RedHat family   TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Setup ufw for Debian family    TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : nexus.service file     TAGS: []
+      dimmaryanto93.sonatype_nexus_oss : Restart service nexus  TAGS: []
 
-TASK [Gathering Facts] **********************************************************************************************************************
-[WARNING]: Platform linux on host nexus-oss_host is using the discovered Python interpreter at /usr/bin/python3.9, but future installation
-of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
-core/2.16/reference_appendices/interpreter_discovery.html for more information.
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Load a variable file based on the OS type] *********************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Ensure group 'nexus' exists] ***********************************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Add the user 'nexus' exists] ***********************************************************************
-[WARNING]: 'append' is set, but no 'groups' are specified. Use 'groups' for appending new groups.This will change to an error in Ansible
-2.14.
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Create a directory ==> /opt/nexus if it does not exist] ********************************************
-changed: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Install OpenJDK 8] *********************************************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Unarchive sonatype nexus-oss] **********************************************************************
-changed: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Give access to user 'nexus' recusively] ************************************************************
-changed: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : shell] *********************************************************************************************
-changed: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Create a symbolic link] ****************************************************************************
-changed: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Put SELinux in permissive mode] ********************************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Setup firewall-cmd for RedHat family] **************************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Setup ufw for Debian family] ***********************************************************************
-skipping: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : nexus.service file] ********************************************************************************
-ok: [nexus-oss_host]
-
-TASK [dimmaryanto93.sonatype_nexus_oss : Restart service nexus] *****************************************************************************
-changed: [nexus-oss_host]
-
-PLAY RECAP **********************************************************************************************************************************
-nexus-oss_host             : ok=14   changed=6    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+PLAY RECAP ***********************************************************************************************************************
+nexus-oss_host             : ok=14   changed=11   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
 ```
 
 Tunggu sampai `nexus.service` running, klo sudah bisa diakses dari browser dengan menggunakan url `10.12.12.5:8081` seperti berikut:
@@ -308,6 +312,27 @@ Sekarang login menggunakan user `admin` passwordnya ambil dari file `/opt/nexus/
 
 ```bash
 ansible-playbook -i inventory.ini nexus-oss/config-reg-docker.yaml --ask-become-pass
+```
+
+Outputnya seperti berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini nexus-oss/config-reg-docker.yaml --ask-become-pass
+BECOME password: 
+
+playbook: nexus-oss/config-reg-docker.yaml
+  play #1 (nexus-oss): Setup registry for docker with custom user and roles     TAGS: []
+    tasks:
+      dimmaryanto93.sonatype_nexus_oss_registry : Setting host facts using complex arguments    TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : Add realms docker allow to pull       TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : Add docker registry to nexus-oss      TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : Add new roles TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : Add new users TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : UFW allow port 8086/8087 tcp  TAGS: []
+      dimmaryanto93.sonatype_nexus_oss_registry : firewall-cmd allow port 8086/8087 tcp TAGS: []
+
+PLAY RECAP *********************************************************************************************************************************************************
+nexus-oss_host             : ok=29   changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
 ```
 
 Jika sudah maka sekarang beberapa repository baru akan terbentuk seperti berikut:
@@ -329,6 +354,59 @@ ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
 ansible-playbook -i inventory.ini gitlab-runner/post-install.yaml --ask-become-pass
 ## register gitlab-runner to gitlab
 ansible-playbook -i inventory.ini gitlab-runner/register-agent.yaml --ask-become-pass
+```
+
+Jika dijalankan output nya seperti berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/site.yaml --ask-become-pass
+BECOME password:
+
+playbook: gitlab-runner/site.yaml
+  play #1 (gitlab-runner): Install gitlab-runner        TAGS: []
+    tasks:
+      dimmaryanto93.docker : Set selinux permissive module on RedHat family     TAGS: []
+      dimmaryanto93.docker : Add firewall-cmd docker communication on RedHat family     TAGS: []
+      dimmaryanto93.docker : Install dependencies    TAGS: []
+      dimmaryanto93.docker : Add yum repository docker-ce    TAGS: []
+      dimmaryanto93.docker : Install dockerd    TAGS: []
+      dimmaryanto93.docker : Start docker daemon        TAGS: []
+      dimmaryanto93.gitlab_runner : Load a variable file based on the OS type   TAGS: []
+      dimmaryanto93.gitlab_runner : Check if gitlab-runner is already installed.        TAGS: []
+      dimmaryanto93.gitlab_runner : Get latest gitlab repository installation script    TAGS: []
+      dimmaryanto93.gitlab_runner : Install GitLab repository.  TAGS: []
+      dimmaryanto93.gitlab_runner : Install gitlab-runner for Debian family     TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+gitlab-runner01_host       : ok=14   changed=0    unreachable=0    failed=0    skipped=7    rescued=0    ignored=0
+
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/post-instal.yaml --ask-become-pass
+BECOME password:
+
+playbook: gitlab-runner/post-instal.yaml
+  play #1 (gitlab-runner): Install gitlab-runner        TAGS: []
+    tasks:
+      dimmaryanto93.docker_post_install : Post-Install docker, executeable non-root     TAGS: []
+      dimmaryanto93.docker_post_install : Create Directory '/etc/docker'        TAGS: []
+      dimmaryanto93.docker_post_install : Set config global docker      TAGS: []
+      dimmaryanto93.docker_post_install : Restart docker        TAGS: []
+      dimmaryanto93.docker_post_install : Log into private registry and force re-authorization  TAGS: []
+      Add IP address of all hosts to all hosts  TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+gitlab-runner01_host       : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini gitlab-runner/register-agent.yaml --ask-become-pass
+BECOME password:
+
+playbook: gitlab-runner/register-agent.yaml
+  play #1 (gitlab-runner): Install gitlab-runner        TAGS: []
+    tasks:
+      dimmaryanto93.gitlab_runner_docker_executor : Gitlab verify       TAGS: []
+      dimmaryanto93.gitlab_runner_docker_executor : Gitlab register docker executor     TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+gitlab-runner01_host       : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
 ```
 
 Jika sudah selesai di execute maka, hasilnya gitlab sudah teregister di gitlab seperti berikut:
