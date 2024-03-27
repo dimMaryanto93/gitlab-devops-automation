@@ -136,19 +136,13 @@ Setelah itu kita perlu install dependency dengan menggunakan perintah berikut:
 
 ```bash
 ansible-galaxy role install -r requirements.yaml --force && \
-ansible-galaxy collection install -r requirements.yaml --force
+ansible-galaxy collection install -r requirements.yaml --force && \
+cp .env.yaml extra-vars.yaml
 ```
 
-Kemudian ada beberapa file yang perlu di edit seperti:
+Kemudian kita perlu edit pada file `extra-vars.yaml` seperti pada mark berikut:
 
-- `inventory.ini`, file ini digunakan untuk mendaftarkan ip, cred dari virtual machine yang akan di install tools tersebut seperti berikut:
-    ![update-inventory](docs/01a-inventory.png)
-- `gitlab/site.yaml`, file ini digunakan untuk memprovision tools gitlab dan perlu kita update beberapa value seperti `gitlab.rb` config seperti berikut:
-    ![update-gitlab-config](docs/01a-gitlab.png)
-- `gitlab-runner/site.yaml`, file ini digunakan untuk memprovision tools gitlab runner dan meregister agent ke gitlab. Jadi kita perlu update config sehingga bisa connect ke gitlab seperti berikut:
-    ![update-gitlab-runner-config](docs/01a-gitlab-runner.png)
-- `nexus-oss/config-reg-docker.yaml`, file ini digunakan untuk memprovision docker registry di nexus-oss. Jadi kita perlu update config sehingga bisa connect ke nexus-oss
-    ![update-nexus-oss-reg](docs/01a-nexus-oss-registry.png)
+![env-change-me](docs/env.png)
 
 Untuk provision perlu step-by-step flownya seperti berikut
 
