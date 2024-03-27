@@ -5,6 +5,5 @@
     gitlab_external_url: http://10.12.1.15 # changed the ip address/domain to allow gitlab access from outside
     gitlab_init_root_password: passwordnyaR00t # changed the default password of user root on gitlab account
     gitlab_init_shared_runner_registration_token: default-token-runner # changed the default token to gitlab runner register using this token
-    gitlab_root_password_print: false
   roles: 
     - role: dimmaryanto93.gitlab
