@@ -413,4 +413,65 @@ Setelah ini, kita set runner supaya bisa running tanpa `tags` pada `gitlab-ci.ym
 
 ### Execute sonarqube task
 
-Pada task ini, fungsi utama adalah meng-install sonarqube serta menjankan sonarqube menggunakan database postgresql
+Pada task ini, berfungsi untuk meng-install Install Oracle JDK 11, dan install Sonarqube. Caranya jalankan script berikut:
+
+```bash
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' sonarqube/site.yaml --ask-become-pass
+```
+
+Jika dijalankan maka hasilnya seperti berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' sonarqube/site.yaml --ask-become-pass
+BECOME password:
+
+playbook: sonarqube/site.yaml
+
+  play #1 (sonarqube): Install Nexus OSS        TAGS: []
+    tasks:
+      dimmaryanto93.oracle_java : Load a variable file based on the OS type     TAGS: []
+      dimmaryanto93.oracle_java : Load a variable file based on the OS arch     TAGS: []
+      dimmaryanto93.oracle_java : Debug os version and architecture     TAGS: []
+      dimmaryanto93.oracle_java : determine if Java is already installed        TAGS: []
+      set_fact  TAGS: []
+      dimmaryanto93.oracle_java : Check that the /tmp/{{ oracle_jdk_filename }} exists  TAGS: []
+      dimmaryanto93.oracle_java : Copy file to server   TAGS: []
+      dimmaryanto93.oracle_java : Check that the /tmp/{{ oracle_jdk_filename }} exists  TAGS: []
+      dimmaryanto93.oracle_java : Download oracle jdk   TAGS: []
+      dimmaryanto93.oracle_java : Install rpm package.  TAGS: []
+      dimmaryanto93.oracle_java : Install deb package package.  TAGS: []
+      ansible.posix.sysctl      TAGS: []
+      ansible.posix.sysctl      TAGS: []
+      pam_limits        TAGS: []
+      pam_limits        TAGS: []
+      dimmaryanto93.sonarqube : Add rule for sonarqube for communication to outside on RedHat family    TAGS: []
+      dimmaryanto93.sonarqube : Add rule for sonarqube for communication to outside on Debian family    TAGS: []
+      dimmaryanto93.sonarqube : Ensure group 'sonar' exists     TAGS: []
+      dimmaryanto93.sonarqube : Add the user 'sonar' exists     TAGS: []
+      dimmaryanto93.sonarqube : Create a directory ==> {{ sonarqube_installation_path }} if it does not exist   TAGS: []
+      dimmaryanto93.sonarqube : Create a directory for data sonarqube   TAGS: []
+      dimmaryanto93.sonarqube : Install dependencies for CentOS TAGS: []
+      dimmaryanto93.sonarqube : Install dependencies for CentOS TAGS: []
+      dimmaryanto93.sonarqube : Download sonarqube      TAGS: []
+      dimmaryanto93.sonarqube : Unarchive sonarqube     TAGS: []
+      dimmaryanto93.sonarqube : Give access to user 'nexus' recusively  TAGS: []
+      shell     TAGS: []
+      shell     TAGS: []
+      debug     TAGS: []
+      dimmaryanto93.sonarqube : Create a symbolic link  TAGS: []
+      dimmaryanto93.sonarqube : Create .service file    TAGS: []
+      dimmaryanto93.sonarqube : Configure Data folder   TAGS: []
+      dimmaryanto93.sonarqube : Configure Temp folder   TAGS: []
+      dimmaryanto93.sonarqube : Enable service for sonarqube    TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+sonarqube_host             : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+```
+
+Setelah diexecute, maka kita bisa akses sonarqube web ui menggunakan port `9000` seperti berikut:
+
+![sonarqube](docs/04-sonarqube.png)
+
+Kemudian kita login menggunakan default user `admin` dan passwordnya adalah `admin` lalu ganti default password maka hasilnya seperti berikut:
+
+![login-to-sonarqube](docs/04a-login.png)
