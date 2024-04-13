@@ -8,7 +8,7 @@ Berikut adalah cara deploy DevSecOps tools menggunakan Ansible Playbook, Ada beb
 - Artifact and Container Registry: [Sonatype Nexus OSS](https://www.sonatype.com/products/sonatype-nexus-repository)
 - Code Quality, Security & Static Analysis Tool: [Sonarqube](https://www.sonarsource.com/products/sonarqube/)
 - Test Performance: [Apache JMeter](https://jmeter.apache.org/)
-- OpenTelemetry Monitoring: [Signoz](https://signoz.io/)
+- OpenTelemetry Monitoring: [Signoz](https://signoz.io/), [Apache Skywalking](https://skywalking.apache.org/)
 
 Pertama kita install package ansible di laptop / Virtual Machine, Ansible ini akan digunakan untuk provision tools/software tersebut.
 
@@ -85,7 +85,7 @@ sonarqube:
         partisions:
             "/": 20 GB
             "/var": at least 80 GB
-signoz:
+apache-skywalking:
     vms: 1
     cpus: 4 cores
     ram: 8 GB
