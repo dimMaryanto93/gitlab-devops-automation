@@ -1,0 +1,5 @@
+- name: Install Nexus OSS
+  hosts: ["gitlab"]
+  tasks:
+    - debug:
+        msg: "Gitlab IP address is {{ gitlab_address }}"

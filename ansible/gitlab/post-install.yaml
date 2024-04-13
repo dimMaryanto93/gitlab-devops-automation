@@ -1,0 +1,4 @@
+- name: Gitlab Post Install
+  hosts: ["gitlab"]
+  roles:
+    - dimmaryanto93.gitlab_post_install

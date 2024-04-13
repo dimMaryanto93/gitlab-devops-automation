@@ -1,2 +1,0 @@
-- name: Adding variables to gitlab instances
-  hosts: ["gitlab"]
