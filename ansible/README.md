@@ -228,7 +228,7 @@ sonarqube_host             : ok=2    changed=1    unreachable=0    failed=0    s
 Pada task ini, fungsi utamanya adalah install gitlab dengan cara seperti berikut:
 
 ```bash
-ansible-playbook -i inventory.ini ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/site.yaml --ask-become-pass
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/site.yaml --ask-become-pass
 ```
 
 Jika diexecute maka hasilnya seperti berikut:
