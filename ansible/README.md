@@ -475,3 +475,43 @@ Setelah diexecute, maka kita bisa akses sonarqube web ui menggunakan port `9000`
 Kemudian kita login menggunakan default user `admin` dan passwordnya adalah `admin` lalu ganti default password maka hasilnya seperti berikut:
 
 ![login-to-sonarqube](docs/04a-login.png)
+
+### Execute Post Install gitlab task
+
+Setelah semua component terinstall sekarang kita buat settingan di gitlab seperti Variables, gitlab runners untagged, enable import & export from git dan lain-lain. berikut adalah step-by-stepnya:
+
+1. Create personal access token for user `root` on Gitlab repository
+  - Goto Profile -> Preference -> User setting menu -> select Access Token look like this:
+    ![create-token](docs/05-create-token.png)
+  - Grant privileges is `api`, `read_api`, `read_user`, `create_runner`, `k8s_proxy`, `read_repository`, `write_repository`, `sudo`, `admin_mode` and give it name `tokenForAdmin` look like this:
+    ![gitlab-permission](docs/05b-personal-access-token.png)
+  - Set personal access token to variables: `gitlab_private_access_token` look like this:
+    ![token-created](docs/05b-personal-access-token.png)
+2. Create access token for user `admin` on Sonarqube
+  - Goto to Administration menu -> User -> Token -> Generate token look like this:
+    ![create-token](docs/06-create-token.png)
+  - Set the token to variables: `sonarqube_auth_token`
+3. Setup auth for docker registry
+  - Set username & password to variable: `docker_registry_login_secret`
+
+Kemudian jalankan perintah berikut:
+
+```bash
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/post-install.yaml
+```
+
+Maka hasilnya seperti berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' gitlab/post-install.yaml
+
+play #1 (gitlab): Gitlab Post Install TAGS: []
+    tasks:
+      dimmaryanto93.gitlab_post_install : Setting host facts using complex arguments    TAGS: []
+      dimmaryanto93.gitlab_post_install : Add variables to gitlab instance      TAGS: []
+      dimmaryanto93.gitlab_post_install : Update setting for import & export project    TAGS: []
+      dimmaryanto93.gitlab_post_install : Update runners setting        TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+gitlab_host             : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+```
