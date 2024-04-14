@@ -515,3 +515,11 @@ play #1 (gitlab): Gitlab Post Install TAGS: []
 PLAY RECAP ***********************************************************************************************************************
 gitlab_host             : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
+
+Berikut hasilnya, untuk gitlab variables:
+
+![gitlab-variables](docs/07-gitlab-variables.png)
+
+dan gitlab import and export repository
+
+![gitlab-import-export](docs/07-gitlab-export-import.png)
