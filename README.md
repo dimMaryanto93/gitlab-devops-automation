@@ -31,7 +31,7 @@ Untuk menggunakan system DevSecOps ini ada beberapa yang harus temen-temen insta
 - Object storage (AWS s3, Google Cloud Storage, [min.io](https://min.io/))
 - Files storage (NFS, Google Cloud Filestore, AWS fileshare, etc)
 
-Untuk lebih lengkapnya temen-temen bisa menggunakan [script ansible berikut](./ansible/README.md)
+Untuk memudahkan proses installasi tools tersebut, temen-temen bisa menggunakan [script ansible playbook](./ansible/README.md) yang telah saya buatkan.
 
 Overview architecture
 
@@ -41,4 +41,4 @@ Overview architecture
 
 Berikut adalah beberapa technology yang nantinya masih tetep digunakan, ditinggalkan, serta rencannya akan digunakan dimasa depan:
 
-[click disini: tech-radar by thoughtwork](https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fraw.githubusercontent.com%2FdimMaryanto93%2Fgitlab-devops-automation%2Fgitlab-kas%2Fdevops-stack.json)
+[click disini: tech-radar by thoughtwork](https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fraw.githubusercontent.com%2FdimMaryanto93%2Fgitlab-devops-automation%2Fgitlab-kas%2Fdevops-stack.csv)
