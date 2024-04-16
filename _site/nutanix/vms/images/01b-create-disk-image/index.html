@@ -1,0 +1,756 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>01b - Create disk image (vm template) - DevSecOps Training</title>
+<meta name="description" content="First we need download the image of Operation System, we choose Centos 7 and the version is CentOS-7-x86_64-Minimal-2207-02.iso">
+
+
+  <meta name="author" content="Dimas Maryanto">
+  
+  <meta property="article:author" content="Dimas Maryanto">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="DevSecOps Training">
+<meta property="og:title" content="01b - Create disk image (vm template)">
+<meta property="og:url" content="http://localhost:4000/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/">
+
+
+  <meta property="og:description" content="First we need download the image of Operation System, we choose Centos 7 and the version is CentOS-7-x86_64-Minimal-2207-02.iso">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-03-09T15:15:50+07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Dimas Maryanto",
+      "url": "http://localhost:4000/gitlab-devops-automation/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/gitlab-devops-automation/feed.xml" type="application/atom+xml" rel="alternate" title="DevSecOps Training Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/gitlab-devops-automation/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/gitlab-devops-automation/">
+          DevSecOps Training
+          <span class="site-subtitle">Best Practice to implement DevSecOps with Gitlab</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/gitlab-devops-automation/cloudnative/application/containerization/02-student-preparation/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/gitlab-devops-automation/" itemprop="url">Dimas Maryanto</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>I am a <strong>Software Engineer</strong> working with Java &amp; Golang, also im interested with <strong>DevSecOps Engineer</strong> working with Nutanix Cloud Platform ✌️.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Bandung, Jawa Barat</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.dimas-maryanto.com/profile" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/dimmaryanto93" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:dimas.maryanto@nutanix.com" rel="me" class="u-email">
+            <meta itemprop="email" content="dimas.maryanto@nutanix.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="01b - Create disk image (vm template)">
+    <meta itemprop="description" content="First we need download the image of Operation System, we choose Centos 7 and the version is CentOS-7-x86_64-Minimal-2207-02.iso">
+    <meta itemprop="datePublished" content="2024-03-09T15:15:50+07:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            01b - Create disk image (vm template)
+
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>First we need download the image of Operation System, we choose <a href="https://www.centos.org/download/">Centos 7</a> and the version is <a href="http://vpsmurah.jagoanhosting.com/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2207-02.iso">CentOS-7-x86_64-Minimal-2207-02.iso</a></p>
+
+<h2 id="prepare-image">Prepare image</h2>
+
+<p>Sekarang kita ke <a href="">Prism Central</a> akses menu <a href="">Compute &amp; Storage</a> kemudian <a href="">Images</a> dan click button <a href="">Add Image</a> pilih <a href="">from URL</a> masukan url image Centos seperti berikut <a href="">http://vpsmurah.jagoanhosting.com/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2207-02.iso</a> seperti berikut</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/01-upload-image.png" alt="upload image" /></p>
+
+<p>Kemudian <a href="">Upload File</a>, wait sampai image Centos 7 selesai download and <a href="">Next</a>.</p>
+
+<h2 id="deploy-vm">Deploy vm</h2>
+
+<p>Setelah image terdownload successfully, kita buat virtual machine dari <a href="">Prism Central</a> akses menu <a href="">Compute &amp; Storage</a> kemudian <a href="">VMs</a> dan <a href="">Create VM</a> dengan specifikasi:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">template-centos7-2202-2</span>
+<span class="na">numberVM</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">vmProperties</span><span class="pi">:</span>
+    <span class="na">cpu</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">corePerCPU</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">memory</span><span class="pi">:</span> <span class="m">4</span>
+</code></pre></div></div>
+
+<p>Seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/02-create-vm.png" alt="create-vm" /></p>
+
+<p>Kemudian <a href="">Next</a>, selanjutnya kita attach disk dan network dengan specifikasi seperti berikut:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">disks</span><span class="pi">:</span> 
+    <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Disk</span>
+      <span class="na">operations</span><span class="pi">:</span> <span class="s">Allocate on Storage Container</span>
+      <span class="na">storageContainer</span><span class="pi">:</span> <span class="s">default-storage</span>
+      <span class="na">capacity</span><span class="pi">:</span> <span class="s">50 GiB</span>
+      <span class="na">busType</span><span class="pi">:</span> <span class="s">SCSI</span>
+    <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">CD-ROM</span>
+      <span class="na">operation</span><span class="pi">:</span> <span class="s">Empty CD-ROM</span>
+      <span class="na">busType</span><span class="pi">:</span> <span class="s">SATA</span>
+<span class="na">networks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">Primary</span>
+      <span class="na">networkConnectionState</span><span class="pi">:</span> <span class="s">Connected</span>
+      <span class="na">assignmentType</span><span class="pi">:</span> <span class="s">Assign with DHCP</span>
+<span class="na">bootConfiguration</span><span class="pi">:</span> <span class="s">Legacy BIOS Mode</span>
+</code></pre></div></div>
+
+<p>Seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/02a-vm-resources.png" alt="vm-resources" /></p>
+
+<p>Selanjutnya klick <a href="">Next</a>, pada tab management seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/02b-vm-management.png" alt="vm-management" /></p>
+
+<p>Kita bisa skip saja dengan nilai default, kemudian <a href="">Next</a> maka muncul halaman review seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/02c-vm-creation-review.png" alt="vm-creation-review" /></p>
+
+<p>Sekarang jika temen-temen lihat, vm sudah terbuat seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/02d-vm-created.png" alt="vm-created" /></p>
+
+<h2 id="installing-os-centos-7">Installing OS Centos 7</h2>
+
+<p>Sekarang kita Turn On vm <code class="language-plaintext highlighter-rouge">template-centos7-2202-2</code> dengan cara checklist vm, kemudian klick <a href="">Action</a> dan pilih <a href="">Power On</a> kemudian klik detail vm tersebut sehingga masuk ke detail tersebut</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03-vm-details.png" alt="vm-detail" /></p>
+
+<p>dan pilih tab <a href="">Console</a> dan <a href="">launch in new windows</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03a-vm-launch-in-new-windows.png" alt="vm-console" /></p>
+
+<p>Kemudian klik <a href="">Mount ISO</a> dan pilih iso yang telah kita download yaitu <a href="">CentOS-7-2207-2.iso</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03b-mount-iso.png" alt="vm-mount-iso" /></p>
+
+<p>Kemudian klick <a href="">Mount</a> dan kemudian restart vm dengan cara click button <a href="">Send CTRL+ALT+DEL</a> sekarang kita masuk ke bootloader installer CentOS 7 seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03c-centos-boot-install.png" alt="vm-boot-centos-installer" /></p>
+
+<p>Kita pilih <a href="">Install CentOS 7</a> kemudian akan muncul pilih langunage seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03d-select-language.png" alt="install-centos-language" /></p>
+
+<p>Selanjutnya, klick <a href="">Continue</a>. Maka kita perlu setting dengan specifkasi seperti berikut:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">date-time</span><span class="pi">:</span>
+    <span class="na">region</span><span class="pi">:</span> <span class="s">Asia</span>
+    <span class="na">city</span><span class="pi">:</span> <span class="s">Jakarta</span>
+    <span class="na">networkTime</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">softwareSelection</span><span class="pi">:</span> <span class="s">Minimal install</span>
+<span class="na">installSource</span><span class="pi">:</span> <span class="s">Local media</span>
+<span class="na">system</span><span class="pi">:</span>
+    <span class="na">installDestination</span><span class="pi">:</span>
+        <span class="na">disk</span><span class="pi">:</span> 
+            <span class="s2">"</span><span class="s">/boot"</span><span class="err">:</span> <span class="s">1024 MiB</span>
+            <span class="s">"/"</span><span class="err">:</span> <span class="s">45 Gib</span>
+            <span class="s">"swap"</span><span class="err">:</span> <span class="s">2968 GiB</span>
+    <span class="na">network-hostname</span><span class="pi">:</span>
+        <span class="na">eth0</span><span class="pi">:</span> 
+            <span class="na">enable</span><span class="pi">:</span> <span class="kc">true</span>
+            <span class="na">dhcp</span><span class="pi">:</span> <span class="kc">true</span>
+        <span class="na">hostname</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">default</span>
+</code></pre></div></div>
+
+<p>Seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03e-vm-installation-summary.png" alt="vm-installation-summary" /></p>
+
+<p>Kemudian <a href="">Begin Installation</a>, maka kita buat setup untuk root password dan create user dengan specifkasi seperti berikut:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">root-user</span><span class="pi">:</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">passwordnyaAdmin'</span>
+<span class="na">new-user</span><span class="pi">:</span>
+    <span class="na">fullname</span><span class="pi">:</span> <span class="s">Administrator</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">admin</span>
+    <span class="na">makeThisUserAdministrator</span><span class="pi">:</span> <span class="s">checklist</span>
+    <span class="na">requiredPassword</span><span class="pi">:</span> <span class="s">checklist</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">password</span>
+</code></pre></div></div>
+
+<p>Jika muncul confirm password is weak, klick <a href="">Done</a> 2x, seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03f-create-vm-user.png" alt="create-user-os" /></p>
+
+<p>kemudian tunggu sampai proses installasi selesai seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03g-os-finish-installed.png" alt="os-finish-installed" /></p>
+
+<p>Final step is, klik <a href="">Finish configuration</a> jika sudah maka vm akan reboot. Dan temen-temen bisa login dengan user account yang telah di buat seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03h-os-login.png" alt="os-login" /></p>
+
+<h2 id="post-install-os-installation">Post Install OS installation</h2>
+
+<p>Setelah OS CentOS 7 terpasang, dan temen-temen bisa login ada beberapa setting yang perlu kita lakukan untuk membuat starter/vm template diantaranya:</p>
+
+<ul>
+  <li>Disable selinux (set permissive mode)</li>
+  <li>Update/Patch OS CentOS</li>
+  <li>Install commons package like <code class="language-plaintext highlighter-rouge">curl</code>, <code class="language-plaintext highlighter-rouge">wget</code>, <code class="language-plaintext highlighter-rouge">tmux</code>, <code class="language-plaintext highlighter-rouge">unzip</code> dll</li>
+</ul>
+
+<p>Sekarang kita akan disable selinux, caranya login sebagai root kemudian edit file <code class="language-plaintext highlighter-rouge">/etc/selinux/config</code> menggunakan editor seperti <code class="language-plaintext highlighter-rouge">vi</code> seperti berikut:</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SELINUX</span>=<span class="n">permissive</span>
+</code></pre></div></div>
+
+<p>Save dan quit, setelah itu reboot VM. Setelah nyala kembali vm kita bisa check menggunakan command <code class="language-plaintext highlighter-rouge">sestatus</code> makesure status outpunya seperti berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@template-centos7-2202-2 ~]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          permissive
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+</code></pre></div></div>
+
+<p>Kemudian kita update packages pada os dengan menggunakan command seperti berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum update <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Setelah semua package already up to date, sekarang kita install package commons yang nanti kita akan gunakan dengan menggunakan perintah berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> curl wget unzip <span class="nb">tar </span>epel-release <span class="o">&amp;&amp;</span> <span class="se">\</span>
+yum <span class="nb">install</span> <span class="nt">-y</span> htop
+</code></pre></div></div>
+
+<h2 id="export-vm-as-disk">Export vm as disk</h2>
+
+<p>Setelah VM, OS, Package sebagai base template sudah siap. Kita akan buat vm tersebut menjadi disk image sehingga kita bisa clone, replikasi di kemudian hari. Caranya kita poweroff dahulu seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/03i-poweroff-vm.png" alt="vm-poweroff" /></p>
+
+<p>Kemudian kita ke menu <a href="">Images</a> kemudian <a href="">Add Image</a> dan pilih <a href="">VM Disk</a> kemudian search VM Name <code class="language-plaintext highlighter-rouge">template-centos7-2202-2</code> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/04-add-image-disk.png" alt="vm-add-image-disk" /></p>
+
+<p>Kemudian Klick button <a href="">+</a> kemudian kita seting specifikasinya seperti berikut:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">image</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">centos7-2207-2.disk</span>
+    <span class="na">descrition</span><span class="pi">:</span> <span class="s">Template centos 7 v2202.2</span>
+</code></pre></div></div>
+
+<p>Jadi seperti ini:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/04a-add-disk-mapping-from-vm.png" alt="vm-disk-mapping-add" /></p>
+
+<p>Kemudian klick <a href="">Next</a>, lalu kita pilih dan simpan pada cluster seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/04b-vm-disk-location.png" alt="vm-disk-location" /></p>
+
+<p>Finaly klick button <a href="">Save</a>, maka dengan begitu vm akan di export sebagai disk. hasilnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01b-create-disk-image/04c-vm-disk-list.png" alt="vm-disk-result" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/gitlab-devops-automation/categories/#images" class="page__taxonomy-item p-category" rel="tag">Images</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#nutanix" class="page__taxonomy-item p-category" rel="tag">Nutanix</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#vms" class="page__taxonomy-item p-category" rel="tag">VMs</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-03-09T15:15:50+07:00">March 9, 2024</time></p>
+
+      </footer>
+
+      
+  <nav class="pagination">
+    
+      <a href="/gitlab-devops-automation/nutanix/cluster/hpoc/01a-precheck-hpoc/" class="pagination--pager" title="01a - PreCheck &amp; Update Cluster HPOC
+">Previous</a>
+    
+    
+      <a href="/gitlab-devops-automation/nutanix/kubernetes/nke/airgap/01c-enable-karbon-airgap/" class="pagination--pager" title="01c - Enable Karbon Airgap [Optional]
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/nke/00-connect-vpn/" rel="permalink">Setup VPN connection with ivanti
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">description…
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/container/registry/nexusoss/01d-install-nexus-oss/" rel="permalink">01d - Install &amp; Configure Nexus OSS as Container Registry
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The an other way for storing/accessing container image can be accessed locally is using Nexus OSS, The installation i’ll cover is:
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/kubernetes/nke/airgap/01c-enable-karbon-airgap/" rel="permalink">01c - Enable Karbon Airgap [Optional]
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi v2.8.0 atau yang terbaru. Kita perlu mengatifkan Karbon Airga...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/cluster/hpoc/01a-precheck-hpoc/" rel="permalink">01a - PreCheck &amp; Update Cluster HPOC
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+
+    
+      <li><a href="/gitlab-devops-automation/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Dimas Maryanto. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/gitlab-devops-automation/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

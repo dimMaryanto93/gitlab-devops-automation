@@ -1,0 +1,824 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>01c - Enable Karbon Airgap [Optional] - DevSecOps Training</title>
+<meta name="description" content="Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi v2.8.0 atau yang terbaru. Kita perlu mengatifkan Karbon Airgap supaya proses pembuatan cluster bisa berjalan offline dan prosesnya lebih cepet. Berikut adalah step-by-step untuk mengaktifkan Karbon Airgap:">
+
+
+  <meta name="author" content="Dimas Maryanto">
+  
+  <meta property="article:author" content="Dimas Maryanto">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="DevSecOps Training">
+<meta property="og:title" content="01c - Enable Karbon Airgap [Optional]">
+<meta property="og:url" content="http://localhost:4000/gitlab-devops-automation/nutanix/kubernetes/nke/airgap/01c-enable-karbon-airgap/">
+
+
+  <meta property="og:description" content="Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi v2.8.0 atau yang terbaru. Kita perlu mengatifkan Karbon Airgap supaya proses pembuatan cluster bisa berjalan offline dan prosesnya lebih cepet. Berikut adalah step-by-step untuk mengaktifkan Karbon Airgap:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-03-09T19:52:43+07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/gitlab-devops-automation/nutanix/kubernetes/nke/airgap/01c-enable-karbon-airgap/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Dimas Maryanto",
+      "url": "http://localhost:4000/gitlab-devops-automation/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/gitlab-devops-automation/feed.xml" type="application/atom+xml" rel="alternate" title="DevSecOps Training Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/gitlab-devops-automation/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/gitlab-devops-automation/">
+          DevSecOps Training
+          <span class="site-subtitle">Best Practice to implement DevSecOps with Gitlab</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/gitlab-devops-automation/cloudnative/application/containerization/02-student-preparation/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/gitlab-devops-automation/" itemprop="url">Dimas Maryanto</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>I am a <strong>Software Engineer</strong> working with Java &amp; Golang, also im interested with <strong>DevSecOps Engineer</strong> working with Nutanix Cloud Platform ✌️.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Bandung, Jawa Barat</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.dimas-maryanto.com/profile" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/dimmaryanto93" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:dimas.maryanto@nutanix.com" rel="me" class="u-email">
+            <meta itemprop="email" content="dimas.maryanto@nutanix.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="01c - Enable Karbon Airgap [Optional]">
+    <meta itemprop="description" content="Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi v2.8.0 atau yang terbaru. Kita perlu mengatifkan Karbon Airgap supaya proses pembuatan cluster bisa berjalan offline dan prosesnya lebih cepet. Berikut adalah step-by-step untuk mengaktifkan Karbon Airgap:">
+    <meta itemprop="datePublished" content="2024-03-09T19:52:43+07:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            01c - Enable Karbon Airgap [Optional]
+
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi <code class="language-plaintext highlighter-rouge">v2.8.0</code> atau yang terbaru. Kita perlu mengatifkan Karbon Airgap supaya proses pembuatan cluster bisa berjalan offline dan prosesnya lebih cepet. Berikut adalah step-by-step untuk mengaktifkan Karbon Airgap:</p>
+
+<ul>
+  <li>Deploy webserver sebagai Darksite</li>
+  <li>Download &amp; Upload Karbon Airgap resources ke darksite</li>
+  <li>Deploy Karbon airgap</li>
+</ul>
+
+<h2 id="deploy-webserver-sebagai-darksite">Deploy webserver sebagai Darksite</h2>
+
+<p>Untuk membuat web-server sebagai Darksite untuk menyimpan nutanix packages, berikut adalah specifikasi yang dibutuhakan:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">NTNX-PACKAGES</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s">Darksite for NKE, Objects</span>
+<span class="na">resources</span><span class="pi">:</span> 
+    <span class="na">CPUs</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">CoresPerCPU</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">Memory</span><span class="pi">:</span> <span class="m">4</span>
+<span class="na">disks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">Disk</span>
+      <span class="na">operation</span><span class="pi">:</span> <span class="s">Clone from Image</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">centos7-2207-2.disk</span> <span class="c1"># select vm template we created before</span>
+      <span class="na">capacity</span><span class="pi">:</span> <span class="s">250 GiB</span>
+      <span class="na">busType</span><span class="pi">:</span> <span class="s">SCSI</span>
+<span class="na">networks</span><span class="pi">:</span>
+    <span class="na">subnet</span><span class="pi">:</span> <span class="s">Primary</span>
+    <span class="na">assignmentType</span><span class="pi">:</span> <span class="s">Assign Static IP</span>
+    <span class="na">ipAddress</span><span class="pi">:</span> <span class="s">10.xx.xx.60</span>
+<span class="na">bootConfiguration</span><span class="pi">:</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">Legacy BIOS Mode</span>
+    <span class="na">bootPriority</span><span class="pi">:</span> <span class="s">Default</span>
+</code></pre></div></div>
+
+<p>Jadi seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/01-create-vm.png" alt="vm-nexus-oss" /></p>
+
+<p>Kemudian coba nyalakan vm tersebut, dan login menggunakan user: <code class="language-plaintext highlighter-rouge">root</code> pass: <code class="language-plaintext highlighter-rouge">passwordnyaAdmin</code> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/01a-login-ssh.png" alt="login-vm" /></p>
+
+<p>Kemudian kita update disknya, karena kita buat virtual disk <code class="language-plaintext highlighter-rouge">250 GiB</code> tetapi secara logical masih default image yaitu <code class="language-plaintext highlighter-rouge">50 GiB</code> seperti berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@NTNX-PACKAGES ~]# <span class="nb">df</span> <span class="nt">-h</span> | <span class="nb">grep</span> <span class="se">\r</span>oot
+/dev/mapper/centos-root   46G  1.7G   44G   4% /
+</code></pre></div></div>
+
+<p>Maka kita harus update lvm disknya dengan menggunakan perintah berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@NTNX-PACKAGES ~]# fdisk <span class="nt">-l</span>
+
+Disk /dev/sda: 268.4 GB, 268435456000 bytes, 524288000 sectors
+Units <span class="o">=</span> sectors of 1 <span class="k">*</span> 512 <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 4096 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 4096 bytes / 1048576 bytes
+Disk label <span class="nb">type</span>: dos
+Disk identifier: 0x000c0828
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   <span class="k">*</span>        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200   104857599    51379200   8e  Linux LVM
+
+Disk /dev/mapper/centos-root: 48.4 GB, 48444211200 bytes, 94617600 sectors
+Units <span class="o">=</span> sectors of 1 <span class="k">*</span> 512 <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 4096 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 4096 bytes / 1048576 bytes
+
+
+Disk /dev/mapper/centos-swap: 4160 MB, 4160749568 bytes, 8126464 sectors
+Units <span class="o">=</span> sectors of 1 <span class="k">*</span> 512 <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 4096 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 4096 bytes / 1048576 bytes
+
+<span class="c">## Set new partision disk</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# fdisk /dev/sda
+
+The device presents a logical sector size that is smaller than
+the physical sector size. Aligning to a physical sector <span class="o">(</span>or optimal
+I/O<span class="o">)</span> size boundary is recommended, or performance may be impacted.
+Welcome to fdisk <span class="o">(</span>util-linux 2.23.2<span class="o">)</span><span class="nb">.</span>
+
+Changes will remain <span class="k">in </span>memory only, <span class="k">until </span>you decide to write them.
+Be careful before using the write command.
+
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n <span class="c"># type n for new partision</span>
+Partition <span class="nb">type</span>:
+   p   primary <span class="o">(</span>2 primary, 0 extended, 2 free<span class="o">)</span>
+   e   extended
+Select <span class="o">(</span>default p<span class="o">)</span>: p <span class="c"># type p for primary</span>
+Partition number <span class="o">(</span>3,4, default 3<span class="o">)</span>: <span class="c"># hit enter for default value</span>
+First sector <span class="o">(</span>104857600-524287999, default 104857600<span class="o">)</span>: <span class="c"># hit enter for default value</span>
+Using default value 104857600
+Last sector, +sectors or +size<span class="o">{</span>K,M,G<span class="o">}</span> <span class="o">(</span>104857600-524287999, default 524287999<span class="o">)</span>:
+Using default value 524287999
+Partition 3 of <span class="nb">type </span>Linux and of size 200 GiB is <span class="nb">set
+
+</span>Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: w <span class="c"># type w for write disk</span>
+The partition table has been altered!
+
+<span class="c">## restart vm, to apply changes disk partision</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# reboot
+Connection to 10.12.11.60 closed by remote host.
+Connection to 10.12.11.60 closed.
+
+<span class="c">## login back</span>
+ssh root@10.12.11.60                                                         255
+root@10.12.11.60 password: <span class="c"># enter root password</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]#
+
+<span class="c">## create pvc</span>
+<span class="o">[</span>root@nke-ops-nexus-oss ~]# pvcreate /dev/sda3
+  Physical volume <span class="s2">"/dev/sda3"</span> successfully created.
+
+<span class="c">## create vg</span>
+<span class="o">[</span>root@nke-ops-nexus-oss ~]# vgcreate centos_ext /dev/sda3
+  Volume group <span class="s2">"centos_ext"</span> successfully created
+
+<span class="c">## check list vg</span>
+<span class="o">[</span>root@nke-ops-nexus-oss ~]# vgs
+  VG         <span class="c">#PV #LV #SN Attr   VSize    VFree</span>
+  centos       1   2   0 wz--n-  &lt;49.00g    4.00m
+  centos_ext   1   0   0 wz--n- &lt;200.00g &lt;200.00g
+
+<span class="c">## merge new vg into the existing one</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# vgmerge centos centos_ext
+  Volume group <span class="s2">"centos_ext"</span> successfully merged into <span class="s2">"centos"</span>
+
+<span class="c">## extend logical volume</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# lvextend <span class="nt">-l</span> 100%FREE /dev/mapper/centos-root
+  Size of logical volume centos/root changed from &lt;45.12 GiB <span class="o">(</span>11550 extents<span class="o">)</span> to 200.00 GiB <span class="o">(</span>51200 extents<span class="o">)</span><span class="nb">.</span>
+  Logical volume centos/root successfully resized.
+
+<span class="c">## apply logical volume</span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# xfs_growfs /dev/mapper/centos-root
+meta-data<span class="o">=</span>/dev/mapper/centos-root <span class="nv">isize</span><span class="o">=</span>512    <span class="nv">agcount</span><span class="o">=</span>4, <span class="nv">agsize</span><span class="o">=</span>2956800 blks
+         <span class="o">=</span>                       <span class="nv">sectsz</span><span class="o">=</span>4096  <span class="nv">attr</span><span class="o">=</span>2, <span class="nv">projid32bit</span><span class="o">=</span>1
+         <span class="o">=</span>                       <span class="nv">crc</span><span class="o">=</span>1        <span class="nv">finobt</span><span class="o">=</span>0 <span class="nv">spinodes</span><span class="o">=</span>0
+data     <span class="o">=</span>                       <span class="nv">bsize</span><span class="o">=</span>4096   <span class="nv">blocks</span><span class="o">=</span>11827200, <span class="nv">imaxpct</span><span class="o">=</span>25
+         <span class="o">=</span>                       <span class="nv">sunit</span><span class="o">=</span>0      <span class="nv">swidth</span><span class="o">=</span>0 blks
+naming   <span class="o">=</span>version 2              <span class="nv">bsize</span><span class="o">=</span>4096   ascii-ci<span class="o">=</span>0 <span class="nv">ftype</span><span class="o">=</span>1
+log      <span class="o">=</span>internal               <span class="nv">bsize</span><span class="o">=</span>4096   <span class="nv">blocks</span><span class="o">=</span>5775, <span class="nv">version</span><span class="o">=</span>2
+         <span class="o">=</span>                       <span class="nv">sectsz</span><span class="o">=</span>4096  <span class="nv">sunit</span><span class="o">=</span>1 blks, lazy-count<span class="o">=</span>1
+realtime <span class="o">=</span>none                   <span class="nv">extsz</span><span class="o">=</span>4096   <span class="nv">blocks</span><span class="o">=</span>0, <span class="nv">rtextents</span><span class="o">=</span>0
+data blocks changed from 11827200 to 52428800
+
+<span class="c">## check disk </span>
+<span class="o">[</span>root@NTNX-PACKAGES ~]# <span class="nb">df</span> <span class="nt">-h</span> | <span class="nb">grep</span> <span class="se">\r</span>oot
+/dev/mapper/centos-root  200G  1.7G  199G   1% /
+</code></pre></div></div>
+
+<p>Setelah kita update logical disk menjadi <code class="language-plaintext highlighter-rouge">250 GiB</code> sekarang kita install web-server menggunakan <code class="language-plaintext highlighter-rouge">httpd</code> dengan perintah berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+yum <span class="nb">install</span> <span class="nt">-y</span> httpd <span class="o">&amp;&amp;</span> <span class="se">\</span>
+systemctl <span class="nb">enable</span> <span class="nt">--now</span> httpd <span class="o">&amp;&amp;</span> <span class="se">\</span>
+firewall-cmd <span class="nt">--zone</span><span class="o">=</span>public <span class="nt">--add-port</span><span class="o">=</span>80/tcp <span class="nt">--add-port</span><span class="o">=</span>443/tcp <span class="nt">--permanent</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+firewall-cmd <span class="nt">--reload</span>
+</code></pre></div></div>
+
+<p>Maka hasilnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/01b-httpd-darksite.png" alt="httpd-webserver" /></p>
+
+<h2 id="download--upload-karbon-airgap-binaries">Download &amp; Upload Karbon Airgap binaries</h2>
+
+<p>Download binary airgap from <a href="https://portal.nutanix.com/page/downloads?product=karbon">nutanix portal support</a></p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/02-downloads.png" alt="download-binary" /></p>
+
+<p>Setelah kita download package <code class="language-plaintext highlighter-rouge">airgap-ntnx-x.x.x.tgz</code> selanjutnya kita upload ke web server tersebut dengan menggunakan perintah:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp downloads/airgap-ntnx-x.x.x.tgz root@10.12.11.60:~/
+scp downloads/airgap-manifest.json root@10.12.11.60:~/
+</code></pre></div></div>
+
+<p>Kemudian kita login ke  extract menggunakan perintah:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">AIRGAP_VERSION</span><span class="o">=</span>2.8.0
+<span class="c">## create folder and give it access to write</span>
+<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /var/www/html/release/nke/ <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo chmod</span> <span class="nt">-R</span> 777 /var/www/html/<span class="k">**</span>
+
+<span class="c">## extrat to folder target</span>
+<span class="nb">tar </span>xvf airgap-ntnx-<span class="nv">$AIRGAP_VERSION</span>.tar.gz <span class="nt">-C</span> /var/www/html/release/nke/
+<span class="nb">cp </span>airgap-manifest.json /var/www/html/release/nke/
+</code></pre></div></div>
+
+<p>Sekarang kita bisa akses webappnya dengan url berikut 
+<a href="">http://10.12.11.60/release/nke/</a></p>
+
+<p>Maka outputnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/02a-karbon-airgap-packages.png" alt="show-package" /></p>
+
+<h2 id="deploying-airgap">Deploying airgap</h2>
+
+<p>Untuk mendeploy airgap, kita perlu login menggunakan ssh ke Prism Central mengunakan user <code class="language-plaintext highlighter-rouge">nutanix</code> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03-ssh-pc.png" alt="login-prism-central" /></p>
+
+<p>Kemudian kita menggunakan tools <code class="language-plaintext highlighter-rouge">karbonctl</code> yang terletak di folder <code class="language-plaintext highlighter-rouge">karbon</code></p>
+
+<p>Pertama kita login dulu menggunakan perintah:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./karbon/karbonctl login <span class="nt">--pc-username</span> admin
+</code></pre></div></div>
+
+<p>Input password untuk user <code class="language-plaintext highlighter-rouge">admin</code> pada Web Prism Central, jika berhasil outputnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03a-karbonctl-login.png" alt="success-login" /></p>
+
+<p>Setelah itu kita siapkan dulu pre-requisites untuk deploy airgap seperti berikut:</p>
+
+<ul>
+  <li>Networking:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--vlan-name</code> atau <code class="language-plaintext highlighter-rouge">--vlan-uuid</code> bisa diambil dari Prism Element di menu Setting -&gt; Network Configuration seperti berikut:
+  <img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03b-info-vlan.png" alt="vlan-info" /></li>
+      <li><code class="language-plaintext highlighter-rouge">--static-ip</code> kita bisa tentukan ip untuk vm airgapnya mau dipasang brapa?</li>
+    </ul>
+  </li>
+  <li>Cluster:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--pe-cluster-name</code> atau <code class="language-plaintext highlighter-rouge">--pe-cluster-uuid</code> bisa ambil di Prism Element pada menu Setting -&gt; Cluster Detail seperti berikut:
+  <img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03c-info-cluster.png" alt="cluster-info" /></li>
+    </ul>
+  </li>
+  <li>Storage:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--storage-container</code> bisa ambil dari Prism Element pada menu -&gt; Storage -&gt; Storage Container seperti berikut:
+  <img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03d-info-storage-container.png" alt="storage-container-info" /></li>
+    </ul>
+  </li>
+  <li>Darksite config:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--webserver-url</code> kita arahkan ke webserver yang udah kita siapkan sebelumnya</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Ok pre-requisite sudah terpenuhi semua sekarang kita enable airgap dengan perintah berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./karbon/karbonctl airgap <span class="se">\</span>
+<span class="nt">--pe-username</span><span class="o">=</span><span class="s1">'admin'</span> <span class="se">\</span>
+<span class="nt">--vlan-uuid</span><span class="o">=</span><span class="s1">'&lt;network-vlan-uuid&gt;'</span> <span class="se">\</span>
+<span class="nt">--pe-cluster-uuid</span><span class="o">=</span><span class="s1">'&lt;prism-cluster-uuid&gt;'</span> <span class="se">\</span>
+<span class="nt">--static-ip</span><span class="o">=</span><span class="s1">'10.12.11.61'</span> <span class="se">\</span>
+<span class="nt">--storage-container</span><span class="o">=</span><span class="s1">'default-container'</span> <span class="se">\</span>
+<span class="nt">--webserver-url</span><span class="o">=</span><span class="s1">'http://10.12.11.60/release/nke/'</span> <span class="se">\</span>
+<span class="nb">enable</span>
+</code></pre></div></div>
+
+<p>Maka hasilnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03e-deploy-airgap.png" alt="deploy-airgap" /></p>
+
+<p>Kemudian kita bisa check airgapnya sudah di success terdeploy dengan perintah berikut:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./karbon/karbonctl airgap list
+</code></pre></div></div>
+
+<p>Maka hasilnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01c-karbon-airgap/03f-airgap-deployed.png" alt="airgap-deployed" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/gitlab-devops-automation/categories/#airgap" class="page__taxonomy-item p-category" rel="tag">Airgap</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#kubernetes" class="page__taxonomy-item p-category" rel="tag">Kubernetes</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#nke" class="page__taxonomy-item p-category" rel="tag">NKE</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#nutanix" class="page__taxonomy-item p-category" rel="tag">Nutanix</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-03-09T19:52:43+07:00">March 9, 2024</time></p>
+
+      </footer>
+
+      
+  <nav class="pagination">
+    
+      <a href="/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/" class="pagination--pager" title="01b - Create disk image (vm template)
+">Previous</a>
+    
+    
+      <a href="/gitlab-devops-automation/nutanix/container/registry/nexusoss/01d-install-nexus-oss/" class="pagination--pager" title="01d - Install &amp; Configure Nexus OSS as Container Registry
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/nke/00-connect-vpn/" rel="permalink">Setup VPN connection with ivanti
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">description…
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/container/registry/nexusoss/01d-install-nexus-oss/" rel="permalink">01d - Install &amp; Configure Nexus OSS as Container Registry
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The an other way for storing/accessing container image can be accessed locally is using Nexus OSS, The installation i’ll cover is:
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/" rel="permalink">01b - Create disk image (vm template)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">First we need download the image of Operation System, we choose Centos 7 and the version is CentOS-7-x86_64-Minimal-2207-02.iso
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/cluster/hpoc/01a-precheck-hpoc/" rel="permalink">01a - PreCheck &amp; Update Cluster HPOC
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+
+    
+      <li><a href="/gitlab-devops-automation/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Dimas Maryanto. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/gitlab-devops-automation/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,670 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>01a - PreCheck &amp; Update Cluster HPOC - DevSecOps Training</title>
+<meta name="description" content="Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.">
+
+
+  <meta name="author" content="Dimas Maryanto">
+  
+  <meta property="article:author" content="Dimas Maryanto">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="DevSecOps Training">
+<meta property="og:title" content="01a - PreCheck &amp; Update Cluster HPOC">
+<meta property="og:url" content="http://localhost:4000/gitlab-devops-automation/nutanix/cluster/hpoc/01a-precheck-hpoc/">
+
+
+  <meta property="og:description" content="Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-03-09T15:01:48+07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/gitlab-devops-automation/nutanix/cluster/hpoc/01a-precheck-hpoc/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Dimas Maryanto",
+      "url": "http://localhost:4000/gitlab-devops-automation/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/gitlab-devops-automation/feed.xml" type="application/atom+xml" rel="alternate" title="DevSecOps Training Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/gitlab-devops-automation/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/gitlab-devops-automation/">
+          DevSecOps Training
+          <span class="site-subtitle">Best Practice to implement DevSecOps with Gitlab</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/gitlab-devops-automation/cloudnative/application/containerization/02-student-preparation/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/gitlab-devops-automation/" itemprop="url">Dimas Maryanto</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>I am a <strong>Software Engineer</strong> working with Java &amp; Golang, also im interested with <strong>DevSecOps Engineer</strong> working with Nutanix Cloud Platform ✌️.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Bandung, Jawa Barat</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.dimas-maryanto.com/profile" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/dimmaryanto93" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:dimas.maryanto@nutanix.com" rel="me" class="u-email">
+            <meta itemprop="email" content="dimas.maryanto@nutanix.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="01a - PreCheck &amp; Update Cluster HPOC">
+    <meta itemprop="description" content="Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.">
+    <meta itemprop="datePublished" content="2024-03-09T15:01:48+07:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            01a - PreCheck &amp; Update Cluster HPOC
+
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Setelah kita mendapatkan Cluster HPOC, pertama kita perlu check dulu version dari Prism Element dan Prism Central berserta componentnya.</p>
+
+<h2 id="prism-element">Prism Element</h2>
+
+<p>Ada beberapa precheck pada prism element diantaranya:</p>
+
+<ul>
+  <li>AHV &amp; AOS Version</li>
+  <li>Cluster resource (CPUs &amp; Memory)</li>
+  <li>LCM Update</li>
+</ul>
+
+<p>Untuk AHV version kita bisa check di Web Prism Element dengan ip <a href="">https://10.xx.xxx.37:9443</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/01-prism-element.png" alt="prism-element-dashboard" /></p>
+
+<p>Untuk melihat version AOS, kita ke menu <a href="">Settings</a> kemudian <a href="">Upgrade Software</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/01-aos-version.png" alt="prism-element-aos-version" /></p>
+
+<p>Yang perlu kita perhatikan disini, saat ini:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span>
+    <span class="na">AHV</span><span class="pi">:</span> <span class="m">20220304.480</span>
+    <span class="na">AOS</span><span class="pi">:</span> <span class="s">6.5.5.5 LTS</span>
+<span class="na">resources</span><span class="pi">:</span>
+    <span class="na">node</span><span class="pi">:</span> <span class="m">1</span>
+    <span class="na">block</span><span class="pi">:</span> <span class="m">1</span>
+    <span class="na">cpus</span><span class="pi">:</span> <span class="s">92 GHZ</span>
+    <span class="na">memory</span><span class="pi">:</span> <span class="s">512 GiB</span>
+</code></pre></div></div>
+
+<p>Finaly yang terkahir jangan lupa untuk upgrade component Prism Element menggunakan LCM seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/01a-pe-lcm.png" alt="lcm-update-pe" /></p>
+
+<h2 id="prism-central">Prism Central</h2>
+
+<p>Ada beberapa pre-checked yang harus dilakukan pada Prism Element diantaranya:</p>
+
+<ul>
+  <li>Version of Prism Central</li>
+  <li>Networking / Subnet</li>
+  <li>Enablement service</li>
+  <li>Version of components</li>
+</ul>
+
+<p>Untuk version dari Prism Central kita bisa liat dari menu <a href="">Settings</a> -&gt; <a href="">Prism Central Management</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/02-prism-central.png" alt="prism-central-management" /></p>
+
+<p>Disini rekomendasi kita membutuhkan Prism Central <code class="language-plaintext highlighter-rouge">v2022.6.0.10</code> atau lebih baru, sehingga component NKE, Object storage bisa update ke latest juga.</p>
+
+<h3 id="networking">Networking</h3>
+
+<p>Untuk networking pada umumnya dalam 1 cluster terdapat 2 subnet yaitu Primary dan Secondary. seperti berikut sesuai dengan email dari <code class="language-plaintext highlighter-rouge">automation@nutanix.com</code></p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">NETWORK</span> <span class="err">INFORMATION</span>
+
+<span class="err">Network</span> <span class="err">IP</span> <span class="err">Address</span> <span class="err">/</span> <span class="err">Prefix</span> <span class="err">Length:</span> <span class="err">10.42.168.0/25</span>
+<span class="err">Gateway</span> <span class="err">IP</span> <span class="err">Address:</span> <span class="err">10.xx.xx.1</span>
+<span class="err">Nameserver</span> <span class="err">IP:</span> <span class="err">10.xx.xx.10</span>
+<span class="err">Subnet</span> <span class="err">Mask:</span> <span class="err">255.255.255.128</span>
+<span class="err">Address</span> <span class="err">Range:</span> <span class="err">10.xx.xx.1</span> <span class="err">-</span> <span class="err">10.xx.xx.126</span>
+
+<span class="err">Note:</span> <span class="err">"Address</span> <span class="err">Range"</span> <span class="err">is</span> <span class="err">here</span> <span class="err">to</span> <span class="err">simply</span> <span class="err">save</span> <span class="err">you</span> <span class="err">a</span> <span class="err">trip</span> <span class="err">to</span> <span class="err">a</span> <span class="err">subnet</span> <span class="err">calculator.</span> <span class="err">Please</span> <span class="err">be</span> <span class="err">sure</span> <span class="err">to</span> <span class="err">pay</span> <span class="err">attention</span> <span class="err">to</span> <span class="err">any</span> <span class="err">IP</span> <span class="err">reservations</span> <span class="err">that</span> <span class="err">may</span> <span class="err">be</span> <span class="err">used</span> <span class="err">by</span> <span class="err">products</span> <span class="err">and</span> <span class="err">VMs</span> <span class="err">when</span> <span class="err">assigning</span> <span class="err">an</span> <span class="err">IPAM</span> <span class="err">range</span> <span class="err">in</span> <span class="err">Prism</span> <span class="err">or</span> <span class="err">static</span> <span class="err">IPs</span> <span class="err">to</span> <span class="err">VMs.</span> 
+<span class="err">SECONDARY</span> <span class="err">NETWORK</span> <span class="err">INFORMATION</span>
+
+<span class="err">Secondary</span> <span class="err">VLAN:</span> <span class="err">1681</span>
+<span class="err">Secondary</span> <span class="err">Subnet:</span> <span class="err">255.255.255.128</span>
+<span class="err">Secondary</span> <span class="err">Gateway:</span> <span class="err">10.xx.xx.129</span>
+<span class="err">Secondary</span> <span class="err">IP</span> <span class="err">Range:</span> <span class="err">10.xx.xx.132</span> <span class="err">-</span> <span class="err">10.xx.xx.250</span>
+</code></pre></div></div>
+
+<p>Jadi untuk <strong>Secondary</strong> subnet kita akan gunakan <strong>NKE cluster</strong> maka kita perlu adjust untuk subnet existing pada menu <a href="">Networking &amp; Security</a> -&gt; <a href="">Subnet</a> kemudian klick <a href="">Secondary</a> seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/03-subnet-secondary.png" alt="subnet-detail" /></p>
+
+<p>Selanjutnya kita klick <a href="">Update</a>, dengan specifikasi seperti berikut:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">VLAN_ID</span><span class="pi">:</span> <span class="s">xxx</span>
+<span class="na">IPAddressManagement</span><span class="pi">:</span> <span class="s">checklist</span>
+<span class="na">Networks</span><span class="pi">:</span>
+    <span class="na">NetworkIPPrefix</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.xx.xx.128/25'</span> <span class="c1"># sesuaikan dengan secondary subnet</span>
+    <span class="na">NetworkIPGateway</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.xx.xx.129'</span> <span class="c1"># sesuaikan dengan secondary gateway</span>
+    <span class="na">DomainNameServers</span><span class="pi">:</span> <span class="s">8.8.8.8, 10.42.194.10</span> <span class="c1"># sesuaikan dengan name server ip</span>
+<span class="na">IPAddressPools</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">start</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.xx.xx.150'</span>
+      <span class="na">end</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.xx.xx.250'</span>
+</code></pre></div></div>
+
+<p>Kurang lebih seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/03a-subnet-update.png" alt="subnet-updated" /></p>
+
+<p>Kemudian di <a href="">Save</a> hasilnya seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/03b-subnet-result.png" alt="subnet-result" /></p>
+
+<h3 id="enablement-service">Enablement Service</h3>
+
+<p>Makesure untuk temen-temen meng-enable service</p>
+
+<ul>
+  <li>Kubernetes</li>
+  <li>Objects</li>
+  <li>Files</li>
+</ul>
+
+<h3 id="update-components">Update Components</h3>
+
+<p>Setelah pre-requirement service di enable, sekarang kita perlu update component-component tersebut dari LCM Prism Central. Kita bisa akses dari menu <a href="">Administration</a> -&gt; <a href="">LCM</a> kemudian kita lakukan <a href="">Inventory</a> untuk scanning component jika sudah lakukan <a href="">Update Software</a> sehingga component already up to date seperti berikut:</p>
+
+<p><img src="/gitlab-devops-automation/resources/imgs/01a-hpoc-cluster/02a-pc-lcm.png" alt="lcm-update-pc" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/gitlab-devops-automation/categories/#cluster" class="page__taxonomy-item p-category" rel="tag">Cluster</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#hpoc" class="page__taxonomy-item p-category" rel="tag">HPOC</a><span class="sep">, </span>
+    
+      <a href="/gitlab-devops-automation/categories/#nutanix" class="page__taxonomy-item p-category" rel="tag">Nutanix</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-03-09T15:01:48+07:00">March 9, 2024</time></p>
+
+      </footer>
+
+      
+  <nav class="pagination">
+    
+      <a href="/gitlab-devops-automation/nutanix/nke/01-instructure-prep/" class="pagination--pager" title="01 - Instructor Preparation
+">Previous</a>
+    
+    
+      <a href="/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/" class="pagination--pager" title="01b - Create disk image (vm template)
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/nke/00-connect-vpn/" rel="permalink">Setup VPN connection with ivanti
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">description…
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/container/registry/nexusoss/01d-install-nexus-oss/" rel="permalink">01d - Install &amp; Configure Nexus OSS as Container Registry
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The an other way for storing/accessing container image can be accessed locally is using Nexus OSS, The installation i’ll cover is:
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/kubernetes/nke/airgap/01c-enable-karbon-airgap/" rel="permalink">01c - Enable Karbon Airgap [Optional]
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Setelah kita enable Nutanix Kubernetes Engine (NKE) component, kemudian kita update NKE menjadi v2.8.0 atau yang terbaru. Kita perlu mengatifkan Karbon Airga...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gitlab-devops-automation/nutanix/vms/images/01b-create-disk-image/" rel="permalink">01b - Create disk image (vm template)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">First we need download the image of Operation System, we choose Centos 7 and the version is CentOS-7-x86_64-Minimal-2207-02.iso
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+
+    
+      <li><a href="/gitlab-devops-automation/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Dimas Maryanto. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/gitlab-devops-automation/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
