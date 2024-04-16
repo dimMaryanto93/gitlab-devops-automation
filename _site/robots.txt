@@ -1,1 +1,0 @@
-Sitemap: http://localhost:4000/gitlab-devops-automation/sitemap.xml
