@@ -1,5 +1,5 @@
 ---
-title: "01c - Enable Karbon Airgap [Optional]"
+title: "01c - Enable Karbon Airgap"
 date: 2024-03-09T19:52:43+07:00
 catalog_key: preparation
 categories:
