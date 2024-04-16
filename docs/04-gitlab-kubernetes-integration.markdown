@@ -66,13 +66,14 @@ export GITLAB_KAS_WSS='wss://<domain-or-ip-server>/-/kubernetes-agent/'
 export GITLAB_ACCESS_TOKEN='<access-token-from-gitlab-kas>'
 export KUBERNETES_NS=gitlab-agent
 export PROJECT_NAME=example
+export GITLAB_VERSION=v16.10.1 # Check your gitlab version
 
 helm repo add gitlab https://charts.gitlab.io
 helm repo update
 helm upgrade --install $PROJECT_NAME gitlab/gitlab-agent \
     --namespace $KUBERNETES_NS \
     --create-namespace \
-    --set image.tag=v16.10.1 \
+    --set image.tag=$GITLAB_VERSION \
     --set config.token=$GITLAB_ACCESS_TOKEN \
     --set config.kasAddress=$GITLAB_KAS_WSS
 ```
