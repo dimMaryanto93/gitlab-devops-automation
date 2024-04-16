@@ -72,7 +72,7 @@ helm repo update
 helm upgrade --install $PROJECT_NAME gitlab/gitlab-agent \
     --namespace $KUBERNETES_NS \
     --create-namespace \
-    --set image.tag=v16.9.2 \
+    --set image.tag=v16.10.1 \
     --set config.token=$GITLAB_ACCESS_TOKEN \
     --set config.kasAddress=$GITLAB_KAS_WSS
 ```
