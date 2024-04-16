@@ -17,6 +17,7 @@ downloads: []
 3. Create VM for Nexus OSS
 4. Create VM for Sonarqube
 5. Create VM for Apache Skywalking
+6. Create VM for ansible
 
 ## Create VM for Nexus OSS
 
