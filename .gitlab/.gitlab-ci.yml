@@ -2,7 +2,7 @@ stages:
   - deploy-ias-review
 
 include:
-  - local: '/templates/templates/gitops-flow.gitlab-ci.yml'
+  - local: 'templates/gitops-flow.gitlab-ci.yml'
 
 deploy-cert-manager:
   stage: deploy-ias-review
