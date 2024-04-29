@@ -1,7 +1,7 @@
 name,ring,quadrant,isNew,description
 "Docker Desktop",Adopt,Tools,FALSE,"<p>Default Container runtime for Develop/Build container image for Windows, and Mac OS</p>"
 "Elastic Fluend Kibana (efk)",Adopt,Platforms,FALSE,"<p></p>"
-"Opensearch, Fluend, Opensearch Dashboard (ofk)",Assess,Platforms,FALSE,"<p></p>"
+"Opensearch, Fluend, Opensearch Dashboard (ofk)",Assess,Platforms,FALSE,"<p>Open Source for Logging system alternative to Elasticseach</p>"
 "Signoz.io",Assess,Platforms,FALSE,"<p></p>"
 "Apache Skywalking APM",Trial,Platforms,FALSE,"<p>Observability monitoring tools alternative signoz.io</p>"
 "Grafana",Assess,Platforms,FALSE,"<p>Tool untuk memonitoring matrics container seperti cpu,memory, dan storage</p>"
