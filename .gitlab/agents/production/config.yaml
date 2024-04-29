@@ -1,6 +1,8 @@
 gitops:
   manifest_projects:
-    - paths:
+    - ref:
+        branch: production-env
+      paths:
         - glob: '*.yaml'
       reconcile_timeout: 3600s
       dry_run_strategy: none

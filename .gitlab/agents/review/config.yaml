@@ -1,7 +1,9 @@
 gitops:
   manifest_projects:
-    - paths:
-        - glob: '.kube/*.yaml'
+    - ref:
+        branch: review-env
+      paths:
+        - glob: '*.yaml'
       reconcile_timeout: 3600s
       dry_run_strategy: none
       prune: true
