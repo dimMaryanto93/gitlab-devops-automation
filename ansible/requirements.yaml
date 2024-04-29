@@ -10,6 +10,7 @@ roles:
   - dimmaryanto93.sonatype_nexus_oss_registry
   - dimmaryanto93.sonarqube
   - dimmaryanto93.oracle_java
+  - dimmaryanto93.skywalking
 collections:
   - ansible.posix
   - community.general
