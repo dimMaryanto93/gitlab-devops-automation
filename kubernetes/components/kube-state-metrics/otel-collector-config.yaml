@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-conf-kubernetes-monitor
+  labels:
+    app: otel-kubernetes-monitor
+data:
+  otel-collector-config: |
+    service:
+      pipelines:
+        metrics:
+          receivers: [ prometheus ]
+          exporters: [ opencensus,logging ]
+    exporters:
+      opencensus:
+        endpoint: "10.12.10.60:11800"
+        tls:
+          insecure: true
+      logging:
+        loglevel: debug
+    receivers:
+      prometheus:
+        config:
+          scrape_configs:
+          # @feature: kubernetes-monitor; configuration to scrape Kubernetes Nodes metrics
+          - job_name: 'kubernetes-cadvisor'
+            scheme: https
+            tls_config:
+              ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            kubernetes_sd_configs:
+              - role: node
+            relabel_configs:
+              - action: labelmap
+                regex: __meta_kubernetes_node_label_(.+)
+              - source_labels: []
+                target_label: cluster
+                replacement: cfe-iac-clu
+              - target_label: __address__
+                replacement: kubernetes.default.svc:443
+              - source_labels: [__meta_kubernetes_node_name]
+                regex: (.+)
+                target_label: __metrics_path__
+                replacement: /api/v1/nodes/$${1}/proxy/metrics/cadvisor
+              - source_labels: [instance]
+                separator: ;
+                regex: (.+)
+                target_label: node
+                replacement: $$1
+                action: replace
+          # @feature: kubernetes-monitor; configuration to scrape Kubernetes Endpoints metrics
+          - job_name: kube-state-metrics
+            metrics_path: /metrics
+            kubernetes_sd_configs:
+            - role: endpoints
+            relabel_configs:
+            - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+              regex: kube-state-metrics
+              replacement: $$1
+              action: keep
+            - action: labelmap
+              regex: __meta_kubernetes_service_label_(.+)
+            - source_labels: []
+              target_label: cluster
+              replacement: cfe-iac-clu

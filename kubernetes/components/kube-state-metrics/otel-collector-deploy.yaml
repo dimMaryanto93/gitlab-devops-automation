@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-deployment-kubernetes-monitor
+  labels:
+    app: otel-kubernetes-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-kubernetes-monitor
+  template:
+    metadata:
+      labels:
+        app: otel-kubernetes-monitor
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      serviceAccountName: otel-sa-kubernetes-monitor
+      containers:
+        - name: otel-kubernetes-monitor
+          image: otel/opentelemetry-collector:0.50.0
+          command:
+            - "/otelcol"
+            - "--config=/conf/otel-collector-config.yaml"
+          volumeMounts:
+            - name: otel-collector-config-vol-kubernetes-monitor
+              mountPath: /conf
+      volumes:
+        - name: otel-collector-config-vol-kubernetes-monitor
+          configMap:
+            name: otel-collector-conf-kubernetes-monitor
+            items:
+              - key: otel-collector-config
+                path: otel-collector-config.yaml

@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: otel-role-binding-kubernetes-monitor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: otel-role-kubernetes-monitor
+subjects:
+  - kind: ServiceAccount
+    name: otel-sa-kubernetes-monitor
+    namespace: skywalking
