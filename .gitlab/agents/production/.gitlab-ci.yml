@@ -1,0 +1,59 @@
+deploy-cert-manager:
+  stage: deploy-ias-production
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: production-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/cert-manager
+  environment:
+    name: production
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-k8s-dashboard:
+  stage: deploy-ias-production
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: production-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/kubernetes-dashboard
+  environment:
+    name: production
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metrics-server:
+  stage: deploy-ias-production
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: production-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metrics-server
+  environment:
+    name: production
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metrics-server:
+  stage: deploy-ias-production
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: production-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metrics-server
+  environment:
+    name: production
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metallb:
+  stage: deploy-ias-production
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: production-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metallb
+  environment:
+    name: production
+  extends: .kustomize-build
+  resource_group: deploy/review
