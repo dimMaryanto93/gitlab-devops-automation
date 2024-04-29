@@ -575,4 +575,6 @@ PLAY RECAP *********************************************************************
 skywalking_host             : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
 
-Kemudian temen-temen bisa akses 
+Kemudian temen-temen bisa akses ke dashboard apache skywalking [http://<ip-host>:8080](http://localhost:8080) seperti berikut:
+
+![dashboard-skywalking]()
