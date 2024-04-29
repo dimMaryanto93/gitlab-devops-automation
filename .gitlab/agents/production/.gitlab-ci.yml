@@ -1,4 +1,4 @@
-deploy-cert-manager:
+deploy-cert-manager:prod:
   stage: deploy-ias-production
   when: manual
   variables:
@@ -10,7 +10,7 @@ deploy-cert-manager:
   extends: .kustomize-build
   resource_group: deploy/review
 
-deploy-k8s-dashboard:
+deploy-k8s-dashboard:prod:
   stage: deploy-ias-production
   when: manual
   variables:
@@ -22,7 +22,7 @@ deploy-k8s-dashboard:
   extends: .kustomize-build
   resource_group: deploy/review
 
-deploy-metrics-server:
+deploy-metrics-server:prod:
   stage: deploy-ias-production
   when: manual
   variables:
@@ -34,7 +34,7 @@ deploy-metrics-server:
   extends: .kustomize-build
   resource_group: deploy/review
 
-deploy-metrics-server:
+deploy-metrics-server:prod:
   stage: deploy-ias-production
   when: manual
   variables:
@@ -46,7 +46,7 @@ deploy-metrics-server:
   extends: .kustomize-build
   resource_group: deploy/review
 
-deploy-metallb:
+deploy-metallb:prod:
   stage: deploy-ias-production
   when: manual
   variables:
