@@ -151,6 +151,7 @@ Untuk provision perlu step-by-step flownya seperti berikut
 - Install Nexus OSS & Configure registry
 - Install gitlab-runner with docker executor
 - Install sonarqube
+- Install skywalking
 
 ### Setup auth to Ansible client
 
@@ -523,3 +524,55 @@ Berikut hasilnya, untuk gitlab variables:
 dan gitlab import and export repository
 
 ![gitlab-import-export](docs/07-gitlab-export-import.png)
+
+### Execute skywalking
+
+Pada task ini, berfungsi untuk Install Oracle JDK 17 dan Apache skywalking terkait system monitoring dan observability. Cara menjalankan seperti berikut:
+
+```bash
+ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' skywalking/site.yaml --ask-become-pass
+```
+
+Jika dijalankan maka hasilnya seperti berikut:
+
+```bash
+💻 ~/D/p/n/g/ansible ➡ ansible-playbook -i inventory.ini --extra-vars='@extra-vars.yaml' skywalking/site.yaml --ask-become-pass
+BECOME password:
+
+playbook: skywalking/site.yaml
+
+  play #1 (skywalking): Install Apache Skywalking       TAGS: []
+    tasks:
+      dimmaryanto93.oracle_java : Load a variable file based on the OS type     TAGS: []
+      dimmaryanto93.oracle_java : Load a variable file based on the OS arch     TAGS: []
+      dimmaryanto93.oracle_java : Debug os version and architecture     TAGS: []
+      dimmaryanto93.oracle_java : determine if Java is already installed        TAGS: []
+      set_fact  TAGS: []
+      dimmaryanto93.oracle_java : Check that the /tmp/{{ oracle_jdk_filename }} exists  TAGS: []
+      dimmaryanto93.oracle_java : Copy file to server   TAGS: []
+      dimmaryanto93.oracle_java : Check that the /tmp/{{ oracle_jdk_filename }} exists  TAGS: []
+      dimmaryanto93.oracle_java : Download oracle jdk   TAGS: []
+      dimmaryanto93.oracle_java : Install rpm package.  TAGS: []
+      dimmaryanto93.oracle_java : Install deb package package.  TAGS: []
+      dimmaryanto93.skywalking : Load a variable file based on the OS type      TAGS: []
+      dimmaryanto93.skywalking : Install dependencies for installing    TAGS: []
+      dimmaryanto93.skywalking : Ensure group 'skywalking' exists       TAGS: []
+      dimmaryanto93.skywalking : Add the user 'skywalking' exists       TAGS: []
+      dimmaryanto93.skywalking : Create a directory ==> {{ skywalking_install_path }} if it does not exist      TAGS: []
+      dimmaryanto93.skywalking : Unarchive skywalking binaries  TAGS: []
+      dimmaryanto93.skywalking : Give access to user 'skywalking' recusively    TAGS: []
+      shell     TAGS: []
+      dimmaryanto93.skywalking : webapp.service file    TAGS: []
+      dimmaryanto93.skywalking : config for skywalking-webapp   TAGS: []
+      dimmaryanto93.skywalking : oap.service file       TAGS: []
+      dimmaryanto93.skywalking : Restart service skywalking     TAGS: []
+      dimmaryanto93.skywalking : Gathering service facts.       TAGS: []
+      dimmaryanto93.skywalking : Put SELinux in permissive mode TAGS: []
+      dimmaryanto93.skywalking : Setup firewall-cmd for RedHat family   TAGS: []
+      dimmaryanto93.skywalking : Setup ufw for Debian family    TAGS: []
+
+PLAY RECAP ***********************************************************************************************************************
+skywalking_host             : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+```
+
+Kemudian temen-temen bisa akses 
