@@ -10,7 +10,7 @@ name,ring,quadrant,isNew,description
 "Kubernetes v25 with containerd",Adopt,Platforms,FALSE,"<p>Kubernetes running with containerd as container runtime, sebagai alternative docker</p>"
 "Kubernetes v26 with containerd",Assess,Platforms,FALSE,"<p>Latest stable kubernetes version</p>"
 "Kubernetes Dashboard",Adopt,Tools,FALSE,"<p>web based for monitoring kubernetes cluster</p>"
-"Aquasec trivy",Adopt,Trial,FALSE,"<p>SAST container image scanning tools for free but required internet to gathering cve database alternative for SonarQube</p>"
+"Aquasec trivy",Trial,Tools,FALSE,"<p>SAST container image scanning tools for free but required internet to gathering cve database alternative for SonarQube</p>"
 "Sonarqube OSS",Adopt,Tools,FALSE,"<p>Code Quality, Security & Static Analysis Tool</p>"
 "MetalLB loadbalancer",Adopt,Tools,FALSE,"<p>Kubernetes loadbalancer on level 7</p>"
 "Nginx Ingress (cummunity)",Adopt,Tools,FALSE,"<p>Kubernetes ingress by nginx community</p>"
