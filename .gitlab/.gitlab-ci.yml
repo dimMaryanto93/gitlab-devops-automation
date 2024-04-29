@@ -1,0 +1,67 @@
+stages:
+  - deploy-ias-review
+
+include:
+  - local: '/templates/templates/gitops-flow.gitlab-ci.yml'
+
+deploy-cert-manager:
+  stage: deploy-ias-review
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/cert-manager
+  environment:
+    name: review
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-k8s-dashboard:
+  stage: deploy-ias-review
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/kubernetes-dashboard
+  environment:
+    name: review
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metrics-server:
+  stage: deploy-ias-review
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metrics-server
+  environment:
+    name: review
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metrics-server:
+  stage: deploy-ias-review
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metrics-server
+  environment:
+    name: review
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+deploy-metallb:
+  stage: deploy-ias-review
+  when: manual
+  variables:
+    GIT_REMOTE_BRANCH: review-env
+    KUBERNETES_MANIFEST_TEMPLATES:
+      kubernetes/components/metallb
+  environment:
+    name: review
+  extends: .kustomize-build
+  resource_group: deploy/review
+
+
