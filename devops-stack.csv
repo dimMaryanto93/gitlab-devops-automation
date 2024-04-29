@@ -29,4 +29,5 @@ name,ring,quadrant,isNew,description
 "Nexus OSS",Adopt,Platforms,FALSE,"<p>Private Repository, Artifact, and Registries for Self Manage or On-Premise</p>"
 "Ansible",Adopt,languages-and-frameworks,FALSE,"<p>Framework to automation configuration deployment from RedHat</p>"
 "Gitlab CI",Adopt,languages-and-frameworks,FALSE,"<p>Framework to automation application deployment from Gitlab</p>"
+"ArgoCD",Hold,languages-and-frameworks,TRUE,"<p>Tools to automation delivery kubernetes workloads</p>"
 "Nutanix Calm",Trial,languages-and-frameworks,FALSE,"<p>Framework to automation configuration deployment from Nutanix Cloud Platform</p>"
