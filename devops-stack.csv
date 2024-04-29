@@ -12,6 +12,7 @@ name,ring,quadrant,isNew,description
 "Kubernetes Dashboard",Adopt,Tools,FALSE,"<p>web based for monitoring kubernetes cluster</p>"
 "MetalLB loadbalancer",Adopt,Tools,FALSE,"<p>Kubernetes loadbalancer on level 7</p>"
 "Nginx Ingress (cummunity)",Adopt,Tools,FALSE,"<p>Kubernetes ingress by nginx community</p>"
+"APISIX Ingress",Assess,Tools,FALSE,"<p>Kubernetes ingress by APISIX</p>"
 "Gitlab",Adopt,Platforms,FALSE,"<p>Source code management, DevSecOps Platform </p>"
 "Jenkins",Trial,Platforms,FALSE,"<p>CI/CD Pipeline platform</p>"
 "Gitlab runner with docker executor",Adopt,Techniques,FALSE,"<p>CI/CD Agent using container based, kelebihan menggunakan method ini lebih dynamic karena executable tidak perlu diinstall</p>"
