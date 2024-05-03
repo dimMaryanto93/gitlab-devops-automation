@@ -16,6 +16,7 @@ variables:
       alias: dockerd
   variables:
       DOCKER_HOST: tcp://dockerd:2375
+      DOCKER_CONFIG: "--config .docker"
       DOCKER_DRIVER: overlay2
       DOCKER_TLS_CERTDIR: ""
       DOCKER_BUILD_ARGS_ENTRIPOINT: ""
@@ -26,7 +27,7 @@ variables:
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
   script:
-    - docker build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - docker ${DOCKER_CONFIG} build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
     - >
       for TAG in ${DOCKER_TAGS};
       do
@@ -36,8 +37,8 @@ variables:
           docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
           echo "docker image push $TAG";
-          docker --config .docker image push $TAG:$CI_COMMIT_REF_SLUG
-          docker --config .docker image push $TAG:$CI_COMMIT_SHORT_SHA
+          docker ${DOCKER_CONFIG} image push $TAG:$CI_COMMIT_REF_SLUG
+          docker ${DOCKER_CONFIG} image push $TAG:$CI_COMMIT_SHORT_SHA
           echo "--------------------------------";
       done
 
