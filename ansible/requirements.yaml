@@ -11,6 +11,7 @@ roles:
   - dimmaryanto93.sonarqube
   - dimmaryanto93.oracle_java
   - dimmaryanto93.skywalking
+  - dimmaryanto93.opensearch
 collections:
   - ansible.posix
   - community.general
