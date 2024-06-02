@@ -1,3 +1,4 @@
 extra-vars.yaml
 inventory.ini
 *.inventory*.ini
+*.env.yaml
