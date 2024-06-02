@@ -3,27 +3,19 @@ variables:
   DOCKER_DIND_VERSION: "18.09-dind"
   DOCKER_CONFIG_FILE: "--config .docker"
 
-.insecure-registry-build-docker:
+.insecure-registry-build-docker-socket:
   stage: build
   image: private.nexus-registry.docker.local:8086/docker:${DOCKER_VERSION}
-  services:
-    - name: private.nexus-registry.docker.local:8086/docker:${DOCKER_DIND_VERSION}
-      entrypoint: ["dockerd-entrypoint.sh"]
-      command: [
-        "--insecure-registry=private.nexus-registry.docker.local:8087",
-        "--insecure-registry=private.nexus-registry.docker.local:8086"
-      ]
-      alias: dockerd
   variables:
-      DOCKER_HOST: tcp://dockerd:2375
-      DOCKER_CONFIG: "--config .docker"
-      DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: ""
-      DOCKER_BUILD_ARGS_ENTRIPOINT: ""
-      DOCKERFILE_LOCATION: "-f Dockerfile"
-      DOCKER_TAGS: 
-        private.nexus-registry.docker.local:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
-      DOCKER_CONTEXT_PATH: "."
+    DOCKER_HOST: unix:///var/run/docker.sock
+    DOCKER_CONFIG: "--config .docker"
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_BUILD_ARGS_ENTRIPOINT: ""
+    DOCKERFILE_LOCATION: "-f Dockerfile"
+    DOCKER_TAGS: 
+      private.nexus-registry.docker.local:8087/$PROJECT_GROUP_ID/$PROJECT_NAME
+    DOCKER_CONTEXT_PATH: "."
   before_script:
     - mkdir -p .docker/ && cat $DOCKER_CONF_JSON > .docker/config.json
   script:
@@ -42,19 +34,86 @@ variables:
           echo "--------------------------------";
       done
 
-.gitlab-registry-build-docker:
-  extends: .insecure-registry-build-docker
+.insecure-registry-build-docker:
+  stage: build
+  extends: .insecure-registry-build-docker-socket
+  services:
+    - name: private.nexus-registry.docker.local:8086/docker:${DOCKER_DIND_VERSION}
+      entrypoint: ["dockerd-entrypoint.sh"]
+      command: [
+        "--insecure-registry=private.nexus-registry.docker.local:8087",
+        "--insecure-registry=private.nexus-registry.docker.local:8086"
+      ]
+      alias: dockerd
+  variables:
+    DOCKER_HOST: tcp://dockerd:2375
+
+.gitlab-registry-build-docker-socket:
+  extends: .insecure-registry-build-docker-socket
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:${DOCKER_VERSION}
+  variables:
+    DOCKER_TAGS: 
+      $CI_REGISTRY_IMAGE
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
+  script:
+    - docker build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - >
+      for TAG in ${DOCKER_TAGS};
+      do
+          echo "--------------------------------";
+          echo "docker image tag $TAG";
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_REF_SLUG
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+          echo "docker image push $TAG";
+          docker image push $TAG:$CI_COMMIT_REF_SLUG
+          docker image push $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+      done
+
+.gitlab-registry-build-docker:
+  extends: .gitlab-registry-build-docker-socket
   services:
     - name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:${DOCKER_DIND_VERSION}
       entrypoint: ["dockerd-entrypoint.sh"]
       alias: dockerd
   variables:
-      DOCKER_TAGS: 
-        $CI_REGISTRY_IMAGE
+    DOCKER_HOST: tcp://dockerd:2375
+    DOCKER_TAGS: 
+      $CI_REGISTRY_IMAGE
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
+  script:
+    - docker build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
+    - >
+      for TAG in ${DOCKER_TAGS};
+      do
+          echo "--------------------------------";
+          echo "docker image tag $TAG";
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_REF_SLUG
+          docker image tag $PROJECT_GROUP_ID/$PROJECT_NAME:latest $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+          echo "docker image push $TAG";
+          docker image push $TAG:$CI_COMMIT_REF_SLUG
+          docker image push $TAG:$CI_COMMIT_SHORT_SHA
+          echo "--------------------------------";
+      done
+
+.docker-registry-build-docker-socket:
+  extends: .gitlab-registry-build-docker-socket
+  image: docker:${DOCKER_VERSION}
+  services:
+    - name: docker:${DOCKER_DIND_VERSION}
+      entrypoint: ["dockerd-entrypoint.sh"]
+      alias: dockerd
+  variables:
+    DOCKER_TAGS: 
+      ${CI_DOCKER_REGISTRY_USER}/${PROJECT_GROUP_ID}-${PROJECT_NAME}
+  before_script:
+    - docker login -u $CI_DOCKER_REGISTRY_USER -p $CI_DOCKER_REGISTRY_PASSWORD
   script:
     - docker build -q $DOCKERFILE_LOCATION $DOCKER_BUILD_ARGS_ENTRIPOINT -t $PROJECT_GROUP_ID/$PROJECT_NAME:latest $DOCKER_CONTEXT_PATH
     - >
@@ -79,8 +138,9 @@ variables:
       entrypoint: ["dockerd-entrypoint.sh"]
       alias: dockerd
   variables:
-      DOCKER_TAGS: 
-        ${CI_DOCKER_REGISTRY_USER}/${PROJECT_GROUP_ID}-${PROJECT_NAME}
+    DOCKER_HOST: tcp://dockerd:2375
+    DOCKER_TAGS: 
+      ${CI_DOCKER_REGISTRY_USER}/${PROJECT_GROUP_ID}-${PROJECT_NAME}
   before_script:
     - docker login -u $CI_DOCKER_REGISTRY_USER -p $CI_DOCKER_REGISTRY_PASSWORD
   script:
