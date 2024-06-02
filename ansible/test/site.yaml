@@ -1,5 +1,7 @@
-- name: Install Nexus OSS
-  hosts: ["gitlab"]
+- name: get fact all
+  hosts: ["all"]
   tasks:
     - debug:
-        msg: "Gitlab IP address is {{ gitlab_address }}"
+        msg: "OS distribution is {{ ansible_facts['distribution'] }}"
+    - debug:
+        msg: "OS family is {{ ansible_facts['os_family'] }}"
