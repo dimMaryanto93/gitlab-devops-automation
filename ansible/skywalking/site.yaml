@@ -3,8 +3,6 @@
   hosts: ["skywalking"]
   become: true
   vars:
-    java_bin_path: /usr/lib/jvm/jdk-17-oracle-x64/bin/java
-    oracle_java_version: 17
+    skywalking_version: 10.0.1
   roles: 
-    - role: dimmaryanto93.oracle_java
     - role: dimmaryanto93.skywalking
