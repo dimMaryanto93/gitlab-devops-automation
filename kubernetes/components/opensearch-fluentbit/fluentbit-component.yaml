@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: kube-system
+data:
+  tail_container_parse.conf: |
+    <parse>
+      @type "#{ENV['FLUENT_CONTAINER_TAIL_PARSER_TYPE'] || 'json'}"
+      time_format "#{ENV['FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT'] || '%Y-%m-%dT%H:%M:%S.%N%:z'}"
+    </parse>
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-system
+  labels:
+    app: fluentd
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  template:
+    metadata:
+      labels:
+        app: fluentd
+    spec:
+      serviceAccountName: fluentd
+      serviceAccount: fluentd
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: fluentd
+          image: fluent/fluentd-kubernetes-daemonset:v1.16-debian-opensearch-2
+          env:
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+            - name: FLUENT_OPENSEARCH_HOST
+              value: "opensearch.logging-system"
+            - name: FLUENT_OPENSEARCH_PORT
+              value: "9200"
+            - name: FLUENT_OPENSEARCH_SCHEME
+              value: "http"
+            - name: FLUENTD_SYSTEMD_CONF
+              value: disable
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+              value: "%Y-%m-%dT%H:%M:%S.%N%:z"
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+              value: "cri"
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          volumeMounts:
+            - name: varlogpods
+              mountPath: /var/log/pods
+              readOnly: true
+            - name: varlogcontainer
+              mountPath: /var/log/containers
+              readOnly: true
+            - name: tailcontainerparse
+              mountPath: /fluentd/etc/tail_container_parse.conf
+              subPath: tail_container_parse.conf
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: varlogpods
+          hostPath:
+            path: /var/log/pods
+        - name: varlogcontainer
+          hostPath:
+            path: /var/log/containers
+        - name: tailcontainerparse
+          configMap:
+            name: fluentd-config
+            items:
+              - key: tail_container_parse.conf
+                path: tail_container_parse.conf
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluentd
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluentd
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - namespaces
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fluentd
+roleRef:
+  kind: ClusterRole
+  name: fluentd
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: fluentd
+    namespace: kube-system
