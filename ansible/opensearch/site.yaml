@@ -2,6 +2,11 @@
   hosts: ["opensearch"]
   become: true
   environment:
-    OPENSEARCH_INITIAL_ADMIN_PASSWORD: Nutanix/4u@2024
+    opensearch_download: true
+    opensearch_dashboard_download: true
+    opensearch_version: 2.11.1
+    opensearch_cluster_enabled: false
+    default_admin_password: "Nutanix/4u@2024"
+    opensearch_cluster_name: "logging_system"
   roles: 
     - role: dimmaryanto93.opensearch
