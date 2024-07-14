@@ -9,13 +9,13 @@ Yang jadi pertanyaan kita harus pilih yang mana? Jawabannya `It's Depend, what y
 
 Untuk menggunakan workflow CI/CD temen-temen bisa menggunakan branch 
 
-- `main`
+- `main`, some feature has deprecated (e.g. Kubernetes integration, application performance metrics)
 - `feature/main` (development version)
 
 Untuk menggunakan workflow GitOps temen-temen bisa menggunakan branch
 
-- `gitlab-kas`
-- `feature/gitlab-kas` (development version)
+- `gitlab-fluxcd`
+- `gitlab-kas`, some feature has deprecated (e.g kubernetes agent)
 
 Semua branch di sertai dengan contoh penggunaanya, temen-temen bisa lihat pada folder `examples/<modules>`
 
