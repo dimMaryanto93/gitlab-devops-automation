@@ -20,7 +20,7 @@ name,ring,quadrant,isNew,description
 "Jenkins",Trial,Platforms,FALSE,"<p>CI/CD Pipeline platform</p>"
 "Gitlab runner with docker executor",Adopt,Techniques,FALSE,"<p>CI/CD Agent using container based connected via socket, kelebihan menggunakan method ini lebih dynamic karena selama executeable tersedia di docker image kita bisa jalankan task tersebut dan tidak perlu install directly on host</p>"
 "Gitlab runner with ssh executor",Hold,Techniques,FALSE,"<p>CI/CD Agent using ssh connection based, kekurangan menggunakan method ini kita perlu install package yang akan digunakan pada <pre><code>.gitlab-ci.yaml</code></pre></p>"
-"Gitlab integration kubernetes as certificate",Hold,Techniques,FALSE,"<p>Deploy kubernetes manifest using push method from gitlab intgration with kubernetes</p>"
+"Gitlab integration kubernetes as certificate",Hold,Techniques,FALSE,"<p>Deploy kubernetes manifest using push method from gitlab intgration with kubernetes, this method has deprecated and removed for the feature</p>"
 "Gitlab integration kubernetes as agent (gitops)",Hold,Techniques,TRUE,"<p>Deploy manifest of kubernetes using gitlab-agent but has deprecated on gitlab v16.10.x and removed on feature release</p>"
 "Gitlab integration kubernetes as flux (gitops)",Trial,Techniques,TRUE,"<p>Deploy manifest of kubernetes using fluxcd + gitlab-agent to pull from gitlab</p>"
 "Kubectl",Adopt,Techniques,FALSE,"<p>Applying kubernetes manifect natively using kubectl binary</p>"
