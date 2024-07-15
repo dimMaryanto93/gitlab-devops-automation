@@ -1,3 +1,81 @@
+For using GitOps with Gitlab + Kubernetes (fluxcd)
+
+Berikut yang harus disiapkan, untuk meng-enable GitOps flow dengan fluxcd menggunakan Gitlab
+
+- Fluxcd (install on your machine / vm)
+    - helm
+    - git
+    - kubectl
+- Kubernetes Cluster
+- Gitlab with KAS Server enable (ensure config on `/etc/gitlab/gitlab.rb` enable `gitlab_kas => true`)
+
+## Install fluxcd
+
+For mac os, you can use homebrew
+
+```bash
+brew install fluxcd/tap/flux
+```
+
+For linux, you can use curl
+
+```bash
+curl -s https://fluxcd.io/install.sh | sudo bash
+```
+
+verify installation
+
+```bash
+flux --version
+```
+
+## Bootstrap fluxcd on gitlab repository
+
+Pertama buat dulu repository di gitlab, contohnya disini saya membuat repository dengan nama `k8s-fluxcd-multicluster` dalam group `examples` seperti berikut
+
+![gitlab-repo](images/gitlab-agentk/01-create-repo.png)
+
+Kemudian, gunakan file `kubeconfig.conf` untuk konek ke kubernetes yang telah kita deploy sebelumnya  
+
+```bash
+💻 ~ ➡ export KUBECONFIG=~/Downloads/devsecops-dev-kubectl.cfg
+💻 ~ ➡ kubectl get node
+
+NAME                            STATUS   ROLES                  AGE   VERSION
+devsecops-dev-7fca35-master-0   Ready    control-plane,master   9d    v1.25.6
+devsecops-dev-7fca35-worker-0   Ready    node                   9d    v1.25.6
+```
+
+copy repository url dengan protocol **http** dan masukan di perintah berikut:
+
+```bash
+flux bootstrap git \                                           
+--url="http://10.12.10.50/examples/k8s-fluxcd-multicluster.git" \
+--token-auth \
+--insecure-skip-tls-verify \
+--username=dimasm93 \
+--allow-insecure-http=true \
+--path="./clusters/review"
+```
+
+Jika diexecute, hasilnya seperti berikut:
+
+![execute-fluxcli](images/gitlab-agentk/01a-init-bootstrap-fluxcd.png)
+
+Kemudian coba check di kubernetes cluster tersebut, pod pada namespace `flux-system` seperti berikut
+
+```bash
+kubectl get pod -n flux-system
+```
+
+Sampai semuanya pod running, seperti berikut outputnya
+
+![flux-system-ns](images/gitlab-agentk/01b-check-flux-system.png)
+
+Kemudian check juga di repositorynya sampai terupdate seperti berikut:
+
+![flux-system-repo](images/gitlab-agentk/01c-check-flux-repo.png)
+
 ## To connect a Kubernetes cluster to GitLab
 
 Before you can install the agent in your cluster, you need:
@@ -42,59 +120,110 @@ To create an agent configuration file:
 
 You can leave the file blank for now, and commit & push.
 
-![config.yaml](images/gitlab-integration/01-configuration-files.png)
+![config.yaml](images/gitlab-agentk/02-create-gitlab-agent-config.png)
 
-## Register the agent with GitLab
+## Register `agentk` on gitlab
 
 You must register an agent before you can install the agent in your cluster. To register an agent:
 
 1. On the top bar, select **Main menu > Projects** and find your project. If you have an agent configuration file, it must be in this project. Your cluster manifest files should also be in this project.
 
 2. From the left sidebar, select **Infrastructure > Kubernetes clusters**.
-    ![kubernetes-agent](images/gitlab-integration/02-gitlab-kas.png)
+    ![kubernetes-agent](images/gitlab-agentk/02a-connect-k8s-cluster.png)
 
 3. Select Connect a cluster (agent). then select agent-name has been created before
-    ![select-agent](images/gitlab-integration/02a-select-agent.png)
+    ![select-agent](images/gitlab-agentk/02b-connect-k8s-review.png)
 
 4. Click button Register. GitLab generates an access token for the agent. You need this token to install the agent in your cluster.
+    ![generate-secret](images/gitlab-agentk/02c-the-credential.png)
 
-5. Copy the command under **Recommended installation** method. You need it when you use
-the one-liner installation method to install the agent in your cluster.
+5. Securely store the agent `access token` and `kasAddress` for later.
 
-```bash
-export GITLAB_KAS_WSS='wss://<domain-or-ip-server>/-/kubernetes-agent/'
-export GITLAB_ACCESS_TOKEN='<access-token-from-gitlab-kas>'
-export KUBERNETES_NS=gitlab-agent
-export PROJECT_NAME=example
-export GITLAB_VERSION=v16.10.1 # Check your gitlab version
+## Install `agentk` on kubernetes cluster
 
-helm repo add gitlab https://charts.gitlab.io
-helm repo update
-helm upgrade --install $PROJECT_NAME gitlab/gitlab-agent \
-    --namespace $KUBERNETES_NS \
-    --create-namespace \
-    --set image.tag=$GITLAB_VERSION \
-    --set config.token=$GITLAB_ACCESS_TOKEN \
-    --set config.kasAddress=$GITLAB_KAS_WSS
-```
+use Flux to create a namespace for `agentk` and install it in your cluster. Keep in mind it takes a few minutes for Flux to pick up and apply configuration changes defined in the repository (`k8s-fluxcd-multicluster` repo).
 
-Jika diexecute hasilnya seperti berikut:
+1. Commit and push the following file to `clusters/review/namespace-gitlab.yaml`:
+    ```yaml
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+        name: gitlab
+    ```
 
-![install-kubernetes-resources](images/gitlab-integration/02b-kubernetes-resources.png)
+    after fluxcd apply this manifest, it will create namespace `gitlab`
 
-After that, now you can see status in list cluster look like this:
+    ![gitlab-ns](images/gitlab-agentk/02e-check-k8s-ns-gitlab-agent.png)
 
-![list cluster](images/gitlab-integration/02c-list-cluster.png)
+2. Create a file called `secret-gitlab-agentk.yaml` that contains your agent access token as a secret:
+    ```yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+        name: gitlab-agent-token
+        namespace: gitlab
+    type: Opaque
+    stringData:
+        token: "<your-gitlab-kubernetes-agentk-token>"
+    ```
 
-If you want to use CI/CD workflow, you need [enabled TLS/SSL](https://docs.gitlab.com/omnibus/settings/ssl/) to gitlab instance as a [documentation mention](https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html#enable-tls).
+    Then apply manualy using `kubectl apply -f secret-gitlab-agentk.yaml`
 
-If gitlab kas status is `Never Connected` look like this
+3. Commit and push the following file to `clusters/review/gitlab-agentk.yaml`, replacing the values of `.spec.values.config.kasAddress` and `.spec.values.config.secretName` with your saved `kas address` and `secret name`:
 
-![never connected](images/gitlab-integration/03a-gitlab-kas-never-connected.png)
+    ```yaml
+    ---
+    apiVersion: source.toolkit.fluxcd.io/v1beta2
+    kind: HelmRepository
+    metadata:
+        labels:
+            app.kubernetes.io/component: agentk
+            app.kubernetes.io/created-by: gitlab
+            app.kubernetes.io/name: agentk
+            app.kubernetes.io/part-of: gitlab
+        name: gitlab-agent
+        namespace: gitlab
+    spec:
+        interval: 1h0m0s
+        url: https://charts.gitlab.io
+    ---
+    apiVersion: helm.toolkit.fluxcd.io/v2beta1
+    kind: HelmRelease
+    metadata:
+        name: gitlab-agent
+        namespace: gitlab
+    spec:
+        chart:
+            spec:
+            chart: gitlab-agent
+            sourceRef:
+                kind: HelmRepository
+                name: gitlab-agent
+                namespace: gitlab
+        interval: 1h0m0s
+        values:
+            config:
+            kasAddress: "<changed-this-with-kas-address>"
+            secretName: gitlab-agent-token
+    ```
 
-You need check logs of agent, using this command `kubectl logs deploy/$PROJECT_NAME-gitlab-agent -n $KUBERNETES_NS`
+4. Check the pod, are all running using `kubectl get pod -n gitlab` and check the logs using `kubectl -n gitlab logs <pod-gitlab-agent-v2-xxxx>` makesure the log no error message look like this:
 
-![connection refused](images/gitlab-integration/03b-gitlab-kas-wss-connection-refused.png)
+    ```bash
+    💻 ~/Downloads ➡ kubectl -n gitlab logs gitlab-agent-v2-9c46c4845-4d5v7
+    {"level":"info","time":"2024-07-15T09:05:22.124Z","msg":"Observability endpoint is up","mod_name":"observability","net_network":"tcp","net_address":"[::]:8080"}
+    ```
+
+If you found error message look like `agentk2kas_tunnel => Error handling a connection` just ignored, the functional may steel running. 
+
+    ```bash
+    💻 ~/Downloads ➡ kubectl -n gitlab logs gitlab-agent-v2-9c46c4845-4d5v7
+    {"level":"error","time":"2024-07-15T11:02:51.575Z","msg":"Error handling a connection","mod_name":"agentk2kas_tunnel","error":"rpc error: code = Unavailable desc = error reading from server: failed to get reader: failed to read frame header: EOF"}
+    ```
+
+If you found error message look like `WebSocket dial failed to send handshake`:
+
+![connect-failed-domain](images/gitlab-integration/03b-gitlab-kas-wss-connection-refused.png)
 
 May you need add `spec.hostAlias` inside deployment object, then update the spec using command `kubectl edit deploy $PROJECT_NAME-gitlab-agent -n $KUBERNETES_NS` add this line:
 
@@ -115,4 +244,8 @@ spec:
 
 Quit and save, then you need check again the logs
 
-![connected](images/gitlab-integration/03c-gitlab-kas-logs-connected.png)
+![check-log-wss](images/gitlab-integration/03c-gitlab-kas-logs-connected.png)
+
+And finaly check the kubernetes cluster connection
+
+![kubernetes-cluster-connected](images/gitlab-agentk/03b-k8s-connected.png)
