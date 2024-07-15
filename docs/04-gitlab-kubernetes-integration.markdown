@@ -195,11 +195,11 @@ use Flux to create a namespace for `agentk` and install it in your cluster. Keep
     spec:
         chart:
             spec:
-            chart: gitlab-agent
-            sourceRef:
-                kind: HelmRepository
-                name: gitlab-agent
-                namespace: gitlab
+                chart: gitlab-agent
+                sourceRef:
+                    kind: HelmRepository
+                    name: gitlab-agent
+                    namespace: gitlab
         interval: 1h0m0s
         values:
             config:
