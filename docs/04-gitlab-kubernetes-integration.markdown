@@ -249,3 +249,92 @@ Quit and save, then you need check again the logs
 And finaly check the kubernetes cluster connection
 
 ![kubernetes-cluster-connected](images/gitlab-agentk/03b-k8s-connected.png)
+
+## Example deploy private repository
+
+For example we have a private repository stored on gitlab with diffrent repository whichis on `examples/devsecops/springboot3-devsecops/` with branch `k8s-review` look like 
+
+![kubernetes-manifest](images/gitlab-agentk/04-example-k8s-manifest.png)
+
+To deploy that kubernetes manifest using gitlab-fluxcd, you will need create some kubernetes resource 
+
+- Secret (the credential to clone/pull from git operator)
+- source.toolkit.fluxcd.io/v1 GitRepository (stored in your `k8s-fluxcd-multicluster` repository on `clusters/<environment>`)
+- kustomize.toolkit.fluxcd.io/v1 Kustomization (stored in your `k8s-fluxcd-multicluster` repository on `cluster/<environment>`)
+
+For the secret, just create local file called `git-secret-cred.yaml`
+
+```yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-login
+  namespace: flux-system
+type: Opaque
+data:
+  username: <BASE64>
+  password: <BASE64>
+```
+
+because, we are using http to clone the source-code (kubernetes manifest) from gitlab please use this template secret and execute using `kubectl apply -f git-secret-cred.yaml`
+
+fill the `username` dan `password` with your gitlab credential or personal access token with scope `[api, write-repository, read-repository, admin]` the encoded with base64 use tools like [base64 web](https://www.base64encode.org/)
+
+after apllyed the secret look like this:
+
+```bash
+~ » kubectl get secret -n flux-system
+NAME           TYPE     DATA   AGE
+flux-system    Opaque   2      21h
+gitlab-login   Opaque   2      21h
+```
+
+The second step is create flux manifest stored in your gitlab repository (`k8s-fluxcd-multicluster`) inside folder `clusters/review` called `gitrepository-springboot-devsecops.yaml`
+
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: <YOUR-REPOSITORY-NAME>
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  secretRef:
+    name: gitlab-login
+  ref:
+    branch: <YOUR-GIT-BRANCH>
+  url: <YOUR-GIT-REPOSITORY-URL>
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: <YOUR-REPOSITORY-NAME>
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: <YOUR-KUBERNETES-MANIFEST-PATH>
+  targetNamespace: default
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: <YOUR-REPOSITORY-NAME>
+```
+
+Please change the placeholder 
+
+- `<YOUR-REPOSITORY-NAME>` => bebas, biasanya di-isi dengan nama yang sama dengan gitlab repository target misalnya `devsecops-example`
+- `<YOUR-GIT-REPOSITORY-URL>` => arahkan ke gitlab repository url misalnya: `http://10.12.10.50/examples/devsecops/springboot3-devsecops.git`
+- `<YOUR-GIT-BRANCH>` => by default `main` tapi case kali lokasi branch yang saya gunakan adalah `k8s-review`
+- `<YOUR-KUBERNETES-MANIFEST-PATH>` => arahkan ke folder dalam repository, dalam hal ini saya menggunakan root folder jadi aku isi dengan `./`
+
+Seperti berikut configurasi lengkapnya:
+
+![fluxcd-gitrepository-manifest](images/gitlab-agentk/04a-fluxcd-gitrepository-manifest.png)
+
+Kemudian coba check dalam kubernetes cluster dengan perintah `kubectl get GitRepository -n flux-system`
+
+![fluxcd-gitrepository-list-cmd](images/gitlab-agentk/04b-flux-gitoperation-manifest-list.png)
+
+Jika sudah, kita bisa check pada deployment targetnya menggunakan perintah `kubectl get deploy -n <targetNamespace>`
