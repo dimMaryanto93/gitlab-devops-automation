@@ -135,9 +135,11 @@ cd gitlab-devops-automation/ansible ## masuk ke folder ansible
 Setelah itu kita perlu install dependency dengan menggunakan perintah berikut:
 
 ```bash
+export ENV_NAME="<your-environment>"
 ansible-galaxy role install -r requirements.yaml --force && \
 ansible-galaxy collection install -r requirements.yaml --force && \
-cp .env.yaml extra-vars.yaml
+cp .env.yaml $ENV_NAME.vars.yaml
+cp inventory.template.ini $ENV_NAME.inventory.ini
 ```
 
 Kemudian kita perlu edit pada file `extra-vars.yaml` seperti pada mark berikut:
