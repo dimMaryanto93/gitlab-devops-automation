@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+spec:
+  template:
+    spec:
+      containers:
+        - name: fluentd
+          env:
+            - name: FLUENT_OPENSEARCH_HOST
+              value: "opensearch.logging-system"
+            - name: FLUENT_OPENSEARCH_PORT
+              value: "9200"
+            - name: FLUENT_OPENSEARCH_SCHEME
+              value: "http"
+            - name: FLUENTD_SYSTEMD_CONF
+              value: disable
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+              value: "%Y-%m-%dT%H:%M:%S.%N%:z"
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+              value: "cri"

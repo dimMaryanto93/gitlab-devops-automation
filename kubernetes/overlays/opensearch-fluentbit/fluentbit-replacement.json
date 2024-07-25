@@ -1,0 +1,17 @@
+[
+    {
+        "op": "replace",
+        "path": "/spec/template/spec/containers/0/env/1/value",
+        "value": "<your-opensearch-address-instance>"
+    },
+    {
+        "op": "replace",
+        "path": "/spec/template/spec/containers/0/env/2/value",
+        "value": "<your-opensearch-port-instance>"
+    },
+    {
+        "op": "replace",
+        "path": "/spec/template/spec/containers/0/env/3/value",
+        "value": "<your-opensearch-schema-instance>"
+    }
+]
