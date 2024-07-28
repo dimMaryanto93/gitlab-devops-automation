@@ -1,4 +1,13 @@
 ---
+- name: Install PostgreSQL
+  hosts: ['sonarqube']
+  become: true
+  vars: 
+    postgres_version: 15
+    enabled_postgresql_ha: false
+  roles: 
+    - dimmaryanto93.postgres_community
+    
 - name: Install Nexus OSS
   hosts: ["sonarqube"]
   become: true
@@ -8,12 +17,3 @@
   roles: 
     - role: dimmaryanto93.oracle_java
     - role: dimmaryanto93.sonarqube
-
-- name: Install PostgreSQL
-  hosts: ['sonarqube']
-  become: true
-  vars: 
-    postgres_version: 15
-    enabled_postgresql_ha: false
-  roles: 
-    - dimmaryanto93.postgres_community
