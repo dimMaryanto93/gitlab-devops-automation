@@ -3,8 +3,17 @@
   hosts: ["sonarqube"]
   become: true
   vars:
-    java_bin_path: /usr/lib/jvm/jdk-17-oracle-x64/bin/java
+    java_bin_path: /usr/lib/jvm/jdk-17.0.12-oracle-x64/bin/java
     oracle_java_version: 17
   roles: 
     - role: dimmaryanto93.oracle_java
     - role: dimmaryanto93.sonarqube
+
+- name: Install PostgreSQL
+  hosts: ['sonarqube']
+  become: true
+  vars: 
+    postgres_version: 15
+    enabled_postgresql_ha: false
+  roles: 
+    - dimmaryanto93.postgres_community
