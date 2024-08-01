@@ -1,0 +1,33 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+spec:
+  replicas: 1
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+    exporters:
+      otlp/traces:
+        endpoint: data-prepper:21890
+        tls:
+          insecure: true
+      otlp/data-prepper:
+        endpoint: data-prepper:21891
+        tls:
+          insecure: true
+      otlp/logs:
+        endpoint: data-prepper:21892
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces: 
+          receivers: [otlp]
+          exporters: [otlp/traces]
