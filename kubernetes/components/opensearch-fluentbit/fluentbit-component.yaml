@@ -48,12 +48,18 @@ spec:
               value: "9200"
             - name: FLUENT_OPENSEARCH_SCHEME
               value: "http"
+            # - name: FLUENT_OPENSEARCH_USER
+            #   value: ""
+            # - name: FLUENT_OPENSEARCH_PASSWORD
+            #   value: ""
             - name: FLUENTD_SYSTEMD_CONF
               value: disable
             - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
               value: "%Y-%m-%dT%H:%M:%S.%N%:z"
             - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
               value: "cri"
+            - name: FLUENT_OPENSEARCH_INDEX_NAME
+              value: "fluentd.${tag}"
           resources:
             limits:
               memory: 512Mi

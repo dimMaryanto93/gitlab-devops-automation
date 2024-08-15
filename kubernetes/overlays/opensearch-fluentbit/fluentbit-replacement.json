@@ -2,16 +2,16 @@
     {
         "op": "replace",
         "path": "/spec/template/spec/containers/0/env/1/value",
-        "value": "<your-opensearch-address-instance>"
+        "value": "10.12.10.56"
     },
     {
         "op": "replace",
         "path": "/spec/template/spec/containers/0/env/2/value",
-        "value": "<your-opensearch-port-instance>"
+        "value": "9200"
     },
     {
         "op": "replace",
         "path": "/spec/template/spec/containers/0/env/3/value",
-        "value": "<your-opensearch-schema-instance>"
+        "value": "http"
     }
 ]
